@@ -1,0 +1,33 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Wed Jun 18 23:37:38 2025
+[*]
+[dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/lab-project-template/waves/tri_state.vcd"
+[dumpfile_mtime] "Wed Jun 18 23:37:14 2025"
+[dumpfile_size] 1453
+[savefile] "/home/shay/a/weyer7/System_Verilog/Projects/lab-project-template/waves/tri_state.gtkw"
+[timestart] 0
+[size] 1850 1016
+[pos] -1 -1
+*-31.479040 8260000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 233
+[signals_width] 122
+[sst_expanded] 1
+[sst_vpaned_height] 289
+@28
+tri_state_tb.blue
+tri_state_tb.bus
+tri_state_tb.green
+@420
+tri_state_tb.i
+@28
+tri_state_tb.red
+tri_state_tb.drive_a
+tri_state_tb.value_a
+tri_state_tb.drive_b
+tri_state_tb.value_b
+tri_state_tb.read_val
+@29
+tri_state_tb.expected
+[pattern_trace] 1
+[pattern_trace] 0

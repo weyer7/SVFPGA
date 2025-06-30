@@ -1,0 +1,55 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Sat Jun 28 01:12:40 2025
+[*]
+[dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/wiltonSB.vcd"
+[dumpfile_mtime] "Sat Jun 28 01:12:33 2025"
+[dumpfile_size] 4500
+[savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/wiltonSB.gtkw"
+[timestart] 0
+[size] 1274 949
+[pos] 1989 26
+*-22.703300 15570000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] wiltonSB_tb.
+[sst_width] 233
+[signals_width] 174
+[sst_expanded] 1
+[sst_vpaned_height] 328
+@800023
+wiltonSB_tb.north[3:0]
+@29
+(0)wiltonSB_tb.north[3:0]
+(1)wiltonSB_tb.north[3:0]
+(2)wiltonSB_tb.north[3:0]
+(3)wiltonSB_tb.north[3:0]
+@1001201
+-group_end
+@800022
+wiltonSB_tb.east[3:0]
+@28
+(0)wiltonSB_tb.east[3:0]
+(1)wiltonSB_tb.east[3:0]
+(2)wiltonSB_tb.east[3:0]
+(3)wiltonSB_tb.east[3:0]
+@1001200
+-group_end
+@800022
+wiltonSB_tb.south[3:0]
+@28
+(0)wiltonSB_tb.south[3:0]
+(1)wiltonSB_tb.south[3:0]
+(2)wiltonSB_tb.south[3:0]
+(3)wiltonSB_tb.south[3:0]
+@1001200
+-group_end
+@800022
+wiltonSB_tb.west[3:0]
+@28
+(0)wiltonSB_tb.west[3:0]
+(1)wiltonSB_tb.west[3:0]
+(2)wiltonSB_tb.west[3:0]
+(3)wiltonSB_tb.west[3:0]
+@1001200
+-group_end
+[pattern_trace] 1
+[pattern_trace] 0

@@ -1,0 +1,57 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Sat Jun 28 01:37:49 2025
+[*]
+[dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/SB2.vcd"
+[dumpfile_mtime] "Sat Jun 28 01:35:08 2025"
+[dumpfile_size] 36089
+[savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/SB2.gtkw"
+[timestart] 0
+[size] 1274 949
+[pos] -1 -1
+*-23.553057 25000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 214
+[signals_width] 142
+[sst_expanded] 1
+[sst_vpaned_height] 278
+@28
+SB2_tb.clk
+SB2_tb.config_data_in
+@800022
+SB2_tb.north[3:0]
+@28
+(0)SB2_tb.north[3:0]
+(1)SB2_tb.north[3:0]
+(2)SB2_tb.north[3:0]
+(3)SB2_tb.north[3:0]
+@1001200
+-group_end
+@800022
+SB2_tb.east[3:0]
+@28
+(0)SB2_tb.east[3:0]
+(1)SB2_tb.east[3:0]
+(2)SB2_tb.east[3:0]
+(3)SB2_tb.east[3:0]
+@1001200
+-group_end
+@800022
+SB2_tb.south[3:0]
+@28
+(0)SB2_tb.south[3:0]
+(1)SB2_tb.south[3:0]
+(2)SB2_tb.south[3:0]
+(3)SB2_tb.south[3:0]
+@1001200
+-group_end
+@800023
+SB2_tb.west[3:0]
+@29
+(0)SB2_tb.west[3:0]
+(1)SB2_tb.west[3:0]
+(2)SB2_tb.west[3:0]
+(3)SB2_tb.west[3:0]
+@1001201
+-group_end
+[pattern_trace] 1
+[pattern_trace] 0

@@ -1,0 +1,63 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Jun 27 23:30:57 2025
+[*]
+[dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/logicelement.vcd"
+[dumpfile_mtime] "Fri Jun 27 23:30:46 2025"
+[dumpfile_size] 6730
+[savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/logicelement.gtkw"
+[timestart] 0
+[size] 1728 958
+[pos] -1 -1
+*-24.738924 25600000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] logicelement_tb.
+[sst_width] 215
+[signals_width] 166
+[sst_expanded] 1
+[sst_vpaned_height] 281
+@200
+-Inputs
+@28
+logicelement_tb.en
+logicelement_tb.nrst
+logicelement_tb.clk
+logicelement_tb.dut.mode
+logicelement_tb.config_data_in
+logicelement_tb.config_en
+logicelement_tb.le_clk
+logicelement_tb.le_en
+logicelement_tb.le_nrst
+@c00022
+logicelement_tb.dut.mux_data[15:0]
+@28
+(0)logicelement_tb.dut.mux_data[15:0]
+(1)logicelement_tb.dut.mux_data[15:0]
+(2)logicelement_tb.dut.mux_data[15:0]
+(3)logicelement_tb.dut.mux_data[15:0]
+(4)logicelement_tb.dut.mux_data[15:0]
+(5)logicelement_tb.dut.mux_data[15:0]
+(6)logicelement_tb.dut.mux_data[15:0]
+(7)logicelement_tb.dut.mux_data[15:0]
+(8)logicelement_tb.dut.mux_data[15:0]
+(9)logicelement_tb.dut.mux_data[15:0]
+(10)logicelement_tb.dut.mux_data[15:0]
+(11)logicelement_tb.dut.mux_data[15:0]
+(12)logicelement_tb.dut.mux_data[15:0]
+(13)logicelement_tb.dut.mux_data[15:0]
+(14)logicelement_tb.dut.mux_data[15:0]
+(15)logicelement_tb.dut.mux_data[15:0]
+@1401200
+-group_end
+@22
+logicelement_tb.select[3:0]
+@200
+-Outputs
+@28
+logicelement_tb.dut.mux_out
+logicelement_tb.dut.dff_out
+logicelement_tb.le_out
+logicelement_tb.config_data_out
+@420
+logicelement_tb.test_case
+[pattern_trace] 1
+[pattern_trace] 0

@@ -1,0 +1,66 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Jun 27 23:34:14 2025
+[*]
+[dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/conbox.vcd"
+[dumpfile_mtime] "Fri Jun 27 23:33:56 2025"
+[dumpfile_size] 7639
+[savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/conbox.gtkw"
+[timestart] 0
+[size] 1728 958
+[pos] -1 -1
+*-22.727428 15310000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] conbox_tb.
+[sst_width] 233
+[signals_width] 152
+[sst_expanded] 1
+[sst_vpaned_height] 514
+@800022
+conbox_tb.le_inA[3:0]
+@28
+(0)conbox_tb.le_inA[3:0]
+(1)conbox_tb.le_inA[3:0]
+(2)conbox_tb.le_inA[3:0]
+(3)conbox_tb.le_inA[3:0]
+@1001200
+-group_end
+@800022
+conbox_tb.le_inB[3:0]
+@28
+(0)conbox_tb.le_inB[3:0]
+(1)conbox_tb.le_inB[3:0]
+(2)conbox_tb.le_inB[3:0]
+(3)conbox_tb.le_inB[3:0]
+@1001200
+-group_end
+@28
+conbox_tb.le_outA
+conbox_tb.le_outB
+@800022
+conbox_tb.sb_busA[7:0]
+@28
+(0)conbox_tb.sb_busA[7:0]
+(1)conbox_tb.sb_busA[7:0]
+(2)conbox_tb.sb_busA[7:0]
+(3)conbox_tb.sb_busA[7:0]
+(4)conbox_tb.sb_busA[7:0]
+(5)conbox_tb.sb_busA[7:0]
+(6)conbox_tb.sb_busA[7:0]
+(7)conbox_tb.sb_busA[7:0]
+@1001200
+-group_end
+@800022
+conbox_tb.sb_busB[7:0]
+@28
+(0)conbox_tb.sb_busB[7:0]
+(1)conbox_tb.sb_busB[7:0]
+(2)conbox_tb.sb_busB[7:0]
+(3)conbox_tb.sb_busB[7:0]
+(4)conbox_tb.sb_busB[7:0]
+(5)conbox_tb.sb_busB[7:0]
+(6)conbox_tb.sb_busB[7:0]
+(7)conbox_tb.sb_busB[7:0]
+@1001200
+-group_end
+[pattern_trace] 1
+[pattern_trace] 0

@@ -1,0 +1,41 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Jun 27 23:41:52 2025
+[*]
+[dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/LE.vcd"
+[dumpfile_mtime] "Fri Jun 27 23:37:58 2025"
+[dumpfile_size] 6720
+[savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/LE.gtkw"
+[timestart] 0
+[size] 1728 958
+[pos] -1 -349
+*-24.721275 24400000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 215
+[signals_width] 150
+[sst_expanded] 1
+[sst_vpaned_height] 281
+@420
+LE_tb.test_case
+@200
+-CRAM signals
+@28
+LE_tb.clk
+LE_tb.en
+LE_tb.nrst
+LE_tb.config_data_in
+LE_tb.config_en
+LE_tb.config_data_out
+@200
+-LE inputs
+@28
+LE_tb.le_clk
+LE_tb.le_en
+LE_tb.le_nrst
+@22
+LE_tb.select[3:0]
+@200
+-LE outputs
+@28
+LE_tb.le_out
+[pattern_trace] 1
+[pattern_trace] 0
