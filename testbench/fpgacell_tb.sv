@@ -167,10 +167,10 @@ module fpgacell_tb;
 
   // DUT instantiation
   fpgacell #(
-    .LE_LUT_SIZE(LE_LUT_SIZE),
-    .LE_INPUTS(LE_INPUTS),
-    .LE_OUTPUTS(LE_OUTPUTS),
-    .BUS_WIDTH(BUS_WIDTH)
+    // .LE_LUT_SIZE(LE_LUT_SIZE),
+    // .LE_INPUTS(LE_INPUTS),
+    // .LE_OUTPUTS(LE_OUTPUTS),
+    // .BUS_WIDTH(BUS_WIDTH)
     )dut(
       .*
     );
