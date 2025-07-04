@@ -1,24 +1,33 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Sat Jun 28 02:25:10 2025
+[*] Thu Jul  3 20:32:41 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/SB.vcd"
-[dumpfile_mtime] "Sat Jun 28 02:24:10 2025"
-[dumpfile_size] 29639
+[dumpfile_mtime] "Thu Jul  3 20:30:51 2025"
+[dumpfile_size] 29782
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/SB.gtkw"
 [timestart] 0
-[size] 1274 949
+[size] 1274 948
 [pos] -1 -1
-*-23.553057 9470000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-[sst_width] 214
+*-23.553057 8300000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 215
 [signals_width] 142
 [sst_expanded] 1
 [sst_vpaned_height] 278
+@200
+-CRAM signals
 @28
 SB_tb.clk
 SB_tb.config_data_in
-@29
 SB_tb.config_en
+@200
+-Test Case
+@420
+SB_tb.test_case
+@421
+SB_tb.sub_test
+@200
+-SB inouts
 @800022
 SB_tb.north[3:0]
 @28

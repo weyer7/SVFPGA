@@ -27,6 +27,7 @@ module CB_tb;
 
 
   int test_case;
+  int sub_test;
 
   genvar i;
   generate
@@ -121,6 +122,7 @@ module CB_tb;
 
     // === Test 1a: LEA input 0 connected to bus A wire 2 === //
     test_case = 1;
+    sub_test = 1;
     set_config_muxA(0, 1);  // maps to sb_bus[3]
     cram(config_dataA, config_dataB);
 
@@ -136,7 +138,7 @@ module CB_tb;
     #1
 
     // === Test 1b: LEA input 0 connected to bus B wire 6 === //
-    test_case = 2;
+    sub_test = 2;
     set_config_muxA(0, 7);  // maps to sb_bus[6]
     cram(config_dataA, config_dataB);
     sb_bus_enaB[6] = 1;
@@ -151,7 +153,8 @@ module CB_tb;
     #1
 
     // === Test 2a: LEB input 1 connected to bus B wire 1 === //
-    test_case = 3;
+    test_case = 2;
+    sub_test = 1;
     set_config_muxB(1, 4);  // maps to sb_busB[1]
     cram(config_dataA, config_dataB);
     sb_bus_enaB[1] = 1;
@@ -166,7 +169,8 @@ module CB_tb;
     #1
 
     // === Test 2b: LEB input 1 connected to bus A wire 5 === //
-    test_case = 4;
+    test_case = 2;
+    sub_test = 2;
     set_config_muxB(1, 2);  // maps to sb_busB[4]
     cram(config_dataA, config_dataB);
     sb_bus_enaA[5] = 1;
@@ -181,7 +185,8 @@ module CB_tb;
     #1
 
     // === Test 3a: LEA input 2 tied to const 1 === //
-    test_case = 5;
+    test_case = 3;
+    sub_test = 1;
     set_config_muxA(2, CONST_1);
     cram(config_dataA, config_dataB);
     #1;
@@ -196,7 +201,8 @@ module CB_tb;
     #1
 
     // === Test 3b: LEB input 3 tied to const 0 === //
-    test_case = 6;
+    test_case = 3;
+    sub_test = 2;
     set_config_muxB(3, CONST_0);
     cram(config_dataA, config_dataB);
     #1;
@@ -212,7 +218,8 @@ module CB_tb;
     #1
 
     // === Test 4a: LEA output drives sb_busA[4] === //
-    test_case = 7;
+    test_case = 4;
+    sub_test = 1;
     set_config_muxA(LE_INPUTS, 2); // LEA drives sb_busA[4]
     cram(config_dataA, config_dataB);
     le_outA[0] = 1'b1;
@@ -226,7 +233,8 @@ module CB_tb;
     #1
 
     // === Test 4b: LEB output drives sb_bus[3] === //
-    test_case = 8;
+    test_case = 4;
+    sub_test = 2;
     set_config_muxB(LE_INPUTS, 5); // LEB drives sb_busB[3]
     cram(config_dataA, config_dataB);
     le_outB[0] = 1'b1;
@@ -240,7 +248,8 @@ module CB_tb;
     #1
 
     // === Test 5: LEA output drives sb_busB[2] === //
-    test_case = 9;
+    test_case = 5;
+    sub_test = 1;
     set_config_muxA(LE_INPUTS, 5); // LEB drives sb_busB[2]
     cram(config_dataA, config_dataB);
     le_outA[0] = 1'b1;
@@ -254,7 +263,8 @@ module CB_tb;
     #1
 
     // === Test 6: Multiple Drivers (expected bus contention) === //
-    test_case = 10;
+    test_case = 6;
+    sub_test = 1;
     set_config_muxA(0, 0); // sb_busA[0] drives le_inA[0]
     set_config_muxA(0,1); // sb_busA[2] drives le_inA[0]
     cram(config_dataA, config_dataB);

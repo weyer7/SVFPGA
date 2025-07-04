@@ -1,17 +1,18 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Fri Jun 27 23:41:52 2025
+[*] Thu Jul  3 20:55:50 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/LE.vcd"
-[dumpfile_mtime] "Fri Jun 27 23:37:58 2025"
-[dumpfile_size] 6720
+[dumpfile_mtime] "Thu Jul  3 20:53:19 2025"
+[dumpfile_size] 6717
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/LE.gtkw"
 [timestart] 0
 [size] 1728 958
-[pos] -1 -349
-*-24.721275 24400000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] -1 -1
+*-24.721275 22600000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] LE_tb.
 [sst_width] 215
-[signals_width] 150
+[signals_width] 166
 [sst_expanded] 1
 [sst_vpaned_height] 281
 @420
@@ -33,6 +34,29 @@ LE_tb.le_en
 LE_tb.le_nrst
 @22
 LE_tb.select[3:0]
+@200
+-LUT data
+@c00022
+LE_tb.dut.mux_data[15:0]
+@28
+(0)LE_tb.dut.mux_data[15:0]
+(1)LE_tb.dut.mux_data[15:0]
+(2)LE_tb.dut.mux_data[15:0]
+(3)LE_tb.dut.mux_data[15:0]
+(4)LE_tb.dut.mux_data[15:0]
+(5)LE_tb.dut.mux_data[15:0]
+(6)LE_tb.dut.mux_data[15:0]
+(7)LE_tb.dut.mux_data[15:0]
+(8)LE_tb.dut.mux_data[15:0]
+(9)LE_tb.dut.mux_data[15:0]
+(10)LE_tb.dut.mux_data[15:0]
+(11)LE_tb.dut.mux_data[15:0]
+(12)LE_tb.dut.mux_data[15:0]
+(13)LE_tb.dut.mux_data[15:0]
+(14)LE_tb.dut.mux_data[15:0]
+(15)LE_tb.dut.mux_data[15:0]
+@1401200
+-group_end
 @200
 -LE outputs
 @28

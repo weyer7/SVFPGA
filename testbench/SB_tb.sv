@@ -1,7 +1,7 @@
 `default_nettype none
 `timescale 1ms/10ns
 module SB_tb;
-  parameter WIDTH = 4;
+  parameter WIDTH = 6;
 
   // DUT-facing inouts
   wire [WIDTH-1:0] north, south, east, west;
@@ -63,7 +63,11 @@ module SB_tb;
     end
     config_en = 0;
     clk = 0;
+    config_data_in = 0;
   endtask
+
+  int test_case; // current test case
+  int sub_test; // current sub-test
 
   // DUT instantiation
   SB #(.WIDTH(WIDTH)) dut (
@@ -79,11 +83,14 @@ module SB_tb;
     $dumpfile("waves/SB.vcd");
     $dumpvars(0, SB_tb);
     $display("[TEST] Starting Wilton Switchbox Test with WIDTH = %0d", WIDTH);
-
+    test_case = 0;
+    sub_test = 0;
     clear_signals();
 
     // Test 1: Single Wire Tests
+    test_case = 1;
     // Test 1a: North[0] turns left -> goes to East[0]
+    sub_test = 1;
     route_sel_unpacked[0][0] = 2'b10;
     flatten_route_sel();
     cram(route_sel_flat);
@@ -96,7 +103,8 @@ module SB_tb;
     #1;
     clear_signals();
 
-    // Test 2b: East[1] turns left -> goes to South[1]
+    // Test 1b: East[1] turns left -> goes to South[1]
+    sub_test = 2;
     route_sel_unpacked[1][1] = 2'b10;
     flatten_route_sel();
     cram(route_sel_flat);
@@ -110,6 +118,7 @@ module SB_tb;
     clear_signals();
 
     // Test 1c: West[2] goes straight -> goes to East[2]
+    sub_test = 3;
     route_sel_unpacked[2][3] = 2'b01;
     flatten_route_sel();
     cram(route_sel_flat);
@@ -123,6 +132,7 @@ module SB_tb;
     clear_signals();
 
     // Test 1d: South[3] goes right -> goes to East[1]
+    sub_test = 4;
     route_sel_unpacked[3][2] = 2'b00;
     flatten_route_sel();
     cram(route_sel_flat);
@@ -136,7 +146,9 @@ module SB_tb;
 
     clear_signals();
     // Test 2: Multiple driver wires on different permutations
+    test_case = 2;
     // Test 2a: Two drive wires
+    sub_test = 1;
     route_sel_unpacked[0][0] = 2'b01; // [wire 0][north] = [straight]
     route_sel_unpacked[1][1] = 2'b01; // [wire 1][east]  = [straight]
     flatten_route_sel();
@@ -153,6 +165,7 @@ module SB_tb;
     #1
 
     // Test 2b: Three drive wires
+    sub_test = 2;
     route_sel_unpacked[0][0] = 2'b00; // [wire 0][north] = [right]
     route_sel_unpacked[1][3] = 2'b10; // [wire 1][west]  = [left]
     route_sel_unpacked[2][2] = 2'b01; // [wire 2][south] = [straight]
@@ -176,6 +189,7 @@ module SB_tb;
     #1
 
     //Test 2c: Four drive wires
+    sub_test = 3;
     route_sel_unpacked[0][0] = 2'b01; // [wire 0][north] = [straight]
     route_sel_unpacked[1][3] = 2'b01; // [wire 1][west]  = [straight]
     route_sel_unpacked[2][2] = 2'b10; // [wire 2][south] = [left]
@@ -207,24 +221,27 @@ module SB_tb;
     #1
 
     // Test 3: multiple drivers on one permutation without expected bus contention
+    test_case = 3;
+    sub_test = 1;
     //FAIL
 
     // Test 4: multiple drivers on one permutation with expected bus contention
-    route_sel_unpacked[3][2] = 2'b01; // [wire 3][south] = [straight]
-    route_sel_unpacked[3][0] = 2'b01; // [wire 3][north]  = [straight]
+    test_case = 4;
+    route_sel_unpacked[3][2] = 2'b10; // [wire 3][south] = [left] (drives west[3])
+    route_sel_unpacked[3][0] = 2'b00; // [wire 3][north]  = [right] (also drives west[3])
     flatten_route_sel();
     cram(route_sel_flat);
 
-    south_ena = 1;
-    north_ena = 1;
+    south_ena[3] = 1;
+    north_ena[3] = 1;
     #1
-    north_drv = 1;
+    north_drv[3] = 1;
     #1
-    south_drv = 1;
+    south_drv[3] = 1;
     #1
-    north_drv = 0;
+    north_drv[3] = 0;
     #1
-    south_drv = 0;
+    south_drv[3] = 0;
     #1
     $display("[TEST] Completed");
     $finish;

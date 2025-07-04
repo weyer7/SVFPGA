@@ -1,21 +1,26 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Sat Jun 28 19:03:54 2025
+[*] Fri Jul  4 03:25:17 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpgacell.vcd"
-[dumpfile_mtime] "Sat Jun 28 19:01:47 2025"
-[dumpfile_size] 24170
+[dumpfile_mtime] "Fri Jul  4 03:20:15 2025"
+[dumpfile_size] 134902
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpgacell.gtkw"
 [timestart] 0
-[size] 1273 949
+[size] 1728 958
 [pos] -1 -1
-*-22.023199 5860000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-24.085594 16110000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] fpgacell_tb.
 [treeopen] fpgacell_tb.dut.
-[sst_width] 214
+[sst_width] 215
 [signals_width] 219
 [sst_expanded] 1
-[sst_vpaned_height] 278
+[sst_vpaned_height] 286
+@200
+-Test Case
+@420
+fpgacell_tb.test_case
+fpgacell_tb.sub_test
 @200
 -CRAM signals
 @28
@@ -23,10 +28,15 @@ fpgacell_tb.clk
 fpgacell_tb.en
 fpgacell_tb.nrst
 fpgacell_tb.config_en
-@29
 fpgacell_tb.config_data_in
-@28
 fpgacell_tb.config_data_out
+@200
+-LE inputs
+@29
+fpgacell_tb.dut.LE_northeast.le_clk
+@28
+fpgacell_tb.dut.LE_northeast.le_en
+fpgacell_tb.dut.LE_northeast.le_nrst
 @200
 -cell inputs
 @28
@@ -47,88 +57,47 @@ fpgacell_tb.LEinnorth[3:0]
 -cell outputs
 @22
 fpgacell_tb.CBoutsouth[3:0]
+@c00022
 fpgacell_tb.CBoutwest[3:0]
+@28
+(0)fpgacell_tb.CBoutwest[3:0]
+(1)fpgacell_tb.CBoutwest[3:0]
+(2)fpgacell_tb.CBoutwest[3:0]
+(3)fpgacell_tb.CBoutwest[3:0]
+@1401200
+-group_end
 @28
 fpgacell_tb.LEouteast
 fpgacell_tb.LEoutnorth
 @200
 -cell inouts
 @22
-fpgacell_tb.SBsouth[3:0]
-fpgacell_tb.SBwest[3:0]
-fpgacell_tb.CBeast[3:0]
-fpgacell_tb.CBnorth[3:0]
-@200
--le seq control
+fpgacell_tb.CBeast[7:0]
+fpgacell_tb.CBnorth[7:0]
+@800022
+fpgacell_tb.SBsouth[7:0]
 @28
-fpgacell_tb.le_clk
-fpgacell_tb.le_en
-fpgacell_tb.le_nrst
-fpgacell_tb.mode
-@200
--CRAM chain
-@c00022
-fpgacell_tb.dut.LE_northeast.config_data[16:0]
-@28
-(0)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(1)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(2)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(3)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(4)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(5)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(6)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(7)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(8)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(9)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(10)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(11)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(12)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(13)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(14)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(15)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-(16)fpgacell_tb.dut.LE_northeast.config_data[16:0]
-@1401200
+(0)fpgacell_tb.SBsouth[7:0]
+(1)fpgacell_tb.SBsouth[7:0]
+(2)fpgacell_tb.SBsouth[7:0]
+(3)fpgacell_tb.SBsouth[7:0]
+(4)fpgacell_tb.SBsouth[7:0]
+(5)fpgacell_tb.SBsouth[7:0]
+(6)fpgacell_tb.SBsouth[7:0]
+(7)fpgacell_tb.SBsouth[7:0]
+@1001200
 -group_end
-@22
-fpgacell_tb.dut.CB_northwest.config_dataA[14:0]
-fpgacell_tb.dut.CB_northwest.config_dataB[14:0]
-fpgacell_tb.dut.CB_southeast.config_dataA[14:0]
-fpgacell_tb.dut.CB_southeast.config_dataB[14:0]
 @c00022
-fpgacell_tb.dut.SB_southwest.route_sel[31:0]
+fpgacell_tb.SBwest[7:0]
 @28
-(0)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(1)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(2)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(3)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(4)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(5)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(6)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(7)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(8)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(9)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(10)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(11)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(12)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(13)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(14)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(15)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(16)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(17)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(18)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(19)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(20)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(21)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(22)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(23)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(24)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(25)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(26)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(27)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(28)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(29)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(30)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
-(31)fpgacell_tb.dut.SB_southwest.route_sel[31:0]
+(0)fpgacell_tb.SBwest[7:0]
+(1)fpgacell_tb.SBwest[7:0]
+(2)fpgacell_tb.SBwest[7:0]
+(3)fpgacell_tb.SBwest[7:0]
+(4)fpgacell_tb.SBwest[7:0]
+(5)fpgacell_tb.SBwest[7:0]
+(6)fpgacell_tb.SBwest[7:0]
+(7)fpgacell_tb.SBwest[7:0]
 @1401200
 -group_end
 [pattern_trace] 1
