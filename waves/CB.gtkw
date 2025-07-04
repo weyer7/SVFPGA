@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Thu Jul  3 20:51:30 2025
+[*] Fri Jul  4 16:35:44 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/CB.vcd"
-[dumpfile_mtime] "Thu Jul  3 20:50:51 2025"
-[dumpfile_size] 19582
+[dumpfile_mtime] "Fri Jul  4 16:33:01 2025"
+[dumpfile_size] 22326
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/CB.gtkw"
-[timestart] 0
-[size] 1274 948
+[timestart] 19590000
+[size] 923 948
 [pos] -1 -1
-*-23.958754 10840000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-23.958754 32250000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] CB_tb.
 [sst_width] 215
 [signals_width] 184
@@ -30,7 +30,6 @@ CB_tb.config_data_outB
 -Test Case
 @420
 CB_tb.test_case
-@421
 CB_tb.sub_test
 @200
 -CB inputs
@@ -43,7 +42,9 @@ CB_tb.le_outB
 CB_tb.le_inA[3:0]
 @28
 (0)CB_tb.le_inA[3:0]
+@29
 (1)CB_tb.le_inA[3:0]
+@28
 (2)CB_tb.le_inA[3:0]
 (3)CB_tb.le_inA[3:0]
 @1001200

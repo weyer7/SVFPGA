@@ -21,24 +21,24 @@ module CB #(
   // 2 SBs connected to each CB.
 
   // dual bank configuration data shift register
-  logic [($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1:0] config_dataA; //# of mux = # of LE I/O. log2(width * 2 + 2) for each mux's select
-  logic [($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1:0] config_dataB;
+  logic [($clog2(2 * WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1:0] config_dataA; //# of mux = # of LE I/O. log2(width * 2 + 2) for each mux's select
+  logic [($clog2(2 * WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1:0] config_dataB;
   always_ff @(posedge clk, negedge nrst) begin
     if (~nrst) begin
       config_dataA <= '1; //check if this is correct
       config_dataB <= '1; //check if this is correct
     end else if (en && config_en) begin
-      config_dataA <= {config_dataA[($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 2:0], config_data_inA};
-      config_dataB <= {config_dataB[($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 2:0], config_data_inB};
+      config_dataA <= {config_dataA[($clog2(2 * WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 2:0], config_data_inA};
+      config_dataB <= {config_dataB[($clog2(2 * WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 2:0], config_data_inB};
     end
   end
-  assign config_data_outA = config_dataA[($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1];
-  assign config_data_outB = config_dataB[($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1];
+  assign config_data_outA = config_dataA[($clog2(2 * WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1];
+  assign config_data_outB = config_dataB[($clog2(2 * WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1];
 
-  localparam int SEL_BITS = $clog2(WIDTH + 2);
+  localparam int SEL_BITS = $clog2(2 * WIDTH + 2);
   localparam int TOTAL_MUX = LE_INPUTS + LE_OUTPUTS;
-  localparam int CONST_0 = WIDTH;
-  localparam int CONST_1 = WIDTH + 1;
+  localparam int CONST_0 = 2 * WIDTH;
+  localparam int CONST_1 = 2 * WIDTH + 1;
 
   logic [SEL_BITS-1:0] config_mux_selA [0:TOTAL_MUX-1], config_mux_selB [0:TOTAL_MUX-1];
   logic [LE_OUTPUTS * 2 - 1:0] le_out;
@@ -73,8 +73,8 @@ module CB #(
             le_inA[i] = 1'b0;
           end else if (config_mux_selA[i] == SEL_BITS'(CONST_1)) begin
             le_inA[i] = 1'b1;
-          end else if ((config_mux_selA[i]) < WIDTH) begin
-            le_inA[i] = sb_bus1[config_mux_selA[i] * 2]; //may need to rework bus muxing logic
+          end else if ((config_mux_selA[i]) < WIDTH * 2) begin
+            le_inA[i] = sb_bus1[config_mux_selA[i]]; //may need to rework bus muxing logic
           end else begin
             le_inA[i] = 0;
           end
@@ -88,8 +88,8 @@ module CB #(
             le_inB[i] = 1'b0;
           end else if (config_mux_selB[i] == SEL_BITS'(CONST_1)) begin
             le_inB[i] = 1'b1;
-          end else if ((config_mux_selB[i]) < WIDTH) begin
-            le_inB[i] = sb_bus1[config_mux_selB[i] * 2 + 1]; //may need to rework bus muxing logic
+          end else if ((config_mux_selB[i]) < WIDTH * 2) begin
+            le_inB[i] = sb_bus1[config_mux_selB[i]]; //may need to rework bus muxing logic
           end else begin
             le_inB[i] = 0;
           end
@@ -106,10 +106,19 @@ module CB #(
       wire [SEL_BITS-1:0] selA = config_mux_selA[LE_INPUTS + i];
       wire [SEL_BITS-1:0] selB = config_mux_selB[LE_INPUTS + i];
 
+      // genvar j;
+      // for (j = 0; j < WIDTH * 2; j++) begin : bus_drive
+      //   assign sb_bus2[j] = ((selA == SEL_BITS'(j)) && !config_en && nrst) ? le_out[i*2 + 0] : 1'bz;
+      //   assign sb_bus2[j] = ((selB == SEL_BITS'(j)) && !config_en && nrst) ? le_out[i*2 + 1] : 1'bz;
+      // end
+
       genvar j;
-      for (j = 0; j < WIDTH; j++) begin : bus_drive
-        assign sb_bus2[j * 2] = ((selA == SEL_BITS'(j)) && !config_en && nrst) ? le_out[i*2 + 0] : 1'bz;
-        assign sb_bus2[j * 2 + 1] = ((selB == SEL_BITS'(j)) && !config_en && nrst) ? le_out[i*2 + 1] : 1'bz;
+      for (j = 0; j < WIDTH * 2; j++) begin : bus_drive
+        assign sb_bus2[j] = (!config_en && nrst) ? (
+          (selA == SEL_BITS'(j)) ? le_out[i*2 + 0] :
+          (selB == SEL_BITS'(j)) ? le_out[i*2 + 1] :
+          1'bz
+          ) : 1'bz;
       end
     end
   endgenerate
