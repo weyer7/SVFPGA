@@ -235,7 +235,7 @@ module CB_tb;
     // === Test 4b: LEB output drives sb_busB[2] === //
     test_case = 4;
     sub_test = 2;
-    set_config_muxB(LE_INPUTS, WIDTH + 2); // LEB drives sb_busB[3]
+    set_config_muxB(LE_INPUTS, WIDTH + 2); // LEB drives sb_busB[2]
     cram(config_dataA, config_dataB);
     le_outB[0] = 1'b1;
     #1;

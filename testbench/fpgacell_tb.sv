@@ -1,12 +1,12 @@
 `default_nettype none
 `timescale 1ms/10ns
 module fpgacell_tb;
-  parameter BUS_WIDTH = 8;
+  parameter BUS_WIDTH = 4;
   parameter LE_INPUTS = 4;
   parameter LE_OUTPUTS = 1;
   parameter LE_LUT_SIZE = 16;
 
-  localparam SEL_BITS  = $clog2(BUS_WIDTH + 2);
+  localparam SEL_BITS  = $clog2(2 * BUS_WIDTH + 2);
   localparam CFG_BITS = ((BUS_WIDTH*4*2) + (4 * ((LE_INPUTS + LE_OUTPUTS) * SEL_BITS)) + (LE_LUT_SIZE + 1));
 
   //CRAM signals
@@ -167,10 +167,10 @@ module fpgacell_tb;
 
   // DUT instantiation
   fpgacell #(
-    // .LE_LUT_SIZE(LE_LUT_SIZE),
-    // .LE_INPUTS(LE_INPUTS),
-    // .LE_OUTPUTS(LE_OUTPUTS),
-    // .BUS_WIDTH(BUS_WIDTH)
+    .LE_LUT_SIZE(LE_LUT_SIZE),
+    .LE_INPUTS(LE_INPUTS),
+    .LE_OUTPUTS(LE_OUTPUTS),
+    .BUS_WIDTH(BUS_WIDTH)
     )dut(
       .*
     );
@@ -200,23 +200,18 @@ module fpgacell_tb;
     test_case = 1;
     sub_test = 1;
 
-    // set_config_mux0A(0,0); //connect LEin[0] to busA[0]
-    set_config_mux0B(0,2); //connect LEin[0] to busB[0]
-    // set_config_mux1A(0,0);
-    // set_config_mux1B(0,4);
-
     //[idx][from] = [to]
     //INPUTS
     route_sel_unpacked[0][2] = 2'd1; //south[0] goes straight into CB0A
     // route_sel_unpacked[3][1] = 2'd1; //south[1] goes right into CB0A
-    route_sel_unpacked[2][3] = 2'd2; //west[2] goes left into CB0A
+    route_sel_unpacked[1][3] = 2'd2; //west[1] goes left into CB0A
 
     set_config_mux0A(0, 0); //connect LEin[0] to bus0A[0]
-    set_config_mux0A(1, 1); //connect LEin[1] to bus0A[2]
+    set_config_mux0A(1, 1); //connect LEin[1] to bus0A[1]
     //OUTPUTS
-    route_sel_unpacked[4][1] = 2'd1; //east[4] from CB1A goes straight to west[4]
+    route_sel_unpacked[2][1] = 2'd1; //east[2] from CB1A goes straight to west[2]
 
-    set_config_mux1A(LE_INPUTS, 2); //LEout connects to bus1A[4]
+    set_config_mux1A(LE_INPUTS, 2); //LEout connects to bus1A[2]
 
     //LUT data
     lut_data = 16'b1000100010001000; //2-input AND with [1:0]
@@ -230,25 +225,25 @@ module fpgacell_tb;
     sub_test = 2; //2-input operation with rest unspecified
     //set inputs to AND gate
     south_ena[0] = 1;
-    west_ena[2] = 1;
+    west_ena[1] = 1;
     for (int i = 0; i < 4; i ++) begin
-      {west_drv[2], south_drv[0]} = i[1:0];
+      {west_drv[1], south_drv[0]} = i[1:0];
       #1;
     end
 
     sub_test = 3; //consecutive CRAM without clear
     //Add one more input
-    route_sel_unpacked[6][2] = 2'd1; //south[6] goes straight
-    set_config_mux0A(2, 3); //connect LEin[2] to busA[6]
+    route_sel_unpacked[3][2] = 2'd1; //south[3] goes straight
+    set_config_mux0A(2, 3); //connect LEin[2] to busA[3]
     //other signals don't need to be updated
 
     flatten_route_sel();
     cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode, lut_data}});
     
-    south_ena[6] = 1;
+    south_ena[3] = 1;
     sub_test = 4;//3-input operation with rest unspecified
     for (int i = 0; i < 8; i ++) begin
-      {south_drv[6], west_drv[2], south_drv[0]} = i[2:0];
+      {south_drv[3], west_drv[1], south_drv[0]} = i[2:0];
       #1;
     end
 
@@ -281,12 +276,12 @@ module fpgacell_tb;
 
     //then, connect K to a top-level switchbox input
     //[idx][from] = [to]
-    route_sel_unpacked[2][2] = 2'd1; //south[2] straight to CB0A
-    set_config_mux0A(1, 1); //le_in[1] to CB0 busA[2]
+    route_sel_unpacked[1][2] = 2'd1; //south[1] straight to CB0A
+    set_config_mux0A(1, 1); //le_in[1] to CB0 busA[1]
 
     //again for J
-    route_sel_unpacked[4][2] = 2'd1; //south[4] straight to CB0A
-    set_config_mux0A(2,2); //LEin[2] to CB0 busA[4]
+    route_sel_unpacked[2][2] = 2'd1; //south[2] straight to CB0A
+    set_config_mux0A(2,2); //LEin[2] to CB0 busA[2]
 
     //now, CRAM
     flatten_route_sel();
@@ -300,40 +295,40 @@ module fpgacell_tb;
     sub_test = 3; //regular operation
     le_en = 1;
     //set
-    south_ena[2] = 1; //k
-    south_ena[4] = 1; //j
+    south_ena[1] = 1; //k
+    south_ena[2] = 1; //j
+    south_drv[1] = 0;
     south_drv[2] = 0;
-    south_drv[4] = 0;
 
     @(negedge le_clk); //synchronize
 
-    south_drv[4] = 1;
+    south_drv[2] = 1;
     #2;
-    south_drv[4] = 0;
+    south_drv[2] = 0;
     #4; //test hold
     //reset
-    south_drv[2] = 1;
+    south_drv[1] = 1;
     #2;
+    south_drv[1] = 0;
+    #4; //test hold
+    south_drv[2] = 1; //toggle
+    south_drv[1] = 1;
+    #2;
+    south_drv[1] = 0;
     south_drv[2] = 0;
     #4; //test hold
-    south_drv[4] = 1; //toggle
-    south_drv[2] = 1;
-    #2;
-    south_drv[2] = 0;
-    south_drv[4] = 0;
-    #4; //test hold
-    south_drv[4] = 1; //toggle again
-    south_drv[2] = 1;
+    south_drv[2] = 1; //toggle again
+    south_drv[1] = 1;
     #2;
     sub_test = 4; //disabled 
     le_en = 0;
     #4;
     le_en = 1;
     #8; //four toggles
-    south_drv[2] = 0;
-    south_drv[4] = 0;    
+    south_drv[1] = 0;
+    south_drv[2] = 0;    
     #4; //test hold
-    south_drv[4] = 1; //set
+    south_drv[2] = 1; //set
     #2;
     sub_test = 4; //mid_operation reset
     le_nrst = 0;
