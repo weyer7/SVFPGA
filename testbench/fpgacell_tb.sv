@@ -1,14 +1,15 @@
 `default_nettype none
 `timescale 1ms/10ns
 module fpgacell_tb;
-  parameter BUS_WIDTH = 4;
+  parameter BUS_WIDTH = 8;
   parameter LE_INPUTS = 4;
   parameter LE_OUTPUTS = 1;
   parameter LE_LUT_SIZE = 16;
 
   localparam SEL_BITS  = $clog2(2 * BUS_WIDTH + 2);
-  localparam CFG_BITS = ((BUS_WIDTH*4*2) + (4 * ((LE_INPUTS + LE_OUTPUTS) * SEL_BITS)) + (LE_LUT_SIZE + 1));
-
+  //                     [  Switch Box ]   [             Connection Box              ]   [   Logic Element   ]
+  localparam CFG_BITS = ((BUS_WIDTH*4*2) + (4 * ((LE_INPUTS + LE_OUTPUTS) * SEL_BITS)) + 4 * (LE_LUT_SIZE + 1));
+ 
   //CRAM signals
   logic clk, en, nrst;
   logic config_data_in, config_en;
@@ -19,23 +20,23 @@ module fpgacell_tb;
 
   //NORTH
   wire [BUS_WIDTH - 1:0] CBnorth;
-  logic [LE_OUTPUTS - 1:0] LEoutnorth;
-  logic [LE_INPUTS - 1:0] LEinnorth;
+  // logic [LE_OUTPUTS - 1:0] LEoutnorth;
+  // logic [LE_INPUTS - 1:0] LEinnorth;
 
   //SOUTH
   wire [BUS_WIDTH - 1:0] SBsouth;
-  logic [LE_INPUTS - 1:0] CBoutsouth;
-  logic [LE_OUTPUTS - 1:0] CBinsouth;
+  // logic [LE_INPUTS - 1:0] CBoutsouth;
+  // logic [LE_OUTPUTS - 1:0] CBinsouth;
 
   //EAST
   wire [BUS_WIDTH - 1:0] CBeast;
-  logic [LE_OUTPUTS - 1:0] LEouteast;
-  logic [LE_INPUTS - 1:0] LEineast;
+  // logic [LE_OUTPUTS - 1:0] LEouteast;
+  // logic [LE_INPUTS - 1:0] LEineast;
 
   //WEST
   wire [BUS_WIDTH - 1:0] SBwest;
-  logic [LE_INPUTS - 1:0] CBoutwest;
-  logic [LE_OUTPUTS - 1:0] CBinwest;
+  // logic [LE_INPUTS - 1:0] CBoutwest;
+  // logic [LE_OUTPUTS - 1:0] CBinwest;
 
   // Unpacked route selection for testbench readability
   logic [1:0] route_sel_unpacked [0:BUS_WIDTH-1][0:3];
@@ -71,8 +72,8 @@ module fpgacell_tb;
   endgenerate
 
   logic [((LE_INPUTS + LE_OUTPUTS) * SEL_BITS) - 1:0] config_data0A, config_data0B, config_data1A, config_data1B;
-  logic mode;
-  logic [LE_LUT_SIZE - 1:0] lut_data;
+  logic mode_w, mode_s, mode_e, mode_n;
+  logic [LE_LUT_SIZE - 1:0] lut_data_w, lut_data_s, lut_data_e, lut_data_n;
 
   //=========================================================================================
   // Helper tasks for configuring each LE
@@ -138,10 +139,10 @@ module fpgacell_tb;
       le_clk = 0;
       le_nrst = 0;
       nrst = 0;
-      CBinsouth = 0;
-      CBinwest = 0;
-      LEineast = 0;
-      LEinnorth = 0;
+      // CBinsouth = 0;
+      // CBinwest = 0;
+      // LEineast = 0;
+      // LEinnorth = 0;
       {north_drv, south_drv, east_drv, west_drv} = '0;
       {north_ena, south_ena, east_ena, west_ena} = '0;
       config_data0A = {(LE_INPUTS + LE_OUTPUTS) * SEL_BITS{'1}}; // Disabled
@@ -154,8 +155,8 @@ module fpgacell_tb;
           route_sel_unpacked[i][j] = 3;
         end
       end
-      mode = 0;
-      lut_data = 0;
+      {mode_w, mode_s, mode_e, mode_n} = 0;
+      {lut_data_w, lut_data_s, lut_data_e, lut_data_n} = 0;
       #1;
       nrst = 1;
       le_nrst = 1;
@@ -194,9 +195,9 @@ module fpgacell_tb;
     clear_signals();
     le_clk = 0;
 
-    //===============================
-    //TEST 1: COMBINATIONAL OPERATION
-    //===============================
+    // ======================================
+    // TEST 1: SIMPLE COMBINATIONAL OPERATION
+    // ======================================
     test_case = 1;
     sub_test = 1;
 
@@ -209,17 +210,17 @@ module fpgacell_tb;
     set_config_mux0A(0, 0); //connect LEin[0] to bus0A[0]
     set_config_mux0A(1, 1); //connect LEin[1] to bus0A[1]
     //OUTPUTS
-    route_sel_unpacked[2][1] = 2'd1; //east[2] from CB1A goes straight to west[2]
+    route_sel_unpacked[2][0] = 2'd1; //north[2] from CB1A goes straight to south[2]
 
-    set_config_mux1A(LE_INPUTS, 2); //LEout connects to bus1A[2]
+    set_config_mux0A(LE_INPUTS, 2); //LEout connects to bus1A[2]
 
     //LUT data
-    lut_data = 16'b1000100010001000; //2-input AND with [1:0]
-    mode = 0; //non-registered
+    lut_data_s = 16'b1000100010001000; //2-input AND with [1:0]
+    mode_s = 0; //non-registered
 
     //CRAM
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode, lut_data}});
+    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode_w, lut_data_w}, {mode_n, lut_data_n}, {mode_e, lut_data_e}, {mode_s, lut_data_s}});
     // #5;
 
     sub_test = 2; //2-input operation with rest unspecified
@@ -238,7 +239,7 @@ module fpgacell_tb;
     //other signals don't need to be updated
 
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode, lut_data}});
+    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode_w, lut_data_w}, {mode_n, lut_data_n}, {mode_e, lut_data_e}, {mode_s, lut_data_s}});
     
     south_ena[3] = 1;
     sub_test = 4;//3-input operation with rest unspecified
@@ -247,9 +248,9 @@ module fpgacell_tb;
       #1;
     end
 
-    //============================
-    //TEST 2: SEQUENTIAL OPERATION
-    //============================
+    // ===================================
+    // TEST 2: SIMPLE SEQUENTIAL OPERATION
+    // ===================================
     test_case = 2;
     sub_test = 1; //CRAM sequential design
     clear_signals();
@@ -266,8 +267,8 @@ module fpgacell_tb;
     |1|1|1|0 |
     LEin[2:0]={J,K,Q}
     */
-    mode = 1; //registered
-    lut_data = 16'b01110010_01110010; //repeated twice to ignore MSB
+    mode_s = 1; //registered
+    lut_data_s = 16'b01110010_01110010; //repeated twice to ignore MSB
 
     //first connect le_out(Q) to le_in[0] and this to a top-level switchbox output
     set_config_mux0A(LE_INPUTS, 0); //le_out to CB0A bus[0]
@@ -285,7 +286,7 @@ module fpgacell_tb;
 
     //now, CRAM
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode, lut_data}});
+    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode_w, lut_data_w}, {mode_n, lut_data_n}, {mode_e, lut_data_e}, {mode_s, lut_data_s}});
 
     sub_test = 2; //logic element nrst
     le_nrst = 0;
@@ -335,6 +336,59 @@ module fpgacell_tb;
     #4;
     le_nrst = 1; //deassert reset
     #4;
+
+    // =======================================
+    // TEST 3: COMPLEX COMBINATIONAL OPERATION
+    // =======================================
+    test_case = 3;
+    sub_test = 1;
+    clear_signals();
+    //make a 1-bit full-adder using 2 LEs
+    /*
+    | A | B |Cin|Sum|Cout|
+    | 0 | 0 | 0 | 0 | 0  |
+    | 0 | 0 | 1 | 1 | 0  |
+    | 0 | 1 | 0 | 1 | 0  |
+    | 0 | 1 | 1 | 0 | 1  |
+    | 1 | 0 | 0 | 1 | 0  |
+    | 1 | 0 | 1 | 0 | 1  |
+    | 1 | 1 | 0 | 0 | 1  |
+    | 1 | 1 | 1 | 1 | 1  |
+    */
+    //first, configure the two LUTs:
+    lut_data_s = 16'b10010110_10010110; //sum
+    lut_data_n = 16'b11101000_11101000; //cout
+
+    //now, configure LE inputs
+    set_config_mux0A(0,0); //connect LE_s input 0 to busA[0]
+    set_config_mux0B(0,0);   //connect LE_n input 0 to busA[0]
+
+    set_config_mux0A(1,1);
+    set_config_mux0B(1,1);
+
+    set_config_mux0A(2,2);
+    set_config_mux0B(2,2);
+
+    route_sel_unpacked[0][2] = 2'd1; //south[0] goes straight
+    route_sel_unpacked[1][2] = 2'd1;
+    route_sel_unpacked[2][2] = 2'd1;
+
+    //finally, configure LE outputs:
+    set_config_mux0A(LE_INPUTS, 3); //LE_s (sum) connected to busA[3]
+    route_sel_unpacked[3][0] = 2'd1; //north[3] goes straight
+
+    set_config_mux0B(LE_INPUTS, 4);
+    route_sel_unpacked[4][0] = 2'd1;
+
+    //CRAM
+    flatten_route_sel();
+    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode_w, lut_data_w}, {mode_n, lut_data_n}, {mode_e, lut_data_e}, {mode_s, lut_data_s}});
+
+    south_ena[2:0] = '1;
+    for (int i = 0; i < 8; i ++) begin
+      south_drv[2:0] = i[2:0];
+      #1;
+    end
 
     $display("[TEST] Completed");
     $finish;
