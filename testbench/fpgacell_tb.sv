@@ -10,35 +10,24 @@ module fpgacell_tb;
   //                     [  Switch Box ]   [             Connection Box              ]   [   Logic Element   ]
   localparam CFG_BITS = ((BUS_WIDTH*4*2) + (4 * ((LE_INPUTS + LE_OUTPUTS) * SEL_BITS)) + 4 * (LE_LUT_SIZE + 1));
  
-  //CRAM signals
-  logic clk, en, nrst;
-  logic config_data_in, config_en;
-  logic config_data_out;
+  //========TOP-LEVEL IO==========//
+  //CRAM signals                  //
+  logic clk, en, nrst;            //
+  logic config_data_in, config_en;//
+  logic config_data_out;          //
+  //configurable logic signals    //
+  logic le_clk, le_en, le_nrst;   //
+  //cardinal busses               //
+  wire [BUS_WIDTH - 1:0] CBnorth; //
+  wire [BUS_WIDTH - 1:0] SBsouth; //
+  wire [BUS_WIDTH - 1:0] CBeast;  //
+  wire [BUS_WIDTH - 1:0] SBwest;  //
+  //==============================//
 
-  //Configurable logic signals
-  logic le_clk, le_en, le_nrst;
-
-  //NORTH
-  wire [BUS_WIDTH - 1:0] CBnorth;
-  // logic [LE_OUTPUTS - 1:0] LEoutnorth;
-  // logic [LE_INPUTS - 1:0] LEinnorth;
-
-  //SOUTH
-  wire [BUS_WIDTH - 1:0] SBsouth;
-  // logic [LE_INPUTS - 1:0] CBoutsouth;
-  // logic [LE_OUTPUTS - 1:0] CBinsouth;
-
-  //EAST
-  wire [BUS_WIDTH - 1:0] CBeast;
-  // logic [LE_OUTPUTS - 1:0] LEouteast;
-  // logic [LE_INPUTS - 1:0] LEineast;
-
-  //WEST
-  wire [BUS_WIDTH - 1:0] SBwest;
-  // logic [LE_INPUTS - 1:0] CBoutwest;
-  // logic [LE_OUTPUTS - 1:0] CBinwest;
-
-  // Unpacked route selection for testbench readability
+  // ====================================================================
+  // HELPER FUNCTIONS
+  // ====================================================================
+  //unpacked route selection for testbench readability
   logic [1:0] route_sel_unpacked [0:BUS_WIDTH-1][0:3];
   logic [BUS_WIDTH*4*2 - 1:0] route_sel_flat;
 
@@ -75,7 +64,6 @@ module fpgacell_tb;
   logic mode_w, mode_s, mode_e, mode_n;
   logic [LE_LUT_SIZE - 1:0] lut_data_w, lut_data_s, lut_data_e, lut_data_n;
 
-  //=========================================================================================
   // Helper tasks for configuring each LE
   task automatic set_config_mux0A(input int mux_index, input int sel);
     int shift = mux_index * SEL_BITS;
@@ -106,7 +94,6 @@ module fpgacell_tb;
   //[ ([LE_INPUTS-1:0] for LE inputs], [LE_INPUTS] for LE output) ] [ {BusB, BusA}[2*sel+1] ]
   //[0][3]  LEB input 0 to busB[7]
   //[LE_INPUTS][2]  LEB output to busB[5]
-  //=========================================================================================
 
   // Task: CRAM configuration loading (MSB first)
   task cram(logic [CFG_BITS - 1:0] data);
@@ -163,10 +150,12 @@ module fpgacell_tb;
     end
   endtask
 
+  // =====================================================================
+  // DUT INSTANTIATION
+  // =====================================================================
   int test_case;
   int sub_test;
 
-  // DUT instantiation
   fpgacell #(
     .LE_LUT_SIZE(LE_LUT_SIZE),
     .LE_INPUTS(LE_INPUTS),
@@ -180,8 +169,6 @@ module fpgacell_tb;
       #1;
       le_clk = ~le_clk;
     end
-
-
 
   //=========================================================================
   // MAIN TEST SEQUENCE
@@ -384,11 +371,20 @@ module fpgacell_tb;
     flatten_route_sel();
     cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode_w, lut_data_w}, {mode_n, lut_data_n}, {mode_e, lut_data_e}, {mode_s, lut_data_s}});
 
+    sub_test = 2;
     south_ena[2:0] = '1;
     for (int i = 0; i < 8; i ++) begin
       south_drv[2:0] = i[2:0];
       #1;
     end
+
+    //add one more test that uses all four LEs
+
+    // ====================================
+    // TEST 4: COMPLEX SEQUENTIAL OPERATION
+    // ====================================
+
+    //one test case with two LEs and one with all four
 
     $display("[TEST] Completed");
     $finish;
