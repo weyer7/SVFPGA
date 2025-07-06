@@ -126,10 +126,6 @@ module fpgacell_tb;
       le_clk = 0;
       le_nrst = 0;
       nrst = 0;
-      // CBinsouth = 0;
-      // CBinwest = 0;
-      // LEineast = 0;
-      // LEinnorth = 0;
       {north_drv, south_drv, east_drv, west_drv} = '0;
       {north_ena, south_ena, east_ena, west_ena} = '0;
       config_data0A = {(LE_INPUTS + LE_OUTPUTS) * SEL_BITS{'1}}; // Disabled
@@ -470,15 +466,26 @@ module fpgacell_tb;
     // ====================================
     // TEST 4: COMPLEX SEQUENTIAL OPERATION
     // ====================================
-
+    test_case = 4;
+    sub_test = 1;
+    clear_signals();
     //four-bit counter
+
+    //SIGNAL: [Q3][Q2][Q1][Q0]
+    //INDEX:  [3] [2] [1] [0]
     /*
     Q0_n = ~Q0
 
     |Q0|Q0n|
     |0 | 1 |
     |1 | 0 |
-
+    */
+    lut_data0A = 16'b01_01_01_01_01_01_01_01; //repeat 8 times to ignore MSBs
+    mode0A = 1; //registered
+    set_config_mux0A(0, 0);
+    route_sel_unpacked[0][0] = 2'd1; //straight to south
+    set_config_mux0A(LE_INPUTS, 0); //connect back into itself
+    /*
     Q1_n = Q1 ^ Q0
 
     |Q1|Q0|Q1n|
@@ -486,7 +493,14 @@ module fpgacell_tb;
     |0 |1 | 1 |
     |1 |0 | 1 |
     |1 |1 | 0 |
-
+    */
+    lut_data0B = 16'b0110_0110_0110_0110; //repeated to ignore MSBs
+    mode0B = 1; //registered
+    set_config_mux0B(0, 0);
+    set_config_mux0B(1, 1);
+    route_sel_unpacked[1][0] = 2'd1;
+    set_config_mux0B(LE_INPUTS, 1);
+    /*
     Q2_n = Q2 ^ (Q1 & Q0)
 
     |Q2|Q1|Q0|Q2n|
@@ -498,7 +512,15 @@ module fpgacell_tb;
     |1 |0 |1 | 1 |
     |1 |1 |0 | 1 |
     |1 |1 |1 | 0 |
-
+    */
+    lut_data1A = 16'b00011110_00011110;
+    mode1A = 1; //registered
+    set_config_mux1A(0, 0);
+    set_config_mux1A(1, 1);
+    set_config_mux1A(2, 2);
+    route_sel_unpacked[2][1] = 2'd2;
+    
+    /*
     Q3_n = Q3 ^ (Q2 & Q1 & Q0)
 
     |Q3|Q2|Q1|Q0|Q3n|
@@ -519,7 +541,8 @@ module fpgacell_tb;
     |1 |1 |1 |0 | 1 |
     |1 |1 |1 |1 | 0 |
     */
-
+    lut_data1B = 16'b0111111110000000;
+    mode1B = 1; //registered
     $display("[TEST] Completed");
     $finish;
   end
