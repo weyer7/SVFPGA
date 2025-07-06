@@ -1,4 +1,0 @@
-VCD info: dumpfile waves/fpgacell.vcd opened for output.
-[TEST] Starting FPGA cell test with width = 8
-[TEST] Completed
-testbench/fpgacell_tb.sv:345: $finish called at 11100000 (10ns)
