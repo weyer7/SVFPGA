@@ -1,0 +1,26 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Sun Jul  6 04:50:50 2025
+[*]
+[dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fullSB.vcd"
+[dumpfile_mtime] "Sun Jul  6 04:48:49 2025"
+[dumpfile_size] 2148
+[savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fullSB.gtkw"
+[timestart] 0
+[size] 919 949
+[pos] -1 -1
+*-15.376991 43100 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 214
+[signals_width] 94
+[sst_expanded] 1
+[sst_vpaned_height] 278
+@22
+fullSB_tb.cfg[8:0]
+@28
+fullSB_tb.north
+fullSB_tb.south
+fullSB_tb.east
+@29
+fullSB_tb.west
+[pattern_trace] 1
+[pattern_trace] 0
