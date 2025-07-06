@@ -95,6 +95,10 @@ module fpgacell_tb;
   //[0][3]  LEB input 0 to busB[7]
   //[LE_INPUTS][2]  LEB output to busB[5]
 
+  // Constants
+  localparam int CONST_0 = 2 * BUS_WIDTH;
+  localparam int CONST_1 = 2 * BUS_WIDTH + 1;
+
   // Task: CRAM configuration loading (MSB first)
   task cram(logic [CFG_BITS - 1:0] data);
     //(SB) + 2*(CB) + (LE)
@@ -103,12 +107,13 @@ module fpgacell_tb;
       for (int i = CFG_BITS; i > 0; i--) begin
         clk = 0;
         config_data_in = data[i-1];
-        #0.05;
+        #0.01;
         clk = 1;
-        #0.05;
+        #0.01;
       end
       config_en = 0;
       clk = 0;
+      config_data_in = 0;
     end
   endtask
   // <==MSB SB CB1B CB1A CB0B CB0A LE LSB==>
@@ -123,9 +128,8 @@ module fpgacell_tb;
       config_data_in = 0;
       en = 1;
       le_en = 1;
-      le_clk = 0;
-      le_nrst = 0;
-      nrst = 0;
+      le_nrst = 1;
+      nrst = 1;
       {north_drv, south_drv, east_drv, west_drv} = '0;
       {north_ena, south_ena, east_ena, west_ena} = '0;
       config_data0A = {(LE_INPUTS + LE_OUTPUTS) * SEL_BITS{'1}}; // Disabled
@@ -140,9 +144,6 @@ module fpgacell_tb;
       end
       {mode1A, mode0A, mode1B, mode0B} = 0;
       {lut_data1A, lut_data0A, lut_data1B, lut_data0B} = 0;
-      #1;
-      nrst = 1;
-      le_nrst = 1;
     end
   endtask
 
@@ -379,8 +380,17 @@ module fpgacell_tb;
     for (int i = 0; i < 8; i ++) begin
       south_drv[2:0] = i[2:0];
       #1;
+      if (south_drv[2] + south_drv[1] + south_drv[0] != SBsouth[4:3]) begin
+        $display("Test %d .%d :%d FAIL", test_case[4:0], sub_test[4:0], i[4:0]);
+        error = 1;
+      end
     end
-
+    if (error) begin
+      $error;
+      $finish;
+    end else begin
+      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+    end
     //two chained full-adders (no need to reconfigure the first one)
     sub_test = 3;
     clear_signals();
@@ -452,7 +462,7 @@ module fpgacell_tb;
       if ({2'd0, i[4]} + i[3:2] + i[1:0] == SBsouth[8:6]) begin
         // $display("Test %d PASS", i[4:0]);
       end else begin
-        $display("Test %d.%d:%d FAIL", test_case[4:0], sub_test[4:0], i[4:0]);
+        $display("Test %d .%d :%d FAIL", test_case[4:0], sub_test[4:0], i[4:0]);
         error = 1;
       end
     end
@@ -461,7 +471,7 @@ module fpgacell_tb;
       $error;
       $finish;
     end else begin
-      $display("Test %d PASS", test_case[4:0]);
+      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
     end
     // ====================================
     // TEST 4: COMPLEX SEQUENTIAL OPERATION
@@ -483,6 +493,9 @@ module fpgacell_tb;
     lut_data0A = 16'b01_01_01_01_01_01_01_01; //repeat 8 times to ignore MSBs
     mode0A = 1; //registered
     set_config_mux0A(0, 0);
+    set_config_mux0A(1, CONST_0);
+    set_config_mux0A(2, CONST_0);
+    set_config_mux0A(3, CONST_0);
     route_sel_unpacked[0][0] = 2'd1; //straight to south
     set_config_mux0A(LE_INPUTS, 0); //connect back into itself
     /*
@@ -498,6 +511,8 @@ module fpgacell_tb;
     mode0B = 1; //registered
     set_config_mux0B(0, 0);
     set_config_mux0B(1, 1);
+    set_config_mux0B(2, CONST_0);
+    set_config_mux0B(3, CONST_0);
     route_sel_unpacked[1][0] = 2'd1;
     set_config_mux0B(LE_INPUTS, 1);
     /*
@@ -513,13 +528,15 @@ module fpgacell_tb;
     |1 |1 |0 | 1 |
     |1 |1 |1 | 0 |
     */
-    lut_data1A = 16'b00011110_00011110;
+    lut_data1A = 16'b01111000_01111000;
     mode1A = 1; //registered
     set_config_mux1A(0, 0);
     set_config_mux1A(1, 1);
     set_config_mux1A(2, 2);
+    set_config_mux1A(3, CONST_0);
     route_sel_unpacked[2][1] = 2'd2;
-    
+    set_config_mux1A(LE_INPUTS, 2);
+
     /*
     Q3_n = Q3 ^ (Q2 & Q1 & Q0)
 
@@ -543,6 +560,127 @@ module fpgacell_tb;
     */
     lut_data1B = 16'b0111111110000000;
     mode1B = 1; //registered
+    set_config_mux1B(0, 0);
+    set_config_mux1B(1, 1);
+    set_config_mux1B(2, 2);
+    set_config_mux1B(3, 3);
+    route_sel_unpacked[3][1] = 2'd2;
+    set_config_mux1B(LE_INPUTS, 3);
+
+    flatten_route_sel();
+    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
+    sub_test = 2;
+    le_nrst = 0;
+    #1;
+    @(posedge le_clk);
+    #0.1
+    le_nrst = 1;
+    for (int i = 0; i < 20; i ++) begin
+      @(negedge le_clk);
+      if (SBsouth[3:0] != i % 16) begin
+        $display("Test %d .%d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], SBsouth[3:0]);
+        error = 1;
+      end
+    end
+    if (error) begin
+      $error;
+      $finish;
+    end else begin
+      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+    end
+
+    //grey code counter
+    sub_test = 3;
+    clear_signals();
+
+    /*
+    |Q3|Q2|Q1|Q0|Q3n|Q2n|Q1n|Q0n|
+    |0 |0 |0 |0 | 0 | 0 | 0 | 1 |
+    |0 |0 |0 |1 | 0 | 0 | 1 | 1 |
+    |0 |0 |1 |1 | 0 | 0 | 1 | 0 |
+    |0 |0 |1 |0 | 0 | 1 | 1 | 0 |
+    |0 |1 |1 |0 | 0 | 1 | 1 | 1 |
+    |0 |1 |1 |1 | 0 | 1 | 0 | 1 |
+    |0 |1 |0 |1 | 0 | 1 | 0 | 0 |
+    |0 |1 |0 |0 | 1 | 1 | 0 | 0 |
+    |1 |1 |0 |0 | 1 | 1 | 0 | 1 |
+    |1 |1 |0 |1 | 1 | 1 | 1 | 1 |
+    |1 |1 |1 |1 | 1 | 1 | 1 | 0 |
+    |1 |1 |1 |0 | 1 | 0 | 1 | 0 |
+    |1 |0 |1 |0 | 1 | 0 | 1 | 1 |
+    |1 |0 |1 |1 | 1 | 0 | 0 | 1 |
+    |1 |0 |0 |1 | 1 | 0 | 0 | 0 |
+    |1 |0 |0 |0 | 0 | 0 | 0 | 0 |
+
+    reorganized:
+    |Q3|Q2|Q1|Q0|Q3n|Q2n|Q1n|Q0n|
+    |0 |0 |0 |0 | 0 | 0 | 0 | 1 |
+    |0 |0 |0 |1 | 0 | 0 | 1 | 1 |
+    |0 |0 |1 |0 | 0 | 1 | 1 | 0 |
+    |0 |0 |1 |1 | 0 | 0 | 1 | 0 |
+    |0 |1 |0 |0 | 1 | 1 | 0 | 0 |
+    |0 |1 |0 |1 | 0 | 1 | 0 | 0 |
+    |0 |1 |1 |0 | 0 | 1 | 1 | 1 |
+    |0 |1 |1 |1 | 0 | 1 | 0 | 1 |
+    |1 |0 |0 |0 | 0 | 0 | 0 | 0 |
+    |1 |0 |0 |1 | 1 | 0 | 0 | 0 |
+    |1 |0 |1 |0 | 1 | 0 | 1 | 1 |
+    |1 |0 |1 |1 | 1 | 0 | 0 | 1 |
+    |1 |1 |0 |0 | 1 | 1 | 0 | 1 |
+    |1 |1 |0 |1 | 1 | 1 | 1 | 1 |
+    |1 |1 |1 |0 | 1 | 0 | 1 | 0 |
+    |1 |1 |1 |1 | 1 | 1 | 1 | 0 |
+    */
+    lut_data0A = 16'b0011110011000011; //configure mux data
+    lut_data0B = 16'b1110010001001110;
+    lut_data1A = 16'b1011000011110100;
+    lut_data1B = 16'b1111111000010000;
+
+    mode0A = 1; //registered mode
+    mode0B = 1;
+    mode1A = 1;
+    mode1B = 1;
+
+    set_config_mux0A(0, 0); //configure inputs and outputs
+    set_config_mux0A(1, 1);
+    set_config_mux0A(2, 2);
+    set_config_mux0A(3, 3);
+    set_config_mux0A(LE_INPUTS, 0);
+
+    set_config_mux0B(0, 0);
+    set_config_mux0B(1, 1);
+    set_config_mux0B(2, 2);
+    set_config_mux0B(3, 3);
+    set_config_mux0B(LE_INPUTS, 1);
+
+    set_config_mux1A(0, 0);
+    set_config_mux1A(1, 1);
+    set_config_mux1A(2, 2);
+    set_config_mux1A(3, 3);
+    set_config_mux1A(LE_INPUTS, 2);
+
+    set_config_mux1B(0, 0);
+    set_config_mux1B(1, 1);
+    set_config_mux1B(2, 2);
+    set_config_mux1B(3, 3);
+    set_config_mux1B(LE_INPUTS, 3);
+
+    route_sel_unpacked[0][0] = 2'd1;
+    route_sel_unpacked[1][0] = 2'd1;
+    route_sel_unpacked[2][1] = 2'd2;
+    route_sel_unpacked[3][1] = 2'd2;
+
+    flatten_route_sel();
+    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
+    sub_test = 4;
+
+    le_nrst = 0;
+    #1;
+    @(posedge le_clk);
+    #0.1;
+    le_nrst = 1;
+    #40;
+
     $display("[TEST] Completed");
     $finish;
   end
