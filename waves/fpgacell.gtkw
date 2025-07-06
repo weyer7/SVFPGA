@@ -1,21 +1,21 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Sun Jul  6 16:16:48 2025
+[*] Sun Jul  6 17:15:15 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpgacell.vcd"
-[dumpfile_mtime] "Sun Jul  6 16:16:43 2025"
+[dumpfile_mtime] "Sun Jul  6 17:08:54 2025"
 [dumpfile_size] 1059051
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpgacell.gtkw"
 [timestart] 0
-[size] 1920 1043
-[pos] -51 -51
-*-24.936022 119700000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[size] 1850 1016
+[pos] 1989 26
+*-25.009218 84000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] fpgacell_tb.
 [treeopen] fpgacell_tb.dut.
 [sst_width] 233
 [signals_width] 219
 [sst_expanded] 1
-[sst_vpaned_height] 325
+[sst_vpaned_height] 315
 @200
 -Test Case
 @420
@@ -54,7 +54,9 @@ fpgacell_tb.SBsouth[15:0]
 (7)fpgacell_tb.SBsouth[15:0]
 (8)fpgacell_tb.SBsouth[15:0]
 (9)fpgacell_tb.SBsouth[15:0]
+@29
 (10)fpgacell_tb.SBsouth[15:0]
+@28
 (11)fpgacell_tb.SBsouth[15:0]
 (12)fpgacell_tb.SBsouth[15:0]
 (13)fpgacell_tb.SBsouth[15:0]

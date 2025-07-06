@@ -4,7 +4,7 @@ module fpgacell #(
     LE_LUT_SIZE = 16,
     LE_INPUTS = 4,
     LE_OUTPUTS = 1,
-    BUS_WIDTH = 8
+    BUS_WIDTH = 16
 )(
   //CRAM signals
   input logic clk, en, nrst,
