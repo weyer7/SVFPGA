@@ -1,7 +1,7 @@
 `default_nettype none
 `timescale 1ms/10ns
 module fpgacell_tb;
-  parameter BUS_WIDTH = 8;
+  parameter BUS_WIDTH = 16;
   parameter LE_INPUTS = 4;
   parameter LE_OUTPUTS = 1;
   parameter LE_LUT_SIZE = 16;
@@ -61,8 +61,8 @@ module fpgacell_tb;
   endgenerate
 
   logic [((LE_INPUTS + LE_OUTPUTS) * SEL_BITS) - 1:0] config_data0A, config_data0B, config_data1A, config_data1B;
-  logic mode_w, mode_s, mode_e, mode_n;
-  logic [LE_LUT_SIZE - 1:0] lut_data_w, lut_data_s, lut_data_e, lut_data_n;
+  logic mode1A, mode0A, mode1B, mode0B;
+  logic [LE_LUT_SIZE - 1:0] lut_data1A, lut_data0A, lut_data1B, lut_data0B;
 
   // Helper tasks for configuring each LE
   task automatic set_config_mux0A(input int mux_index, input int sel);
@@ -142,8 +142,8 @@ module fpgacell_tb;
           route_sel_unpacked[i][j] = 3;
         end
       end
-      {mode_w, mode_s, mode_e, mode_n} = 0;
-      {lut_data_w, lut_data_s, lut_data_e, lut_data_n} = 0;
+      {mode1A, mode0A, mode1B, mode0B} = 0;
+      {lut_data1A, lut_data0A, lut_data1B, lut_data0B} = 0;
       #1;
       nrst = 1;
       le_nrst = 1;
@@ -169,6 +169,8 @@ module fpgacell_tb;
       #1;
       le_clk = ~le_clk;
     end
+  
+  logic error; //error status
 
   //=========================================================================
   // MAIN TEST SEQUENCE
@@ -181,6 +183,7 @@ module fpgacell_tb;
     sub_test = 0;
     clear_signals();
     le_clk = 0;
+    error = 0;
 
     // ======================================
     // TEST 1: SIMPLE COMBINATIONAL OPERATION
@@ -202,12 +205,12 @@ module fpgacell_tb;
     set_config_mux0A(LE_INPUTS, 2); //LEout connects to bus1A[2]
 
     //LUT data
-    lut_data_s = 16'b1000100010001000; //2-input AND with [1:0]
-    mode_s = 0; //non-registered
+    lut_data0A = 16'b1000100010001000; //2-input AND with [1:0]
+    mode0A = 0; //non-registered
 
     //CRAM
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode_w, lut_data_w}, {mode_n, lut_data_n}, {mode_e, lut_data_e}, {mode_s, lut_data_s}});
+    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
     // #5;
 
     sub_test = 2; //2-input operation with rest unspecified
@@ -226,7 +229,7 @@ module fpgacell_tb;
     //other signals don't need to be updated
 
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode_w, lut_data_w}, {mode_n, lut_data_n}, {mode_e, lut_data_e}, {mode_s, lut_data_s}});
+    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
     
     south_ena[3] = 1;
     sub_test = 4;//3-input operation with rest unspecified
@@ -254,8 +257,8 @@ module fpgacell_tb;
     |1|1|1|0 |
     LEin[2:0]={J,K,Q}
     */
-    mode_s = 1; //registered
-    lut_data_s = 16'b01110010_01110010; //repeated twice to ignore MSB
+    mode0A = 1; //registered
+    lut_data0A = 16'b01110010_01110010; //repeated twice to ignore MSB
 
     //first connect le_out(Q) to le_in[0] and this to a top-level switchbox output
     set_config_mux0A(LE_INPUTS, 0); //le_out to CB0A bus[0]
@@ -273,7 +276,7 @@ module fpgacell_tb;
 
     //now, CRAM
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode_w, lut_data_w}, {mode_n, lut_data_n}, {mode_e, lut_data_e}, {mode_s, lut_data_s}});
+    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
 
     sub_test = 2; //logic element nrst
     le_nrst = 0;
@@ -343,8 +346,12 @@ module fpgacell_tb;
     | 1 | 1 | 1 | 1 | 1  |
     */
     //first, configure the two LUTs:
-    lut_data_s = 16'b10010110_10010110; //sum
-    lut_data_n = 16'b11101000_11101000; //cout
+    lut_data0A = 16'b10010110_10010110; //sum
+    lut_data0B = 16'b11101000_11101000; //cout
+
+    //set the mode
+    mode0A = 0; //combinational mode
+    mode0B = 0;
 
     //now, configure LE inputs
     set_config_mux0A(0,0); //connect LE_s input 0 to busA[0]
@@ -369,7 +376,7 @@ module fpgacell_tb;
 
     //CRAM
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode_w, lut_data_w}, {mode_n, lut_data_n}, {mode_e, lut_data_e}, {mode_s, lut_data_s}});
+    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
 
     sub_test = 2;
     south_ena[2:0] = '1;
@@ -378,13 +385,140 @@ module fpgacell_tb;
       #1;
     end
 
-    //add one more test that uses all four LEs
+    //two chained full-adders (no need to reconfigure the first one)
+    sub_test = 3;
+    clear_signals();
 
+    //SIGNAL: [A0][A1][B0][B1][Cin]  [Cout0]  [S0][S1][Cout]
+    //INDEX:  [0] [1] [2] [3]  [4]     [5]    [6] [7]  [8]
+
+    //reconfigure old FA
+    lut_data0A = 16'b10010110_10010110;
+    lut_data0B = 16'b11101000_11101000;
+    mode0A = 0; //combinational mode
+    mode0B = 0;
+
+    set_config_mux0A(1,0); //A0
+    set_config_mux0B(1,0);
+    set_config_mux0A(2,2); //B0
+    set_config_mux0B(2,2);
+    set_config_mux0A(0,4); //Cin
+    set_config_mux0B(0,4);
+
+    route_sel_unpacked[0][2] = 2'd1; //south[0] goes straight
+    // route_sel_unpacked[1][2] = 2'd1;
+    route_sel_unpacked[2][2] = 2'd1;
+    // route_sel_unpacked[3][2] = 2'd1;
+    route_sel_unpacked[4][2] = 2'd1;
+
+    set_config_mux0A(LE_INPUTS, 6); //s0
+    set_config_mux0B(LE_INPUTS, 5); //cout0
+
+    route_sel_unpacked[6][0] = 2'd1; //connect outputs to SB south
+    // route_sel_unpacked[5][0] = 2'd1; //don't need; internal signal only
+
+    //configure the remaining two LEs
+    mode1A = 0;
+    mode1B = 0;
+
+    lut_data1A = 16'b10010110_10010110; //sum2;
+    lut_data1B = 16'b11101000_11101000; //cout2;
+
+    //now, configure the inputs to the second full adder
+    set_config_mux1A(0,5); //connect Cin to busA[5]
+    set_config_mux1B(0,5);
+    route_sel_unpacked[5][0] = 2'd2; //Cout from fa1 turns left into Cin of fa2
+
+    set_config_mux1A(1,1); //A1
+    set_config_mux1B(1,1);
+    route_sel_unpacked[1][2] = 2'd0; //south[1] turns right into A1 inputs
+
+    set_config_mux1A(2,3); //B1
+    set_config_mux1B(2,3);
+    route_sel_unpacked[3][2] = 2'd0; //south[3] turns right into B1 inputs
+
+    //and finally, the outputs:
+    set_config_mux1A(LE_INPUTS, 7); //sum1
+    set_config_mux1B(LE_INPUTS, 8); //cout
+    route_sel_unpacked[7][1] = 2'd2; //sum2 turns left and goes south
+    route_sel_unpacked[8][1] = 2'd2;
+
+    flatten_route_sel();
+    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
+    sub_test = 4;
+
+    south_ena = '0;
+    south_ena[4:0] = '1;
+    for (int i = 0; i < 32; i ++) begin
+      // [Cin][B1][B0][A1][A0]
+      south_drv[4:0] = i[4:0];
+      #1;
+      if ({2'd0, i[4]} + i[3:2] + i[1:0] == SBsouth[8:6]) begin
+        // $display("Test %d PASS", i[4:0]);
+      end else begin
+        $display("Test %d.%d:%d FAIL", test_case[4:0], sub_test[4:0], i[4:0]);
+        error = 1;
+      end
+    end
+    if (error) begin
+      $display("Test %d FAIL", test_case[4:0]);
+      $error;
+      $finish;
+    end else begin
+      $display("Test %d PASS", test_case[4:0]);
+    end
     // ====================================
     // TEST 4: COMPLEX SEQUENTIAL OPERATION
     // ====================================
 
-    //one test case with two LEs and one with all four
+    //four-bit counter
+    /*
+    Q0_n = ~Q0
+
+    |Q0|Q0n|
+    |0 | 1 |
+    |1 | 0 |
+
+    Q1_n = Q1 ^ Q0
+
+    |Q1|Q0|Q1n|
+    |0 |0 | 0 |
+    |0 |1 | 1 |
+    |1 |0 | 1 |
+    |1 |1 | 0 |
+
+    Q2_n = Q2 ^ (Q1 & Q0)
+
+    |Q2|Q1|Q0|Q2n|
+    |0 |0 |0 | 0 |
+    |0 |0 |1 | 0 |
+    |0 |1 |0 | 0 |
+    |0 |1 |1 | 1 |
+    |1 |0 |0 | 1 |
+    |1 |0 |1 | 1 |
+    |1 |1 |0 | 1 |
+    |1 |1 |1 | 0 |
+
+    Q3_n = Q3 ^ (Q2 & Q1 & Q0)
+
+    |Q3|Q2|Q1|Q0|Q3n|
+    |0 |0 |0 |0 | 0 |
+    |0 |0 |0 |1 | 0 |
+    |0 |0 |1 |0 | 0 |
+    |0 |0 |1 |1 | 0 |
+    |0 |1 |0 |0 | 0 |
+    |0 |1 |0 |1 | 0 |
+    |0 |1 |1 |0 | 0 |
+    |0 |1 |1 |1 | 1 |
+    |1 |0 |0 |0 | 1 |
+    |1 |0 |0 |1 | 1 |
+    |1 |0 |1 |0 | 1 |
+    |1 |0 |1 |1 | 1 |
+    |1 |1 |0 |0 | 1 |
+    |1 |1 |0 |1 | 1 |
+    |1 |1 |1 |0 | 1 |
+    |1 |1 |1 |1 | 0 |
+    */
 
     $display("[TEST] Completed");
     $finish;
