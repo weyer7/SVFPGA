@@ -10,19 +10,19 @@ module fpgacell_tb;
   //                     [  Switch Box ]   [             Connection Box              ]   [   Logic Element   ]
   localparam CFG_BITS = ((BUS_WIDTH*4*2) + (4 * ((LE_INPUTS + LE_OUTPUTS) * SEL_BITS)) + 4 * (LE_LUT_SIZE + 1));
  
-  //========TOP-LEVEL IO==========//
-  //CRAM signals                  //
-  logic clk, en, nrst;            //
-  logic config_data_in, config_en;//
-  logic config_data_out;          //
-  //configurable logic signals    //
-  logic le_clk, le_en, le_nrst;   //
-  //cardinal busses               //
-  wire [BUS_WIDTH - 1:0] CBnorth; //
-  wire [BUS_WIDTH - 1:0] SBsouth; //
-  wire [BUS_WIDTH - 1:0] CBeast;  //
-  wire [BUS_WIDTH - 1:0] SBwest;  //
-  //==============================//
+  // ========TOP-LEVEL IO==========//
+  //CRAM signals                   //
+  logic clk, en, nrst;             //
+  logic config_data_in, config_en; //
+  logic config_data_out;           //
+  //configurable logic signals     //
+  logic le_clk, le_en, le_nrst;    //
+  //cardinal busses                //
+  wire [BUS_WIDTH - 1:0] CBnorth;  //
+  wire [BUS_WIDTH - 1:0] SBsouth;  //
+  wire [BUS_WIDTH - 1:0] CBeast;   //
+  wire [BUS_WIDTH - 1:0] SBwest;   //
+  // ==============================//
 
   // ====================================================================
   // HELPER FUNCTIONS
@@ -132,10 +132,7 @@ module fpgacell_tb;
       nrst = 1;
       {north_drv, south_drv, east_drv, west_drv} = '0;
       {north_ena, south_ena, east_ena, west_ena} = '0;
-      config_data0A = {(LE_INPUTS + LE_OUTPUTS) * SEL_BITS{'1}}; // Disabled
-      config_data0B = {(LE_INPUTS + LE_OUTPUTS) * SEL_BITS{'1}}; // Disabled
-      config_data1A = {(LE_INPUTS + LE_OUTPUTS) * SEL_BITS{'1}}; // Disabled
-      config_data1B = {(LE_INPUTS + LE_OUTPUTS) * SEL_BITS{'1}}; // Disabled
+      {config_data0A, config_data0B, config_data1A, config_data1B} = '1; // Disabled
       route_sel_flat = {BUS_WIDTH*4*2{'1}}; //disabled
       for (int i = 0; i < BUS_WIDTH; i ++) begin
         for (int j = 0; j < 4; j ++) begin
