@@ -84,8 +84,8 @@ module fpgacell #(
     .config_data_inB(cb0A_cram_out), .config_data_outB(cb0B_cram_out), 
     .clk(clk), .en(en), .nrst(nrst),
     //configurable logic signals
-    .sb_busA(bus_west), .le_outA(leout0A), .le_inA(lein0A),
-    .sb_busB(CBnorth), .le_outB(leout0B), .le_inB(lein0B));
+    .sb_bus(CBnorth), .le_outA(leout0A), .le_inA(lein0A),
+    .le_outB(leout0B), .le_inB(lein0B));
 
   CB #(BUS_WIDTH, LE_OUTPUTS, LE_INPUTS) CB_southeast 
     //CRAM signals
@@ -93,15 +93,15 @@ module fpgacell #(
     .config_data_inB(cb1A_cram_out), .config_data_outB(cb1B_cram_out), 
     .clk(clk), .en(en), .nrst(nrst),
     //configurable logic signals
-    .sb_busA(bus_south), .le_outA(leout1A), .le_inA(lein1A),
-    .sb_busB(CBeast), .le_outB(leout1B), .le_inB(lein1B));
+    .sb_bus(CBeast), .le_outA(leout1A), .le_inA(lein1A),
+    .le_outB(leout1B), .le_inB(lein1B));
 
   SB #(BUS_WIDTH)                        SB_southwest 
     //CRAM signals
     (.config_data_in(cb1B_cram_out), .config_en(config_en), .config_data_out(sb_cram_out), 
     .clk(clk), .en(en), .nrst(nrst),
     //configurable logic signals
-    .north(bus_west), .south(SBsouth), .east(bus_south), .west(SBwest));
+    .north(CBnorth), .south(SBsouth), .east(CBeast), .west(SBwest));
 
     assign config_data_out = sb_cram_out;
 

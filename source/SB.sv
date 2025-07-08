@@ -60,7 +60,7 @@ module SB #(
           (route_sel[i][DIR_N] != 2'b11) ? north[i] :
           (route_sel[i][DIR_E] != 2'b11) ? east[i]  :
           (route_sel[i][DIR_S] != 2'b11) ? south[i] :
-          (route_sel[i][DIR_W] != 2'b11) ? west[i]  : 1'bz;
+          (route_sel[i][DIR_W] != 2'b11) ? west[i]  : 1'b0;
 
       // Output logic with updated 2'b11 handling (connects to wire_bus instead of disconnecting)
       assign north[i] = !config_en ? (
@@ -68,28 +68,28 @@ module SB #(
           (rot_dir(DIR_S, route_sel[i][DIR_S]) == DIR_N && route_sel[i][DIR_S] != 2'b11) ||
           (rot_dir(DIR_W, route_sel[i][DIR_W]) == DIR_N && route_sel[i][DIR_W] != 2'b11) ||
           (route_sel[i][DIR_N] == 2'b11)
-        ) ? wire_bus[i] : 1'bz : 1'bz;
+        ) ? wire_bus[i] : 1'bz : 1'b0;
       
       assign east[i] = !config_en ? (
           (rot_dir(DIR_N, route_sel[i][DIR_N]) == DIR_E && route_sel[i][DIR_N] != 2'b11) ||
           (rot_dir(DIR_S, route_sel[i][DIR_S]) == DIR_E && route_sel[i][DIR_S] != 2'b11) ||
           (rot_dir(DIR_W, route_sel[i][DIR_W]) == DIR_E && route_sel[i][DIR_W] != 2'b11) ||
           (route_sel[i][DIR_E] == 2'b11)
-        ) ? wire_bus[i] : 1'bz : 1'bz;
+        ) ? wire_bus[i] : 1'bz : 1'b0;
       
       assign south[i] = !config_en ? (
           (rot_dir(DIR_N, route_sel[i][DIR_N]) == DIR_S && route_sel[i][DIR_N] != 2'b11) ||
           (rot_dir(DIR_E, route_sel[i][DIR_E]) == DIR_S && route_sel[i][DIR_E] != 2'b11) ||
           (rot_dir(DIR_W, route_sel[i][DIR_W]) == DIR_S && route_sel[i][DIR_W] != 2'b11) ||
           (route_sel[i][DIR_S] == 2'b11)
-        ) ? wire_bus[i] : 1'bz : 1'bz;
+        ) ? wire_bus[i] : 1'bz : 1'b0;
       
       assign west[i] = !config_en ? (
           (rot_dir(DIR_N, route_sel[i][DIR_N]) == DIR_W && route_sel[i][DIR_N] != 2'b11) ||
           (rot_dir(DIR_E, route_sel[i][DIR_E]) == DIR_W && route_sel[i][DIR_E] != 2'b11) ||
           (rot_dir(DIR_S, route_sel[i][DIR_S]) == DIR_W && route_sel[i][DIR_S] != 2'b11) ||
           (route_sel[i][DIR_W] == 2'b11)
-        ) ? wire_bus[i] : 1'bz : 1'bz;
+        ) ? wire_bus[i] : 1'bz : 1'b0;
       
     end
   endgenerate

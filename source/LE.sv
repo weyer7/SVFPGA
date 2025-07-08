@@ -52,6 +52,6 @@ assign mux_out = mux_data[select];
 //mode multiplexer
 logic mode;
 assign mode = config_data[LUT_SIZE];
-assign le_out = config_en || !nrst ? 1'bz : mode ? dff_out : mux_out; //hi-z if configuring
+assign le_out = config_en || !nrst ? 1'b0 : mode ? dff_out : mux_out; //hi-z if configuring
 
 endmodule

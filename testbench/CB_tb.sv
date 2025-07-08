@@ -6,12 +6,11 @@ module CB_tb;
   parameter int LE_INPUTS  = 4;
   parameter int LE_OUTPUTS = 1;
 
-  localparam int SEL_BITS  = $clog2(2 * WIDTH + 2);
+  localparam int SEL_BITS  = $clog2(WIDTH + 2);
   localparam int CFG_BITS  = (LE_INPUTS + LE_OUTPUTS) * SEL_BITS;
 
   // DUT-facing inouts
-  wire [WIDTH-1:0] sb_busA;
-  wire [WIDTH-1:0] sb_busB;
+  wire [WIDTH-1:0] sb_bus;
   logic config_data_inA, config_data_inB;
   logic config_en;
   logic config_data_outA, config_data_outB;
@@ -21,8 +20,8 @@ module CB_tb;
   wire  [LE_INPUTS-1:0]  le_inA, le_inB;
 
   // Internal tri-state bus drivers
-  logic [WIDTH-1:0] sb_bus_drvA, sb_bus_drvB;
-  logic [WIDTH-1:0] sb_bus_enaA, sb_bus_enaB;
+  logic [WIDTH-1:0] sb_bus_drv;
+  logic [WIDTH-1:0] sb_bus_ena;
 
 
 
@@ -32,8 +31,7 @@ module CB_tb;
   genvar i;
   generate
     for (i = 0; i < WIDTH; i++) begin
-      assign sb_busA[i] = sb_bus_enaA[i] ? sb_bus_drvA[i] : 1'bz;
-      assign sb_busB[i] = sb_bus_enaB[i] ? sb_bus_drvB[i] : 1'bz;
+      assign sb_bus[i] = sb_bus_ena[i] ? sb_bus_drv[i] : 1'bz;
     end
   endgenerate
 
@@ -44,7 +42,7 @@ module CB_tb;
     .LE_OUTPUTS(LE_OUTPUTS)
   ) dut (
     .clk(clk), .en(en), .nrst(nrst),
-    .sb_busA(sb_busA), .sb_busB(sb_busB),
+    .sb_bus(sb_bus),
     .config_data_inA(config_data_inA), .config_data_inB(config_data_inB),
     .config_en(config_en),
     .config_data_outA(config_data_outA), .config_data_outB(config_data_outB),
@@ -93,10 +91,8 @@ module CB_tb;
   endtask
 
   task automatic clear_signals();
-    sb_bus_enaA  = '0;
-    sb_bus_drvA  = '0;
-    sb_bus_enaB  = '0;
-    sb_bus_drvB  = '0;
+    sb_bus_ena  = '0;
+    sb_bus_drv  = '0;
     le_outA     = '0;
     le_outB     = '0;
     config_dataA = {CFG_BITS{1'b1}}; // Disabled
@@ -104,8 +100,8 @@ module CB_tb;
   endtask
 
   // Constants
-  localparam int CONST_0 = 2 * WIDTH;
-  localparam int CONST_1 = 2 * WIDTH + 1;
+  localparam int CONST_0 = WIDTH;
+  localparam int CONST_1 = WIDTH + 1;
 
   // === TEST SEQUENCE ===
   initial begin
@@ -126,12 +122,12 @@ module CB_tb;
     set_config_muxA(0, 2);  // maps to sb_bus[3]
     cram(config_dataA, config_dataB);
 
-    sb_bus_enaA[2] = 1;
-    sb_bus_drvA[2] = 1'b1;
+    sb_bus_ena[2] = 1;
+    sb_bus_drv[2] = 1'b1;
     #1;
-    sb_bus_drvA[2] = 1'b0;
+    sb_bus_drv[2] = 1'b0;
     #1
-    sb_bus_drvA[2] = 1'b1;
+    sb_bus_drv[2] = 1'b1;
     #1
     $display("LEA input 0 = %b (expected 1)", le_inA[0]);
     clear_signals();
@@ -139,14 +135,14 @@ module CB_tb;
 
     // === Test 1b: LEA input 0 connected to bus B wire 6 === //
     sub_test = 2;
-    set_config_muxA(0, WIDTH + 6);  // maps to sb_bus[6]
+    set_config_muxA(0, 6);  // maps to sb_bus[6]
     cram(config_dataA, config_dataB);
-    sb_bus_enaB[6] = 1;
-    sb_bus_drvB[6] = 1'b1;
+    sb_bus_ena[6] = 1;
+    sb_bus_drv[6] = 1'b1;
     #1;
-    sb_bus_drvB[6] = 1'b0;
+    sb_bus_drv[6] = 1'b0;
     #1
-    sb_bus_drvB[6] = 1'b1;
+    sb_bus_drv[6] = 1'b1;
     #1
     $display("LEA input 0 = %b (expected 1)", le_inA[0]);
     clear_signals();
@@ -155,14 +151,14 @@ module CB_tb;
     // === Test 2a: LEB input 1 connected to bus B wire 1 === //
     test_case = 2;
     sub_test = 1;
-    set_config_muxB(1, WIDTH + 1);  // maps to sb_busB[1]
+    set_config_muxB(1, 1);  // maps to sb_busB[1]
     cram(config_dataA, config_dataB);
-    sb_bus_enaB[1] = 1;
-    sb_bus_drvB[1] = 1'b1;
+    sb_bus_ena[1] = 1;
+    sb_bus_drv[1] = 1'b1;
     #1;
-    sb_bus_drvB[1] = 1'b0;
+    sb_bus_drv[1] = 1'b0;
     #1;
-    sb_bus_drvB[1] = 1'b1;
+    sb_bus_drv[1] = 1'b1;
     #1
     $display("LEB input 1 = %b (expected 1)", le_inB[1]);
     clear_signals();
@@ -173,12 +169,12 @@ module CB_tb;
     sub_test = 2;
     set_config_muxB(1, 5);  // maps to sb_busB[4]
     cram(config_dataA, config_dataB);
-    sb_bus_enaA[5] = 1;
-    sb_bus_drvA[5] = 1'b1;
+    sb_bus_ena[5] = 1;
+    sb_bus_drv[5] = 1'b1;
     #1;
-    sb_bus_drvA[5] = 1'b0;
+    sb_bus_drv[5] = 1'b0;
     #1;
-    sb_bus_drvA[5] = 1'b1;
+    sb_bus_drv[5] = 1'b1;
     #1
     $display("LEB input 1 = %b (expected 1)", le_inB[1]);
     clear_signals();
@@ -190,11 +186,9 @@ module CB_tb;
     set_config_muxA(2, CONST_1);
     cram(config_dataA, config_dataB);
     #1;
-    sb_bus_enaA = {WIDTH{1'd1}};
-    sb_bus_enaB = {WIDTH{1'd1}};
+    sb_bus_ena = {WIDTH{1'd1}};
     #1
-    sb_bus_drvA = {WIDTH{1'd1}};
-    sb_bus_drvB = {WIDTH{1'd1}};
+    sb_bus_drv = {WIDTH{1'd1}};
     #1
     $display("LEA input 2 = %b (expected 1)", le_inA[2]);
     clear_signals();
@@ -207,11 +201,9 @@ module CB_tb;
     cram(config_dataA, config_dataB);
     #1;
     #1;
-    sb_bus_enaA = {WIDTH{1'd1}};
-    sb_bus_enaB = {WIDTH{1'd1}};
+    sb_bus_ena = {WIDTH{1'd1}};
     #1
-    sb_bus_drvA = {WIDTH{1'd1}};
-    sb_bus_drvB = {WIDTH{1'd1}};
+    sb_bus_drv = {WIDTH{1'd1}};
     #1;
     $display("LEB input 3 = %b (expected 0)", le_inB[3]);
     clear_signals();
@@ -228,14 +220,14 @@ module CB_tb;
     #1;
     le_outA[0] = 1'b1;
     #1;
-    $display("sb_busA[4] = %b (expected 1)", sb_busA[4]);
+    $display("sb_busA[4] = %b (expected 1)", sb_bus[4]);
     clear_signals();
     #1
 
     // === Test 4b: LEB output drives sb_busB[2] === //
     test_case = 4;
     sub_test = 2;
-    set_config_muxB(LE_INPUTS, WIDTH + 2); // LEB drives sb_busB[2]
+    set_config_muxB(LE_INPUTS, 2); // LEB drives sb_busB[2]
     cram(config_dataA, config_dataB);
     le_outB[0] = 1'b1;
     #1;
@@ -243,14 +235,14 @@ module CB_tb;
     #1
     le_outB[0] = 1'b1;
     #1
-    $display("sb_busB[3] = %b (expected 1)", sb_busB[3]);
+    $display("sb_busB[3] = %b (expected 1)", sb_bus[3]);
     clear_signals();
     #1
 
     // === Test 5: LEA output drives sb_busB[2] === //
     test_case = 5;
     sub_test = 1;
-    set_config_muxA(LE_INPUTS, WIDTH + 2); // LEB drives sb_busB[2]
+    set_config_muxA(LE_INPUTS, 2); // LEB drives sb_busB[2]
     cram(config_dataA, config_dataB);
     le_outA[0] = 1'b1;
     #1;
@@ -258,7 +250,7 @@ module CB_tb;
     #1
     le_outA[0] = 1'b1;
     #1
-    $display("sb_busB[2] = %b (expected 1)", sb_busB[2]);
+    $display("sb_busB[2] = %b (expected 1)", sb_bus[2]);
     clear_signals();
     #1
 
@@ -268,19 +260,19 @@ module CB_tb;
     set_config_muxA(0, 0); // sb_busA[0] drives le_inA[0]
     set_config_muxA(0,2); // sb_busA[2] drives le_inA[0]
     cram(config_dataA, config_dataB);
-    sb_bus_enaA[0] = 1'b1;
+    sb_bus_ena[0] = 1'b1;
     #1;
-    sb_bus_enaA[2] = 1'b1;
+    sb_bus_ena[2] = 1'b1;
     #1
-    sb_bus_drvA[0] = 1'b1;
+    sb_bus_drv[0] = 1'b1;
     #1
-    sb_bus_drvA[2] = 1'b1;
+    sb_bus_drv[2] = 1'b1;
     #1
-    sb_bus_drvA[0] = 1'b0;
+    sb_bus_drv[0] = 1'b0;
     #1
-    sb_bus_drvA[2] = 1'b0;
+    sb_bus_drv[2] = 1'b0;
     #1
-    $display("sb_busB[2] = %b (expected 1)", sb_busB[2]);
+    $display("sb_busB[2] = %b (expected 1)", sb_bus[2]);
     clear_signals();
     #1
 

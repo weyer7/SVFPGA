@@ -86,13 +86,13 @@ sim_%_src:
 syn_%: check_env
 	@echo -e "Synthesizing design...\n"
 	@mkdir -p $(MAP)
-	$(YOSYS) -d -p "read_verilog -sv -noblackbox $(SRC)/*; synth -top $*; dfflibmap -liberty $(LIBERTY); abc -liberty $(LIBERTY); clean; write_verilog -noattr -noexpr -nohex -nodec -defparam $(MAP)/$*.v" > $*.log
+	$(YOSYS) -d -p "read_verilog -sv -noblackbox $(SRC)/*; tribuf; synth -top $*; dfflibmap -liberty $(LIBERTY); abc -liberty $(LIBERTY); clean; write_verilog -noattr -noexpr -nohex -nodec -defparam $(MAP)/$*.v" > $*.log
 	@echo -e "\nSynthesis complete!\n"
 
 
 # Compile and simulate synthesized design
 .PHONY: sim_%_syn
-sim_%_syn: syn_%
+sim_%_syn:
 	@echo -e "Compiling synthesized design...\n"
 	@mkdir -p $(BUILD) && rm -rf $(BUILD)/*
 	@iverilog -g2012 -o $(BUILD)/$*_tb -DFUNCTIONAL -DUNIT_DELAY=#1 $(TB)/$*_tb.sv $(MAP)/$*.v $(VERILOG)

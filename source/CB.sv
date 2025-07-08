@@ -5,8 +5,8 @@ module CB #(
   parameter LE_INPUTS = 4
 )(
   input logic clk, en, nrst,
-  inout wire [WIDTH-1:0] sb_busA, //switchbox bus A
-  inout wire [WIDTH-1:0] sb_busB, //switchbox bus B
+  inout wire [WIDTH-1:0] sb_bus, //switchbox bus
+  // inout wire [WIDTH-1:0] sb_busB, //switchbox bus B
   input logic config_en,
   input logic config_data_inA, config_data_inB,
   input logic [LE_OUTPUTS - 1:0] le_outA, le_outB,
@@ -21,28 +21,28 @@ module CB #(
   // 2 SBs connected to each CB.
 
   // dual bank configuration data shift register
-  logic [($clog2(2 * WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1:0] config_dataA; //# of mux = # of LE I/O. log2(width * 2 + 2) for each mux's select
-  logic [($clog2(2 * WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1:0] config_dataB;
+  logic [($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1:0] config_dataA; //# of mux = # of LE I/O. log2(width * 2 + 2) for each mux's select
+  logic [($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1:0] config_dataB;
   always_ff @(posedge clk, negedge nrst) begin
     if (~nrst) begin
       config_dataA <= '1; //check if this is correct
       config_dataB <= '1; //check if this is correct
     end else if (en && config_en) begin
-      config_dataA <= {config_dataA[($clog2(2 * WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 2:0], config_data_inA};
-      config_dataB <= {config_dataB[($clog2(2 * WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 2:0], config_data_inB};
+      config_dataA <= {config_dataA[($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 2:0], config_data_inA};
+      config_dataB <= {config_dataB[($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 2:0], config_data_inB};
     end
   end
-  assign config_data_outA = config_dataA[($clog2(2 * WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1];
-  assign config_data_outB = config_dataB[($clog2(2 * WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1];
+  assign config_data_outA = config_dataA[($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1];
+  assign config_data_outB = config_dataB[($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 1];
 
-  localparam int SEL_BITS = $clog2(2 * WIDTH + 2);
+  localparam int SEL_BITS = $clog2(WIDTH + 2);
   localparam int TOTAL_MUX = LE_INPUTS + LE_OUTPUTS;
-  localparam int CONST_0 = 2 * WIDTH;
-  localparam int CONST_1 = 2 * WIDTH + 1;
+  localparam int CONST_0 = WIDTH;
+  localparam int CONST_1 = WIDTH + 1;
 
   logic [SEL_BITS-1:0] config_mux_selA [0:TOTAL_MUX-1], config_mux_selB [0:TOTAL_MUX-1];
   logic [LE_OUTPUTS * 2 - 1:0] le_out;
-  logic [LE_INPUTS * 2 - 1:0] le_sel;
+  // logic [LE_INPUTS * 2 - 1:0] le_sel;
 
   genvar i;
   generate
@@ -58,23 +58,23 @@ module CB #(
       assign le_out[2*i + 1] = le_outB[i];
     end
   endgenerate
-  logic [WIDTH * 2 - 1:0] sb_bus1;
-  logic [WIDTH * 2 - 1:0] sb_bus2;
-  assign sb_bus1 = {sb_busB, sb_busA};
-  assign {sb_busB, sb_busA} = sb_bus2;
+  // logic [WIDTH * 2 - 1:0] sb_bus1;
+  // logic [WIDTH * 2 - 1:0] sb_bus2;
+  // assign sb_bus1 = {sb_busB, sb_busA};
+  // assign {sb_busB, sb_busA} = sb_bus2;
   // logic [LE_INPUTS-1:0] le_inA, le_inB;
   generate
     for (i = 0; i < LE_INPUTS; i++) begin : input_mux
       always_comb begin
         if (config_en || !nrst) begin
-          le_inA[i] = 1'bz; //avoid driving LE if configuring
+          le_inA[i] = 1'b0; //avoid driving LE if configuring
         end else begin
           if (config_mux_selA[i] == SEL_BITS'(CONST_0)) begin
             le_inA[i] = 1'b0;
           end else if (config_mux_selA[i] == SEL_BITS'(CONST_1)) begin
             le_inA[i] = 1'b1;
-          end else if ((config_mux_selA[i]) < WIDTH * 2) begin
-            le_inA[i] = sb_bus1[config_mux_selA[i]]; //may need to rework bus muxing logic
+          end else if ((config_mux_selA[i]) < WIDTH) begin
+            le_inA[i] = sb_bus[config_mux_selA[i]]; //may need to rework bus muxing logic
           end else begin
             le_inA[i] = 0;
           end
@@ -82,22 +82,22 @@ module CB #(
       end
       always_comb begin
         if (config_en || !nrst) begin
-          le_inB[i] = 1'bz; //avoid driving LE if configuring
+          le_inB[i] = 1'b0; //avoid driving LE if configuring
         end else begin
           if (config_mux_selB[i] == SEL_BITS'(CONST_0)) begin
             le_inB[i] = 1'b0;
           end else if (config_mux_selB[i] == SEL_BITS'(CONST_1)) begin
             le_inB[i] = 1'b1;
-          end else if ((config_mux_selB[i]) < WIDTH * 2) begin
-            le_inB[i] = sb_bus1[config_mux_selB[i]]; //may need to rework bus muxing logic
+          end else if ((config_mux_selB[i]) < WIDTH) begin
+            le_inB[i] = sb_bus[config_mux_selB[i]]; //may need to rework bus muxing logic
           end else begin
             le_inB[i] = 0;
           end
         end
       end
 
-      assign le_sel[i*2 + 0] = le_inA[i];
-      assign le_sel[i*2 + 1] = le_inB[i];
+      // assign le_sel[i] = le_inA[i];
+      // assign le_sel[i] = le_inB[i];
     end
   endgenerate
 
@@ -113,12 +113,12 @@ module CB #(
       // end
 
       genvar j;
-      for (j = 0; j < WIDTH * 2; j++) begin : bus_drive
-        assign sb_bus2[j] = (!config_en && nrst) ? (
+      for (j = 0; j < WIDTH; j++) begin : bus_drive
+        assign sb_bus[j] = (!config_en && nrst) ? (
           (selA == SEL_BITS'(j)) ? le_out[i*2 + 0] :
           (selB == SEL_BITS'(j)) ? le_out[i*2 + 1] :
           1'bz
-          ) : 1'bz;
+          ) : 1'b0;
       end
     end
   endgenerate

@@ -1,20 +1,20 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Fri Jul  4 16:35:44 2025
+[*] Tue Jul  8 00:40:05 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/CB.vcd"
-[dumpfile_mtime] "Fri Jul  4 16:33:01 2025"
-[dumpfile_size] 22326
+[dumpfile_mtime] "Tue Jul  8 00:39:57 2025"
+[dumpfile_size] 17712
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/CB.gtkw"
-[timestart] 19590000
-[size] 923 948
+[timestart] 0
+[size] 1728 958
 [pos] -1 -1
-*-23.958754 32250000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-23.328060 12740000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] CB_tb.
 [sst_width] 215
 [signals_width] 184
 [sst_expanded] 1
-[sst_vpaned_height] 278
+[sst_vpaned_height] 282
 @200
 -CRAM signals
 @28
@@ -42,9 +42,7 @@ CB_tb.le_outB
 CB_tb.le_inA[3:0]
 @28
 (0)CB_tb.le_inA[3:0]
-@29
 (1)CB_tb.le_inA[3:0]
-@28
 (2)CB_tb.le_inA[3:0]
 (3)CB_tb.le_inA[3:0]
 @1001200
@@ -60,63 +58,18 @@ CB_tb.le_inB[3:0]
 -group_end
 @200
 -CB inouts
-@800022
-CB_tb.sb_busA[7:0]
-@28
-(0)CB_tb.sb_busA[7:0]
-(1)CB_tb.sb_busA[7:0]
-(2)CB_tb.sb_busA[7:0]
-(3)CB_tb.sb_busA[7:0]
-(4)CB_tb.sb_busA[7:0]
-(5)CB_tb.sb_busA[7:0]
-(6)CB_tb.sb_busA[7:0]
-(7)CB_tb.sb_busA[7:0]
-@1001200
+@800023
+CB_tb.sb_bus[7:0]
+@29
+(0)CB_tb.sb_bus[7:0]
+(1)CB_tb.sb_bus[7:0]
+(2)CB_tb.sb_bus[7:0]
+(3)CB_tb.sb_bus[7:0]
+(4)CB_tb.sb_bus[7:0]
+(5)CB_tb.sb_bus[7:0]
+(6)CB_tb.sb_bus[7:0]
+(7)CB_tb.sb_bus[7:0]
+@1001201
 -group_end
-@800022
-CB_tb.sb_busB[7:0]
-@28
-(0)CB_tb.sb_busB[7:0]
-(1)CB_tb.sb_busB[7:0]
-(2)CB_tb.sb_busB[7:0]
-(3)CB_tb.sb_busB[7:0]
-(4)CB_tb.sb_busB[7:0]
-(5)CB_tb.sb_busB[7:0]
-(6)CB_tb.sb_busB[7:0]
-(7)CB_tb.sb_busB[7:0]
-@1001200
--group_end
-@200
--CB inout controls
-@c00022
-CB_tb.sb_bus_drvA[7:0]
-@28
-(0)CB_tb.sb_bus_drvA[7:0]
-(1)CB_tb.sb_bus_drvA[7:0]
-(2)CB_tb.sb_bus_drvA[7:0]
-(3)CB_tb.sb_bus_drvA[7:0]
-(4)CB_tb.sb_bus_drvA[7:0]
-(5)CB_tb.sb_bus_drvA[7:0]
-(6)CB_tb.sb_bus_drvA[7:0]
-(7)CB_tb.sb_bus_drvA[7:0]
-@1401200
--group_end
-@22
-CB_tb.sb_bus_drvB[7:0]
-@c00022
-CB_tb.sb_bus_enaA[7:0]
-@28
-(0)CB_tb.sb_bus_enaA[7:0]
-(1)CB_tb.sb_bus_enaA[7:0]
-(2)CB_tb.sb_bus_enaA[7:0]
-(3)CB_tb.sb_bus_enaA[7:0]
-(4)CB_tb.sb_bus_enaA[7:0]
-(5)CB_tb.sb_bus_enaA[7:0]
-(6)CB_tb.sb_bus_enaA[7:0]
-(7)CB_tb.sb_bus_enaA[7:0]
-@1401200
--group_end
-@22
-CB_tb.sb_bus_enaB[7:0]
 [pattern_trace] 1
 [pattern_trace] 0
