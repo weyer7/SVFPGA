@@ -1,0 +1,22 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Tue Jul  8 02:40:28 2025
+[*]
+[dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/tbuf.vcd"
+[dumpfile_mtime] "Tue Jul  8 02:40:07 2025"
+[dumpfile_size] 555
+[savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/tbuf.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*-20.209103 1387000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 215
+[signals_width] 78
+[sst_expanded] 1
+[sst_vpaned_height] 155
+@28
+tbuf_tb.a
+tbuf_tb.b
+tbuf_tb.f
+[pattern_trace] 1
+[pattern_trace] 0
