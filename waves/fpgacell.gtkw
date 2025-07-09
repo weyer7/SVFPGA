@@ -1,19 +1,19 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Tue Jul  8 00:40:56 2025
+[*] Wed Jul  9 17:12:23 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpgacell.vcd"
-[dumpfile_mtime] "Tue Jul  8 00:40:15 2025"
-[dumpfile_size] 994306
+[dumpfile_mtime] "Wed Jul  9 17:08:24 2025"
+[dumpfile_size] 968672
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpgacell.gtkw"
 [timestart] 0
-[size] 1728 958
+[size] 1850 1016
 [pos] 1989 26
-*-24.965078 25800000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-14.962045 7900 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] fpgacell_tb.
 [treeopen] fpgacell_tb.dut.
 [sst_width] 233
-[signals_width] 165
+[signals_width] 166
 [sst_expanded] 1
 [sst_vpaned_height] 305
 @200
@@ -38,69 +38,67 @@ fpgacell_tb.dut.le_en
 fpgacell_tb.dut.le_nrst
 @200
 -cell inouts
-@22
-fpgacell_tb.CBeast[15:0]
 @c00023
-fpgacell_tb.CBnorth[15:0]
+fpgacell_tb.SBsouth_in[15:0]
 @28
-(0)fpgacell_tb.CBnorth[15:0]
-(1)fpgacell_tb.CBnorth[15:0]
-(2)fpgacell_tb.CBnorth[15:0]
-(3)fpgacell_tb.CBnorth[15:0]
-(4)fpgacell_tb.CBnorth[15:0]
-(5)fpgacell_tb.CBnorth[15:0]
-(6)fpgacell_tb.CBnorth[15:0]
-(7)fpgacell_tb.CBnorth[15:0]
-(8)fpgacell_tb.CBnorth[15:0]
-(9)fpgacell_tb.CBnorth[15:0]
-(10)fpgacell_tb.CBnorth[15:0]
-(11)fpgacell_tb.CBnorth[15:0]
-(12)fpgacell_tb.CBnorth[15:0]
-(13)fpgacell_tb.CBnorth[15:0]
-(14)fpgacell_tb.CBnorth[15:0]
-(15)fpgacell_tb.CBnorth[15:0]
+(0)fpgacell_tb.SBsouth_in[15:0]
+(1)fpgacell_tb.SBsouth_in[15:0]
+(2)fpgacell_tb.SBsouth_in[15:0]
+(3)fpgacell_tb.SBsouth_in[15:0]
+(4)fpgacell_tb.SBsouth_in[15:0]
+(5)fpgacell_tb.SBsouth_in[15:0]
+(6)fpgacell_tb.SBsouth_in[15:0]
+(7)fpgacell_tb.SBsouth_in[15:0]
+(8)fpgacell_tb.SBsouth_in[15:0]
+(9)fpgacell_tb.SBsouth_in[15:0]
+(10)fpgacell_tb.SBsouth_in[15:0]
+(11)fpgacell_tb.SBsouth_in[15:0]
+(12)fpgacell_tb.SBsouth_in[15:0]
+(13)fpgacell_tb.SBsouth_in[15:0]
+(14)fpgacell_tb.SBsouth_in[15:0]
+(15)fpgacell_tb.SBsouth_in[15:0]
 @1401201
 -group_end
 @800022
-fpgacell_tb.SBsouth[15:0]
+fpgacell_tb.SBsouth_out[15:0]
 @28
-(0)fpgacell_tb.SBsouth[15:0]
-(1)fpgacell_tb.SBsouth[15:0]
-(2)fpgacell_tb.SBsouth[15:0]
-(3)fpgacell_tb.SBsouth[15:0]
-(4)fpgacell_tb.SBsouth[15:0]
-(5)fpgacell_tb.SBsouth[15:0]
-(6)fpgacell_tb.SBsouth[15:0]
-(7)fpgacell_tb.SBsouth[15:0]
-(8)fpgacell_tb.SBsouth[15:0]
-(9)fpgacell_tb.SBsouth[15:0]
-(10)fpgacell_tb.SBsouth[15:0]
-(11)fpgacell_tb.SBsouth[15:0]
-(12)fpgacell_tb.SBsouth[15:0]
-(13)fpgacell_tb.SBsouth[15:0]
-(14)fpgacell_tb.SBsouth[15:0]
-(15)fpgacell_tb.SBsouth[15:0]
+(0)fpgacell_tb.SBsouth_out[15:0]
+(1)fpgacell_tb.SBsouth_out[15:0]
+(2)fpgacell_tb.SBsouth_out[15:0]
+(3)fpgacell_tb.SBsouth_out[15:0]
+(4)fpgacell_tb.SBsouth_out[15:0]
+(5)fpgacell_tb.SBsouth_out[15:0]
+(6)fpgacell_tb.SBsouth_out[15:0]
+(7)fpgacell_tb.SBsouth_out[15:0]
+(8)fpgacell_tb.SBsouth_out[15:0]
+(9)fpgacell_tb.SBsouth_out[15:0]
+(10)fpgacell_tb.SBsouth_out[15:0]
+(11)fpgacell_tb.SBsouth_out[15:0]
+(12)fpgacell_tb.SBsouth_out[15:0]
+(13)fpgacell_tb.SBsouth_out[15:0]
+(14)fpgacell_tb.SBsouth_out[15:0]
+(15)fpgacell_tb.SBsouth_out[15:0]
 @1001200
 -group_end
 @c00022
-fpgacell_tb.SBwest[15:0]
+fpgacell_tb.dut.SB0.north_in[15:0]
 @28
-(0)fpgacell_tb.SBwest[15:0]
-(1)fpgacell_tb.SBwest[15:0]
-(2)fpgacell_tb.SBwest[15:0]
-(3)fpgacell_tb.SBwest[15:0]
-(4)fpgacell_tb.SBwest[15:0]
-(5)fpgacell_tb.SBwest[15:0]
-(6)fpgacell_tb.SBwest[15:0]
-(7)fpgacell_tb.SBwest[15:0]
-(8)fpgacell_tb.SBwest[15:0]
-(9)fpgacell_tb.SBwest[15:0]
-(10)fpgacell_tb.SBwest[15:0]
-(11)fpgacell_tb.SBwest[15:0]
-(12)fpgacell_tb.SBwest[15:0]
-(13)fpgacell_tb.SBwest[15:0]
-(14)fpgacell_tb.SBwest[15:0]
-(15)fpgacell_tb.SBwest[15:0]
+(0)fpgacell_tb.dut.SB0.north_in[15:0]
+(1)fpgacell_tb.dut.SB0.north_in[15:0]
+(2)fpgacell_tb.dut.SB0.north_in[15:0]
+(3)fpgacell_tb.dut.SB0.north_in[15:0]
+(4)fpgacell_tb.dut.SB0.north_in[15:0]
+(5)fpgacell_tb.dut.SB0.north_in[15:0]
+(6)fpgacell_tb.dut.SB0.north_in[15:0]
+(7)fpgacell_tb.dut.SB0.north_in[15:0]
+(8)fpgacell_tb.dut.SB0.north_in[15:0]
+(9)fpgacell_tb.dut.SB0.north_in[15:0]
+(10)fpgacell_tb.dut.SB0.north_in[15:0]
+(11)fpgacell_tb.dut.SB0.north_in[15:0]
+(12)fpgacell_tb.dut.SB0.north_in[15:0]
+(13)fpgacell_tb.dut.SB0.north_in[15:0]
+(14)fpgacell_tb.dut.SB0.north_in[15:0]
+(15)fpgacell_tb.dut.SB0.north_in[15:0]
 @1401200
 -group_end
 [pattern_trace] 1

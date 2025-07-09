@@ -5,15 +5,14 @@ module CB #(
   parameter LE_INPUTS = 4
 )(
   input logic clk, en, nrst,
-  inout wire [WIDTH-1:0] sb_bus, //switchbox bus
-  // inout wire [WIDTH-1:0] sb_busB, //switchbox bus B
+  // inout wire [WIDTH-1:0] sb_bus, //switchbox bus
+  input logic [WIDTH - 1:0] sb_bus_in, 
+  output logic [WIDTH - 1:0] sb_bus_out, //switch to discreet inputs and outputs
   input logic config_en,
   input logic config_data_inA, config_data_inB,
   input logic [LE_OUTPUTS - 1:0] le_outA, le_outB,
   output logic config_data_outA, config_data_outB,
   output logic [LE_INPUTS - 1:0] le_inA, le_inB
-  // input logic [LE_OUTPUTS * 2 - 1:0] le_out,
-  // output logic [LE_INPUTS * 2 - 1:0] le_sel
 );
   // The connection box (CB) of an FPGA connects each Logic Element (LE)
   // to a switch box (SB) bus. It can also tie LE inputs to a constant 
@@ -74,7 +73,7 @@ module CB #(
           end else if (config_mux_selA[i] == SEL_BITS'(CONST_1)) begin
             le_inA[i] = 1'b1;
           end else if ((config_mux_selA[i]) < WIDTH) begin
-            le_inA[i] = sb_bus[config_mux_selA[i]]; //may need to rework bus muxing logic
+            le_inA[i] = sb_bus_in[config_mux_selA[i]]; //may need to rework bus muxing logic
           end else begin
             le_inA[i] = 0;
           end
@@ -89,7 +88,7 @@ module CB #(
           end else if (config_mux_selB[i] == SEL_BITS'(CONST_1)) begin
             le_inB[i] = 1'b1;
           end else if ((config_mux_selB[i]) < WIDTH) begin
-            le_inB[i] = sb_bus[config_mux_selB[i]]; //may need to rework bus muxing logic
+            le_inB[i] = sb_bus_in[config_mux_selB[i]]; //may need to rework bus muxing logic
           end else begin
             le_inB[i] = 0;
           end
@@ -114,10 +113,10 @@ module CB #(
 
       genvar j;
       for (j = 0; j < WIDTH; j++) begin : bus_drive
-        assign sb_bus[j] = (!config_en && nrst) ? (
+        assign sb_bus_out[j] = (!config_en && nrst) ? (
           (selA == SEL_BITS'(j)) ? le_out[i*2 + 0] :
           (selB == SEL_BITS'(j)) ? le_out[i*2 + 1] :
-          1'bz
+          1'b0 //removed tristate
           ) : 1'b0;
       end
     end

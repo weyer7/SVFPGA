@@ -3,10 +3,23 @@
 module SB #(
   parameter int WIDTH = 32
 )(
-  inout wire [WIDTH-1:0] north,
-  inout wire [WIDTH-1:0] east,
-  inout wire [WIDTH-1:0] south,
-  inout wire [WIDTH-1:0] west,
+  // inout wire [WIDTH-1:0] north,
+  // inout wire [WIDTH-1:0] east,
+  // inout wire [WIDTH-1:0] south,
+  // inout wire [WIDTH-1:0] west,
+
+  //removed tristate
+  input wire [WIDTH - 1:0] north_in,
+  output wire [WIDTH - 1:0] north_out,
+
+  input wire [WIDTH - 1:0] east_in,
+  output wire [WIDTH - 1:0] east_out,
+
+  input wire [WIDTH - 1:0] south_in,
+  output wire [WIDTH - 1:0] south_out,
+
+  input wire [WIDTH - 1:0] west_in,
+  output wire [WIDTH - 1:0] west_out,
 
   // input logic [WIDTH-1:0][3:0][1:0] route_sel  // [wire][input_dir][2-bit turn]
   input logic clk, en, nrst,
@@ -57,39 +70,39 @@ module SB #(
 
       // Determine who is driving the bus. Priority logic avoids contention
       assign wire_bus[i] = 
-          (route_sel[i][DIR_N] != 2'b11) ? north[i] :
-          (route_sel[i][DIR_E] != 2'b11) ? east[i]  :
-          (route_sel[i][DIR_S] != 2'b11) ? south[i] :
-          (route_sel[i][DIR_W] != 2'b11) ? west[i]  : 1'b0;
+          (route_sel[i][DIR_N] != 2'b11) ? north_in[i] :
+          (route_sel[i][DIR_E] != 2'b11) ? east_in[i]  :
+          (route_sel[i][DIR_S] != 2'b11) ? south_in[i] :
+          (route_sel[i][DIR_W] != 2'b11) ? west_in[i]  : 1'b0;
 
       // Output logic with updated 2'b11 handling (connects to wire_bus instead of disconnecting)
-      assign north[i] = !config_en ? (
+      assign north_out[i] = !config_en ? (
           (rot_dir(DIR_E, route_sel[i][DIR_E]) == DIR_N && route_sel[i][DIR_E] != 2'b11) ||
           (rot_dir(DIR_S, route_sel[i][DIR_S]) == DIR_N && route_sel[i][DIR_S] != 2'b11) ||
           (rot_dir(DIR_W, route_sel[i][DIR_W]) == DIR_N && route_sel[i][DIR_W] != 2'b11) ||
           (route_sel[i][DIR_N] == 2'b11)
-        ) ? wire_bus[i] : 1'bz : 1'b0;
+        ) ? wire_bus[i] : 1'b0 : 1'b0;
       
-      assign east[i] = !config_en ? (
+      assign east_out[i] = !config_en ? (
           (rot_dir(DIR_N, route_sel[i][DIR_N]) == DIR_E && route_sel[i][DIR_N] != 2'b11) ||
           (rot_dir(DIR_S, route_sel[i][DIR_S]) == DIR_E && route_sel[i][DIR_S] != 2'b11) ||
           (rot_dir(DIR_W, route_sel[i][DIR_W]) == DIR_E && route_sel[i][DIR_W] != 2'b11) ||
           (route_sel[i][DIR_E] == 2'b11)
-        ) ? wire_bus[i] : 1'bz : 1'b0;
+        ) ? wire_bus[i] : 1'b0 : 1'b0;
       
-      assign south[i] = !config_en ? (
+      assign south_out[i] = !config_en ? (
           (rot_dir(DIR_N, route_sel[i][DIR_N]) == DIR_S && route_sel[i][DIR_N] != 2'b11) ||
           (rot_dir(DIR_E, route_sel[i][DIR_E]) == DIR_S && route_sel[i][DIR_E] != 2'b11) ||
           (rot_dir(DIR_W, route_sel[i][DIR_W]) == DIR_S && route_sel[i][DIR_W] != 2'b11) ||
           (route_sel[i][DIR_S] == 2'b11)
-        ) ? wire_bus[i] : 1'bz : 1'b0;
+        ) ? wire_bus[i] : 1'b0 : 1'b0;
       
-      assign west[i] = !config_en ? (
+      assign west_out[i] = !config_en ? (
           (rot_dir(DIR_N, route_sel[i][DIR_N]) == DIR_W && route_sel[i][DIR_N] != 2'b11) ||
           (rot_dir(DIR_E, route_sel[i][DIR_E]) == DIR_W && route_sel[i][DIR_E] != 2'b11) ||
           (rot_dir(DIR_S, route_sel[i][DIR_S]) == DIR_W && route_sel[i][DIR_S] != 2'b11) ||
           (route_sel[i][DIR_W] == 2'b11)
-        ) ? wire_bus[i] : 1'bz : 1'b0;
+        ) ? wire_bus[i] : 1'b0 : 1'b0;
       
     end
   endgenerate

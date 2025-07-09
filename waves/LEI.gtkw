@@ -1,0 +1,49 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Wed Jul  9 20:00:06 2025
+[*]
+[dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/LEI.vcd"
+[dumpfile_mtime] "Wed Jul  9 19:59:22 2025"
+[dumpfile_size] 3476
+[savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/LEI.gtkw"
+[timestart] 0
+[size] 1850 1016
+[pos] 1939 0
+*-22.214859 11990000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 233
+[signals_width] 126
+[sst_expanded] 1
+[sst_vpaned_height] 289
+@22
+LEI_tb.drvLE0A[3:0]
+LEI_tb.drvLE0B[3:0]
+LEI_tb.drvLE1A[3:0]
+@c00022
+LEI_tb.drvLE1B[3:0]
+@28
+(0)LEI_tb.drvLE1B[3:0]
+(1)LEI_tb.drvLE1B[3:0]
+(2)LEI_tb.drvLE1B[3:0]
+(3)LEI_tb.drvLE1B[3:0]
+@1401200
+-group_end
+@800023
+LEI_tb.lein0A[3:0]
+@29
+(0)LEI_tb.lein0A[3:0]
+(1)LEI_tb.lein0A[3:0]
+(2)LEI_tb.lein0A[3:0]
+(3)LEI_tb.lein0A[3:0]
+@1001201
+-group_end
+@22
+LEI_tb.lein0B[3:0]
+LEI_tb.lein1A[3:0]
+LEI_tb.lein1B[3:0]
+@28
+LEI_tb.leout0A
+LEI_tb.leout0B
+LEI_tb.leout1A
+LEI_tb.leout1B
+[pattern_trace] 1
+[pattern_trace] 0
