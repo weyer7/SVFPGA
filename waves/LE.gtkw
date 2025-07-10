@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Thu Jul  3 20:55:50 2025
+[*] Thu Jul 10 03:29:53 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/LE.vcd"
-[dumpfile_mtime] "Thu Jul  3 20:53:19 2025"
-[dumpfile_size] 6717
+[dumpfile_mtime] "Thu Jul 10 03:28:50 2025"
+[dumpfile_size] 13282
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/LE.gtkw"
 [timestart] 0
 [size] 1728 958
 [pos] -1 -1
-*-24.721275 22600000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-24.535275 31400000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] LE_tb.
 [sst_width] 215
 [signals_width] 166
@@ -33,7 +33,9 @@ LE_tb.le_clk
 LE_tb.le_en
 LE_tb.le_nrst
 @22
-LE_tb.select[3:0]
+LE_tb.selCB[3:0]
+LE_tb.selLEI[3:0]
+LE_tb.LEIdvn[3:0]
 @200
 -LUT data
 @c00022
@@ -56,6 +58,15 @@ LE_tb.dut.mux_data[15:0]
 (14)LE_tb.dut.mux_data[15:0]
 (15)LE_tb.dut.mux_data[15:0]
 @1401200
+-group_end
+@800023
+LE_tb.dut.select[3:0]
+@29
+(0)LE_tb.dut.select[3:0]
+(1)LE_tb.dut.select[3:0]
+(2)LE_tb.dut.select[3:0]
+(3)LE_tb.dut.select[3:0]
+@1001201
 -group_end
 @200
 -LE outputs

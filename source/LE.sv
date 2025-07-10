@@ -3,12 +3,13 @@ module LE #(
   parameter
     LUT_SIZE = 16 //number of look up table values
 )(
+  //CRAM signals
   input logic clk, en, nrst,
-  input logic le_clk, le_en, le_nrst,
-  input logic [$clog2(LUT_SIZE) - 1:0] select, //select lines of the LE's LUT
-  // input logic [(LUT_SIZE + 1) - 1:0] config_data, //LUT data + operation mode
   input logic config_data_in, config_en,
   output logic config_data_out,
+
+  input logic le_clk, le_en, le_nrst,
+  input logic [$clog2(LUT_SIZE) - 1:0] selCB, selLEI, LEIdvn, //select lines of the LE's LUT
   output logic le_out
 );
 // The logic element, or LE of an FPGA is what defines the FPGA's behavior.
@@ -46,7 +47,13 @@ end
 //multiplexer
 logic mux_out;
 logic [LUT_SIZE - 1:0]mux_data;
+logic [$clog2(LUT_SIZE) - 1:0] select;
 assign mux_data = config_data[(LUT_SIZE + 1) - 2:0];
+always_comb begin
+  for (int i = 0; i < $clog2(LUT_SIZE); i ++) begin
+    select[i] = LEIdvn[i] ? selLEI[i] : selCB[i];
+  end
+end
 assign mux_out = mux_data[select];
 
 //mode multiplexer
