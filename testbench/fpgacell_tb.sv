@@ -1,6 +1,7 @@
 `default_nettype none
-`timescale 1us/10ns
+`timescale 1us/1ps
 module fpgacell_tb;
+  //make sure to update parameters inside DUT if simming from syn
   parameter BUS_WIDTH = 16;
   parameter LE_INPUTS = 4;
   parameter LE_OUTPUTS = 1;
@@ -418,7 +419,7 @@ module fpgacell_tb;
     for (int i = 0; i < 8; i ++) begin
       SBsouth_in[2:0] = i[2:0];
       #1;
-      if (SBsouth_out[2] + SBsouth_out[1] + SBsouth_out[0] != SBsouth_in[4:3]) begin
+      if (SBsouth_in[2] + SBsouth_in[1] + SBsouth_in[0] != SBsouth_out[4:3]) begin
         $display("Test %d .%d :%d FAIL", test_case[4:0], sub_test[4:0], i[4:0]);
         error = 1;
       end
