@@ -89,17 +89,23 @@ sim_%_src:
 
 
 # Run synthesis on Design
-.PHONY: syn_%
-syn_%: check_env sv2v_%
+.PHONY: synv_%
+synv_%: check_env sv2v_%
 	@echo -e "Synthesizing design...\n"
 	@mkdir -p $(MAP)
 	$(YOSYS) -d -p "read_verilog -sv -noblackbox $(BUILD)/converted/*; tribuf; synth -top $*; dfflibmap -liberty $(LIBERTY); abc -liberty $(LIBERTY); clean; write_verilog -noattr -noexpr -nohex -nodec -defparam $(MAP)/$*.v" > $*.log
 	@echo -e "\nSynthesis complete!\n"
 
+.PHONY: syn_%
+syn_%: check_env
+	@echo -e "Synthesizing design...\n"
+	@mkdir -p $(MAP)
+	$(YOSYS) -d -p "read_verilog -sv -noblackbox $(SRC)/*; tribuf; synth -top $*; dfflibmap -liberty $(LIBERTY); abc -liberty $(LIBERTY); clean; write_verilog -noattr -noexpr -nohex -nodec -defparam $(MAP)/$*.v" > $*.log
+	@echo -e "\nSynthesis complete!\n"
 
 # Compile and simulate synthesized design
-.PHONY: sim_%_syn
-sim_%_syn: syn_%
+.PHONY: sim_%_synv
+sim_%_synv: synv_%
 	@echo -e "Compiling synthesized design...\n"
 	# @mkdir -p $(BUILD) && rm -rf $(BUILD)/*
 	@iverilog -g2012 -o $(BUILD)/$*_tb -DFUNCTIONAL -DUNIT_DELAY=#1 $(BUILD)/converted/tb/$*_tb.v $(MAP)/$*.v $(VERILOG)
@@ -114,6 +120,22 @@ sim_%_syn: syn_%
 		gtkwave waves/$*.vcd; \
 	fi
 
+# Compile and simulate synthesized design
+.PHONY: sim_%_syn
+sim_%_syn: syn_%
+	@echo -e "Compiling synthesized design...\n"
+	# @mkdir -p $(BUILD) && rm -rf $(BUILD)/*
+	@iverilog -g2012 -o $(BUILD)/$*_tb -DFUNCTIONAL -DUNIT_DELAY=#1 $(TB)/$*_tb.sv $(MAP)/$*.v $(VERILOG)
+	@echo -e "\nCompilation complete!\n"
+	@echo -e "Simulating synthesized design...\n\n"
+	@vvp -l vvp_sim.log $(BUILD)/$*_tb
+	@echo -e "\nSimulation complete!\n"
+	@echo -e "\nOpening waveforms...\n"
+	@if [ -f waves/$*.gtkw ]; then \
+		gtkwave waves/$*.gtkw; \
+	else \
+		gtkwave waves/$*.vcd; \
+	fi
 
 # Lint Design Only
 .PHONY: vlint_%
