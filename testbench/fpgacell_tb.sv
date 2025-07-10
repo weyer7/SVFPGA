@@ -7,8 +7,8 @@ module fpgacell_tb;
   parameter LE_LUT_SIZE = 16;
 
   localparam SEL_BITS  = $clog2(BUS_WIDTH + 2);
-  //                     [  Switch Box ]   [             Connection Box              ]   [   Logic Element   ]
-  localparam CFG_BITS = ((BUS_WIDTH*4*2) + (4 * ((LE_INPUTS + LE_OUTPUTS) * SEL_BITS)) + 4 * (LE_LUT_SIZE + 1));
+  //                     [  Switch Box ]   [             Connection Box              ]   [ LE Interconnect ]     [   Logic Element   ]
+  localparam CFG_BITS = ((BUS_WIDTH*4*2) + (4 * ((LE_INPUTS + LE_OUTPUTS) * SEL_BITS)) + (LE_INPUTS * 4 * 3) + 4 * (LE_LUT_SIZE + 1));
  
   // ========TOP-LEVEL IO==========//
   //CRAM signals                   
@@ -47,6 +47,20 @@ module fpgacell_tb;
       end
     end
   endtask
+
+  logic [2:0] lei_dataup [LE_INPUTS - 1:0] [3:0];
+
+  task automatic flatten_lei_data();
+  //   input  logic [2:0] config_data [LE_INPUTS - 1:0][3:0],
+  //   output logic [LE_INPUTS * 4 * 3 - 1:0] config_packed
+  // );
+    lei_config = '0;
+    for (int j = 0; j < LE_INPUTS; j++) begin
+      for (int i = 0; i < 4; i++) begin
+        lei_config[(j * 4 + i) * 3 +: 3] = lei_dataup[j][i];
+      end
+    end
+  endtask
   //route_sel_unpacked[index][bus] = [direction]
   //bus: north = 0, east = 1, south = 2, west = 3
   //index: from WIDTH-1 to 0 for each direction
@@ -68,8 +82,12 @@ module fpgacell_tb;
   // endgenerate
 
   logic [((LE_INPUTS + LE_OUTPUTS) * SEL_BITS) - 1:0] config_data0A, config_data0B, config_data1A, config_data1B;
+  logic [(LE_INPUTS * 4 * 3) - 1:0] lei_config;
   logic mode1A, mode0A, mode1B, mode0B;
   logic [LE_LUT_SIZE - 1:0] lut_data1A, lut_data0A, lut_data1B, lut_data0B;
+
+  logic [CFG_BITS - 1:0] cram_data;
+  assign cram_data = {route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, lei_config, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}};
 
   // Helper tasks for configuring each LE
   task automatic set_config_mux0A(input int mux_index, input int sel);
@@ -149,6 +167,11 @@ module fpgacell_tb;
       end
       {mode1A, mode0A, mode1B, mode0B} = 0;
       {lut_data1A, lut_data0A, lut_data1B, lut_data0B} = 0;
+      for (int i = 0; i < LE_INPUTS; i ++) begin
+        for (int j = 0; j < 4; j ++) begin
+          lei_dataup[i][j] = 3'd7;
+        end
+      end
     end
   endtask
 
@@ -215,7 +238,8 @@ module fpgacell_tb;
 
     //CRAM
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
+    flatten_lei_data();
+    cram(cram_data);
     // #5;
 
     sub_test = 2; //2-input operation with rest unspecified
@@ -236,8 +260,9 @@ module fpgacell_tb;
     //other signals don't need to be updated
 
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
-    
+    flatten_lei_data();
+    cram(cram_data);
+
     // south_ena[3] = 1;
     sub_test = 4;//3-input operation with rest unspecified
     for (int i = 0; i < 8; i ++) begin
@@ -269,7 +294,8 @@ module fpgacell_tb;
 
     //first connect le_out(Q) to le_in[0] and this to a top-level switchbox output
     set_config_mux0A(LE_INPUTS, 0); //le_out to CB0A bus[0]
-    set_config_mux0A(0, 0); //le_in[0] to CB0A bus[0]
+    // set_config_mux0A(0, 0); //le_in[0] to CB0A bus[0]
+    lei_dataup[0][0] = 0;
     route_sel_unpacked[0][0] = 2'd1; //north[0] straight to SBsout[0]
 
     //then, connect K to a top-level switchbox input
@@ -283,7 +309,8 @@ module fpgacell_tb;
 
     //now, CRAM
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
+    flatten_lei_data();
+    cram(cram_data);
 
     sub_test = 2; //logic element nrst
     le_nrst = 0;
@@ -361,8 +388,8 @@ module fpgacell_tb;
     mode0B = 0;
 
     //now, configure LE inputs
-    set_config_mux0A(0,0); //connect LE_s input 0 to busA[0]
-    set_config_mux0B(0,0);   //connect LE_n input 0 to busA[0]
+    set_config_mux0A(0,0); //connect LE0A input 0 to busA[0]
+    set_config_mux0B(0,0);   //connect LE0B input 0 to busA[0]
 
     set_config_mux0A(1,1);
     set_config_mux0B(1,1);
@@ -383,7 +410,8 @@ module fpgacell_tb;
 
     //CRAM
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
+    flatten_lei_data();
+    cram(cram_data);
 
     sub_test = 2;
     // south_ena[2:0] = '1;
@@ -429,7 +457,7 @@ module fpgacell_tb;
     route_sel_unpacked[4][2] = 2'd1;
 
     set_config_mux0A(LE_INPUTS, 6); //s0
-    set_config_mux0B(LE_INPUTS, 5); //cout0
+    // set_config_mux0B(LE_INPUTS, 5); //cout0
 
     route_sel_unpacked[6][0] = 2'd1; //connect outputs to SB south
     // route_sel_unpacked[5][0] = 2'd1; //don't need; internal signal only
@@ -442,8 +470,10 @@ module fpgacell_tb;
     lut_data1B = 16'b11101000_11101000; //cout2;
 
     //now, configure the inputs to the second full adder
-    set_config_mux1A(0,5); //connect Cin to busA[5]
-    set_config_mux1B(0,5);
+    // set_config_mux1A(0,5); //connect Cin to busA[5]
+    // set_config_mux1B(0,5);
+    lei_dataup[0][2] = 3'd1;
+    lei_dataup[0][3] = 3'd1;
     route_sel_unpacked[5][0] = 2'd2; //Cout from fa1 turns left into Cin of fa2
 
     set_config_mux1A(1,1); //A1
@@ -461,7 +491,8 @@ module fpgacell_tb;
     route_sel_unpacked[8][1] = 2'd2;
 
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
+    flatten_lei_data();
+    cram(cram_data);
     sub_test = 4;
 
     // south_ena = '0;
@@ -503,12 +534,13 @@ module fpgacell_tb;
     */
     lut_data0A = 16'b01_01_01_01_01_01_01_01; //repeat 8 times to ignore MSBs
     mode0A = 1; //registered
-    set_config_mux0A(0, 0);
+    // set_config_mux0A(0, 0);
+    lei_dataup[0][0] = 0;
     set_config_mux0A(1, CONST_0);
     set_config_mux0A(2, CONST_0);
     set_config_mux0A(3, CONST_0);
     route_sel_unpacked[0][0] = 2'd1; //straight to south
-    set_config_mux0A(LE_INPUTS, 0); //connect back into itself
+    set_config_mux0A(LE_INPUTS, 0);
     /*
     Q1_n = Q1 ^ Q0
 
@@ -520,8 +552,10 @@ module fpgacell_tb;
     */
     lut_data0B = 16'b0110_0110_0110_0110; //repeated to ignore MSBs
     mode0B = 1; //registered
-    set_config_mux0B(0, 0);
-    set_config_mux0B(1, 1);
+    // set_config_mux0B(0, 0);
+    // set_config_mux0B(1, 1);
+    lei_dataup[0][1] = 0;
+    lei_dataup[1][1] = 1;
     set_config_mux0B(2, CONST_0);
     set_config_mux0B(3, CONST_0);
     route_sel_unpacked[1][0] = 2'd1;
@@ -541,9 +575,12 @@ module fpgacell_tb;
     */
     lut_data1A = 16'b01111000_01111000;
     mode1A = 1; //registered
-    set_config_mux1A(0, 0);
-    set_config_mux1A(1, 1);
-    set_config_mux1A(2, 2);
+    // set_config_mux1A(0, 0);
+    // set_config_mux1A(1, 1);
+    // set_config_mux1A(2, 2);
+    lei_dataup[0][2] = 0;
+    lei_dataup[1][2] = 1;
+    lei_dataup[2][2] = 2;
     set_config_mux1A(3, CONST_0);
     route_sel_unpacked[2][1] = 2'd2;
     set_config_mux1A(LE_INPUTS, 2);
@@ -571,15 +608,20 @@ module fpgacell_tb;
     */
     lut_data1B = 16'b0111111110000000;
     mode1B = 1; //registered
-    set_config_mux1B(0, 0);
-    set_config_mux1B(1, 1);
-    set_config_mux1B(2, 2);
-    set_config_mux1B(3, 3);
+    // set_config_mux1B(0, 0);
+    // set_config_mux1B(1, 1);
+    // set_config_mux1B(2, 2);
+    // set_config_mux1B(3, 3);
+    lei_dataup[0][3] = 0;
+    lei_dataup[1][3] = 1;
+    lei_dataup[2][3] = 2;
+    lei_dataup[3][3] = 3;
     route_sel_unpacked[3][1] = 2'd2;
     set_config_mux1B(LE_INPUTS, 3);
 
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
+    flatten_lei_data();
+    cram(cram_data);
     sub_test = 2;
     le_nrst = 0;
     #1;
@@ -652,28 +694,15 @@ module fpgacell_tb;
     mode1A = 1;
     mode1B = 1;
 
-    set_config_mux0A(0, 0); //configure inputs and outputs
-    set_config_mux0A(1, 1);
-    set_config_mux0A(2, 2);
-    set_config_mux0A(3, 3);
+    for (int i = 0; i < 4; i ++) begin //configure inputs and outputs
+      lei_dataup[0][i] = 0;
+      lei_dataup[1][i] = 1;
+      lei_dataup[2][i] = 2;
+      lei_dataup[3][i] = 3;
+    end
     set_config_mux0A(LE_INPUTS, 0);
-
-    set_config_mux0B(0, 0);
-    set_config_mux0B(1, 1);
-    set_config_mux0B(2, 2);
-    set_config_mux0B(3, 3);
     set_config_mux0B(LE_INPUTS, 1);
-
-    set_config_mux1A(0, 0);
-    set_config_mux1A(1, 1);
-    set_config_mux1A(2, 2);
-    set_config_mux1A(3, 3);
     set_config_mux1A(LE_INPUTS, 2);
-
-    set_config_mux1B(0, 0);
-    set_config_mux1B(1, 1);
-    set_config_mux1B(2, 2);
-    set_config_mux1B(3, 3);
     set_config_mux1B(LE_INPUTS, 3);
 
     route_sel_unpacked[0][0] = 2'd1;
@@ -682,7 +711,8 @@ module fpgacell_tb;
     route_sel_unpacked[3][1] = 2'd2;
 
     flatten_route_sel();
-    cram({route_sel_flat, config_data1B, config_data1A, config_data0B, config_data0A, {mode1A, lut_data1A}, {mode0B, lut_data0B}, {mode1B, lut_data1B}, {mode0A, lut_data0A}});
+    flatten_lei_data();
+    cram(cram_data);
     sub_test = 4;
 
     le_nrst = 0;

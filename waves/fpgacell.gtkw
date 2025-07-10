@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Wed Jul  9 17:12:23 2025
+[*] Thu Jul 10 04:50:07 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpgacell.vcd"
-[dumpfile_mtime] "Wed Jul  9 17:08:24 2025"
-[dumpfile_size] 968672
+[dumpfile_mtime] "Thu Jul 10 04:49:46 2025"
+[dumpfile_size] 1286537
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpgacell.gtkw"
 [timestart] 0
-[size] 1850 1016
-[pos] 1989 26
-*-14.962045 7900 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[size] 1274 949
+[pos] 1984 26
+*-15.780965 58800 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] fpgacell_tb.
 [treeopen] fpgacell_tb.dut.
 [sst_width] 233
@@ -79,27 +79,6 @@ fpgacell_tb.SBsouth_out[15:0]
 (14)fpgacell_tb.SBsouth_out[15:0]
 (15)fpgacell_tb.SBsouth_out[15:0]
 @1001200
--group_end
-@c00022
-fpgacell_tb.dut.SB0.north_in[15:0]
-@28
-(0)fpgacell_tb.dut.SB0.north_in[15:0]
-(1)fpgacell_tb.dut.SB0.north_in[15:0]
-(2)fpgacell_tb.dut.SB0.north_in[15:0]
-(3)fpgacell_tb.dut.SB0.north_in[15:0]
-(4)fpgacell_tb.dut.SB0.north_in[15:0]
-(5)fpgacell_tb.dut.SB0.north_in[15:0]
-(6)fpgacell_tb.dut.SB0.north_in[15:0]
-(7)fpgacell_tb.dut.SB0.north_in[15:0]
-(8)fpgacell_tb.dut.SB0.north_in[15:0]
-(9)fpgacell_tb.dut.SB0.north_in[15:0]
-(10)fpgacell_tb.dut.SB0.north_in[15:0]
-(11)fpgacell_tb.dut.SB0.north_in[15:0]
-(12)fpgacell_tb.dut.SB0.north_in[15:0]
-(13)fpgacell_tb.dut.SB0.north_in[15:0]
-(14)fpgacell_tb.dut.SB0.north_in[15:0]
-(15)fpgacell_tb.dut.SB0.north_in[15:0]
-@1401200
 -group_end
 [pattern_trace] 1
 [pattern_trace] 0

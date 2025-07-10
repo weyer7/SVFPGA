@@ -37,9 +37,13 @@ module fpgacell #(
   //internal busses
   wire [BUS_WIDTH - 1:0] bus_south, bus_west;
   logic [LE_OUTPUTS - 1:0] leout0A, leout0B, leout1A, leout1B;
-  logic [LE_INPUTS - 1:0]  lein0A,  lein0B,  lein1A,  lein1B;
+  logic [LE_INPUTS - 1:0]  lein0A_CB,  lein0B_CB,  lein1A_CB,  lein1B_CB;
+  logic [LE_INPUTS - 1:0]  lein0A_LEI,  lein0B_LEI,  lein1A_LEI,  lein1B_LEI;
+  logic [LE_INPUTS - 1:0]  lein0A_LEIdvn,  lein0B_LEIdvn,  lein1A_LEIdvn,  lein1B_LEIdvn;
+
   //internal CRAM wires
   logic le_west_cram_out, le_south_cram_out, le_north_cram_out, le_east_cram_out,
+  lei_cram_out,
   cb0A_cram_out, cb0B_cram_out, 
   cb1A_cram_out, cb1B_cram_out, sb_cram_out;
 
@@ -55,7 +59,7 @@ module fpgacell #(
     .clk(clk), .en(en), .nrst(nrst), 
     //configurable logic signals
     .le_clk(le_clk), .le_en(le_en), .le_nrst(le_nrst),
-    .select(lein0A), .le_out(leout0A));
+    .selCB(lein0A_CB), .selLEI(lein0A_LEI), .LEIdvn(lein0A_LEIdvn), .le_out(leout0A));
 
   LE #(LE_LUT_SIZE)                      LE_0B
     //CRAM signals
@@ -63,7 +67,7 @@ module fpgacell #(
     .clk(clk), .en(en), .nrst(nrst), 
     //configurable logic signals
     .le_clk(le_clk), .le_en(le_en), .le_nrst(le_nrst),
-    .select(lein0B), .le_out(leout0B));
+    .selCB(lein0B_CB), .selLEI(lein0B_LEI), .LEIdvn(lein0B_LEIdvn), .le_out(leout0B));
 
   LE #(LE_LUT_SIZE)                      LE_1A
     //CRAM signals
@@ -71,7 +75,7 @@ module fpgacell #(
     .clk(clk), .en(en), .nrst(nrst), 
     //configurable logic signals
     .le_clk(le_clk), .le_en(le_en), .le_nrst(le_nrst),
-    .select(lein1A), .le_out(leout1A));
+    .selCB(lein1A_CB), .selLEI(lein1A_LEI), .LEIdvn(lein1A_LEIdvn), .le_out(leout1A));
 
   LE #(LE_LUT_SIZE)                      LE_1B
   //CRAM signals
@@ -79,16 +83,26 @@ module fpgacell #(
   .clk(clk), .en(en), .nrst(nrst), 
   //configurable logic signals
   .le_clk(le_clk), .le_en(le_en), .le_nrst(le_nrst),
-  .select(lein1B), .le_out(leout1B));
+  .selCB(lein1B_CB), .selLEI(lein1B_LEI), .LEIdvn(lein1B_LEIdvn), .le_out(leout1B));
+
+  LEI #(LE_INPUTS)                       LEI0
+  //CRAM signals
+  (
+    .clk(clk), .en(en), .nrst(nrst),
+    .config_data_in(le_west_cram_out), .config_data_out(lei_cram_out), .config_en(config_en),
+    .leout0A(leout0A), .leout0B(leout0B), .leout1A(leout1A), .leout1B(leout1B),
+    .lein0A(lein0A_LEI), .lein0B(lein0B_LEI), .lein1A(lein1A_LEI), .lein1B(lein1B_LEI),
+    .drvLE0A(lein0A_LEIdvn), .drvLE0B(lein0B_LEIdvn), .drvLE1A(lein1A_LEIdvn), .drvLE1B(lein1B_LEIdvn) 
+  );
 
   CB #(BUS_WIDTH, LE_OUTPUTS, LE_INPUTS) CB_0
     //CRAM signals
-    (.config_data_inA(le_west_cram_out), .config_en(config_en), .config_data_outA(cb0A_cram_out), //change cram chain
+    (.config_data_inA(lei_cram_out), .config_en(config_en), .config_data_outA(cb0A_cram_out), //change cram chain
     .config_data_inB(cb0A_cram_out), .config_data_outB(cb0B_cram_out), 
     .clk(clk), .en(en), .nrst(nrst),
     //configurable logic signals
-    .sb_bus_in(SBnorth_out), .sb_bus_out(SBnorth_in), .le_outA(leout0A), .le_inA(lein0A),
-    .le_outB(leout0B), .le_inB(lein0B));
+    .sb_bus_in(SBnorth_out), .sb_bus_out(SBnorth_in), .le_outA(leout0A), .le_inA(lein0A_CB),
+    .le_outB(leout0B), .le_inB(lein0B_CB));
 
   CB #(BUS_WIDTH, LE_OUTPUTS, LE_INPUTS) CB_1
     //CRAM signals
@@ -96,8 +110,8 @@ module fpgacell #(
     .config_data_inB(cb1A_cram_out), .config_data_outB(cb1B_cram_out), 
     .clk(clk), .en(en), .nrst(nrst),
     //configurable logic signals
-    .sb_bus_in(SBeast_out), .sb_bus_out(SBeast_in), .le_outA(leout1A), .le_inA(lein1A),
-    .le_outB(leout1B), .le_inB(lein1B));
+    .sb_bus_in(SBeast_out), .sb_bus_out(SBeast_in), .le_outA(leout1A), .le_inA(lein1A_CB),
+    .le_outB(leout1B), .le_inB(lein1B_CB));
 
   SB #(BUS_WIDTH)                        SB0
     //CRAM signals

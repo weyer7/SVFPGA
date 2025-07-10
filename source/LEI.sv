@@ -97,7 +97,7 @@ module LEI #(
         //flat_index = ((j * 4) + i) * 3
         logic [2:0] sel;
         sel = config_data[(((j << 2) + i) * 3) +: 3];
-        if (sel < 3'd4) begin
+        if (sel < 3'd4 && !config_en) begin
           concat_inputs[i][j] = le_outputs[sel];
           input_drv[i][j]     = 1'b1;
         end else begin
