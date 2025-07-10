@@ -47,9 +47,6 @@ module fpgacell #(
   cb0A_cram_out, cb0B_cram_out, 
   cb1A_cram_out, cb1B_cram_out, sb_cram_out;
 
-  // assign LEouteast = leout_east;
-  // assign LEoutnorth = leout_north;
-
   // logic [BUS_WIDTH - 1:0] SBnorth_in, SBsouth_in, SBeast_in, SBwest_in;
   logic [BUS_WIDTH - 1:0] SBnorth_in, SBeast_in;
 

@@ -142,10 +142,16 @@ module fpgacell_tb;
       config_data_in = 0;
     end
   endtask
-  // <==MSB SB CB1B CB1A CB0B CB0A LE LSB==>
+  // <==MSB [SB] [CB1B CB1A] [CB0B CB0A] [LEI] [LE1B LE1A] [LE0B LE0A] LSB==>
 
-  // CB0 LE
-  // SB CB1
+  //  ___   ____   ___________
+  // |CB0|-[LE0B]-|    LEI    |
+  // |___|-[LE0A]-|___________|
+  //  _|________   _|__   __|_
+  // |          | [LE1A] [LE1B]
+  // |    SB    |  _|_______|_
+  // |          |-|    CB1    |
+  // |__________| |___________|
 
   task automatic clear_signals();
     begin
@@ -229,9 +235,9 @@ module fpgacell_tb;
     set_config_mux0A(0, 0); //connect LEin[0] to bus0A[0]
     set_config_mux0A(1, 1); //connect LEin[1] to bus0A[1]
     //OUTPUTS
-    route_sel_unpacked[2][0] = 2'd1; //north[2] from CB1A goes straight to south[2]
+    route_sel_unpacked[2][0] = 2'd1; //north[2] from CB0A goes straight to south[2]
 
-    set_config_mux0A(LE_INPUTS, 2); //LEout connects to bus1A[2]
+    set_config_mux0A(LE_INPUTS, 2); //LEout connects to bus0A[2]
 
     //LUT data
     lut_data0A = 16'b1000100010001000; //2-input AND with [1:0]
