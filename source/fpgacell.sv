@@ -16,8 +16,8 @@ module fpgacell #(
 
   //NORTH
   // inout wire [BUS_WIDTH - 1:0] SBnorth,
-  // input logic [BUS_WIDTH - 1:0] SBnorth_in,
-  output logic [BUS_WIDTH - 1:0] SBnorth_out,
+  input logic [BUS_WIDTH - 1:0] CBnorth_in,
+  output logic [BUS_WIDTH - 1:0] CBnorth_out,
 
   //SOUTH
   // inout wire [BUS_WIDTH - 1:0] SBsouth,
@@ -26,8 +26,8 @@ module fpgacell #(
 
   //EAST
   // inout wire [BUS_WIDTH - 1:0] SBeast,
-  // input logic [BUS_WIDTH - 1:0] SBeast_in,
-  output logic [BUS_WIDTH - 1:0] SBeast_out,
+  input logic [BUS_WIDTH - 1:0] CBeast_in,
+  output logic [BUS_WIDTH - 1:0] CBeast_out,
 
   //WEST
   // inout wire [BUS_WIDTH - 1:0] SBwest
@@ -48,7 +48,7 @@ module fpgacell #(
   cb1A_cram_out, cb1B_cram_out, sb_cram_out;
 
   // logic [BUS_WIDTH - 1:0] SBnorth_in, SBsouth_in, SBeast_in, SBwest_in;
-  logic [BUS_WIDTH - 1:0] SBnorth_in, SBeast_in;
+  logic [BUS_WIDTH - 1:0] SBnorth_in, SBeast_in, SBnorth_out, SBeast_out;
 
   LE #(LE_LUT_SIZE)                      LE_0A
     //CRAM signals
@@ -108,7 +108,9 @@ module fpgacell #(
       .config_data_inB(cb0A_cram_out), .config_data_outB(cb0B_cram_out), 
       .clk(clk), .en(en), .nrst(nrst),
       //configurable logic signals
-      .sb_bus_in(SBnorth_out), .sb_bus_out(SBnorth_in), .le_outA(leout0A), .le_inA(lein0A_CB),
+      .sb_bus_in(SBnorth_out), .sb_bus_out(SBnorth_in),
+      .cb_bus_in(CBnorth_in), .cb_bus_out(CBnorth_out),
+      .le_outA(leout0A), .le_inA(lein0A_CB),
       .le_outB(leout0B), .le_inB(lein0B_CB)
     );
 
@@ -119,7 +121,9 @@ module fpgacell #(
       .config_data_inB(cb1A_cram_out), .config_data_outB(cb1B_cram_out), 
       .clk(clk), .en(en), .nrst(nrst),
       //configurable logic signals
-      .sb_bus_in(SBeast_out), .sb_bus_out(SBeast_in), .le_outA(leout1A), .le_inA(lein1A_CB),
+      .sb_bus_in(SBeast_out), .sb_bus_out(SBeast_in),
+      .cb_bus_in(CBeast_in), .cb_bus_out(CBeast_out),
+      .le_outA(leout1A), .le_inA(lein1A_CB),
       .le_outB(leout1B), .le_inB(lein1B_CB)
     );
 

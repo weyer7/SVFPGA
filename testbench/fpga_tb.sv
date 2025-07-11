@@ -1,6 +1,6 @@
 `default_nettype none
 `timescale 1us/1ps
-module fpgacell_tb;
+module fpga_tb;
   //make sure to update parameters inside DUT if simming from syn
   parameter BUS_WIDTH = 16;
   parameter LE_INPUTS = 4;
@@ -19,17 +19,17 @@ module fpgacell_tb;
   //configurable logic signals     
   logic le_clk, le_en, le_nrst;    
   //cardinal busses                
-  logic [BUS_WIDTH - 1:0] CBnorth_in;
-  logic [BUS_WIDTH - 1:0] CBnorth_out;
+  logic [BUS_WIDTH * 2 - 1:0] io_north_in;
+  logic [BUS_WIDTH * 2 - 1:0] io_north_out;
 
-  logic [BUS_WIDTH - 1:0] SBsouth_in;  
-  logic [BUS_WIDTH - 1:0] SBsouth_out;
+  logic [BUS_WIDTH * 2 - 1:0] io_south_in;  
+  logic [BUS_WIDTH * 2 - 1:0] io_south_out;
 
-  logic [BUS_WIDTH - 1:0] CBeast_in;
-  logic [BUS_WIDTH - 1:0] CBeast_out;
+  logic [BUS_WIDTH * 2 - 1:0] io_east_in;
+  logic [BUS_WIDTH * 2 - 1:0] io_east_out;
 
-  logic [BUS_WIDTH - 1:0] SBwest_in;
-  logic [BUS_WIDTH - 1:0] SBwest_out;
+  logic [BUS_WIDTH * 2 - 1:0] io_west_in;
+  logic [BUS_WIDTH * 2 - 1:0] io_west_out;
   // ==============================//
 
   // ====================================================================
@@ -164,7 +164,7 @@ module fpgacell_tb;
       nrst = 1;
       // {north_drv, south_drv, east_drv, west_drv} = '0;
       // {north_ena, south_ena, east_ena, west_ena} = '0;
-      {CBnorth_in, SBsouth_in, CBeast_in, SBwest_in} = '0;
+      {io_north_in, io_south_in, io_east_in, io_west_in} = '0;
       {config_data0A, config_data0B, config_data1A, config_data1B} = '1; // Disabled
       route_sel_flat = {BUS_WIDTH*4*2{'1}}; //disabled
       for (int i = 0; i < BUS_WIDTH; i ++) begin
@@ -188,7 +188,7 @@ module fpgacell_tb;
   int test_case;
   int sub_test;
 
-  fpgacell #(
+  fpga #(
     // .LE_LUT_SIZE(LE_LUT_SIZE),
     // .LE_INPUTS(LE_INPUTS),
     // .LE_OUTPUTS(LE_OUTPUTS),
@@ -208,8 +208,8 @@ module fpgacell_tb;
   // MAIN TEST SEQUENCE
   //=========================================================================
   initial begin
-    $dumpfile("waves/fpgacell.vcd");
-    $dumpvars(0, fpgacell_tb);
+    $dumpfile("waves/fpga.vcd");
+    $dumpvars(0, fpga_tb);
     $display("[TEST] Starting FPGA cell test with width = %0d", BUS_WIDTH);
     test_case = 0;
     sub_test = 0;
@@ -254,7 +254,7 @@ module fpgacell_tb;
     // south_ena[0] = 1;
     // west_ena[1] = 1;
     for (int i = 0; i < 4; i ++) begin
-      {SBwest_in[1], SBsouth_in[0]} = i[1:0];
+      {io_west_in[1], io_south_in[0]} = i[1:0];
       #1;
     end
     // west_drv[1] = 0;
@@ -273,7 +273,7 @@ module fpgacell_tb;
     // south_ena[3] = 1;
     sub_test = 4;//3-input operation with rest unspecified
     for (int i = 0; i < 8; i ++) begin
-      {SBsouth_in[3], SBwest_in[1], SBsouth_in[0]} = i[2:0];
+      {io_south_in[3], io_west_in[1], io_south_in[0]} = i[2:0];
       #1;
     end
 
@@ -334,33 +334,33 @@ module fpgacell_tb;
 
     @(negedge le_clk); //synchronize
 
-    SBsouth_in[2] = 1;
+    io_south_in[2] = 1;
     #2;
-    SBsouth_in[2] = 0;
+    io_south_in[2] = 0;
     #4; //test hold
     //reset
-    SBsouth_in[1] = 1;
+    io_south_in[1] = 1;
     #2;
-    SBsouth_in[1] = 0;
+    io_south_in[1] = 0;
     #4; //test hold
-    SBsouth_in[2] = 1; //toggle
-    SBsouth_in[1] = 1;
+    io_south_in[2] = 1; //toggle
+    io_south_in[1] = 1;
     #2;
-    SBsouth_in[1] = 0;
-    SBsouth_in[2] = 0;
+    io_south_in[1] = 0;
+    io_south_in[2] = 0;
     #4; //test hold
-    SBsouth_in[2] = 1; //toggle again
-    SBsouth_in[1] = 1;
+    io_south_in[2] = 1; //toggle again
+    io_south_in[1] = 1;
     #2;
     sub_test = 4; //disabled 
     le_en = 0;
     #4;
     le_en = 1;
     #8; //four toggles
-    SBsouth_in[1] = 0;
-    SBsouth_in[2] = 0;    
+    io_south_in[1] = 0;
+    io_south_in[2] = 0;    
     #4; //test hold
-    SBsouth_in[2] = 1; //set
+    io_south_in[2] = 1; //set
     #2;
     sub_test = 4; //mid_operation reset
     le_nrst = 0;
@@ -423,9 +423,9 @@ module fpgacell_tb;
     sub_test = 2;
     // south_ena[2:0] = '1;
     for (int i = 0; i < 8; i ++) begin
-      SBsouth_in[2:0] = i[2:0];
+      io_south_in[2:0] = i[2:0];
       #1;
-      if (SBsouth_in[2] + SBsouth_in[1] + SBsouth_in[0] != SBsouth_out[4:3]) begin
+      if (io_south_in[2] + io_south_in[1] + io_south_in[0] != io_south_out[4:3]) begin
         $display("Test %d .%d :%d FAIL", test_case[4:0], sub_test[4:0], i[4:0]);
         error = 1;
       end
@@ -506,16 +506,17 @@ module fpgacell_tb;
     // south_ena[4:0] = '1;
     for (int i = 0; i < 32; i ++) begin
       // [Cin][B1][B0][A1][A0]
-      SBsouth_in[4:0] = i[4:0];
+      io_south_in[4:0] = i[4:0];
       #1;
-      if ({2'd0, i[4]} + i[3:2] + i[1:0] == SBsouth_out[8:6]) begin
+      if ({2'd0, i[4]} + i[3:2] + i[1:0] == io_south_out[8:6]) begin
         // $display("Test %d PASS", i[4:0]);
       end else begin
-        $display("Test %d .%d :%d FAIL", test_case[4:0], sub_test[4:0], i[4:0]);
+        $display("Test %d .%d :%d FAIL. exp = %d, got %d", test_case[4:0], sub_test[4:0], i[4:0], {2'd0, i[4]} + i[3:2] + i[1:0], io_north_out[8:0]);
         error = 1;
       end
     end
     if (error) begin
+      error = 0;
       $display("Test %d FAIL", test_case[4:0]);
       // $error;
       // $finish;
@@ -637,8 +638,8 @@ module fpgacell_tb;
     le_nrst = 1;
     for (int i = 0; i < 20; i ++) begin
       @(negedge le_clk);
-      if (SBsouth_out[3:0] != i % 16) begin
-        $display("Test %d .%d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], SBsouth_out[3:0]);
+      if (io_south_out[3:0] != i % 16) begin
+        $display("Test %d .%d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], io_south_out[3:0]);
         error = 1;
       end
     end

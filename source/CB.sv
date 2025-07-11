@@ -4,14 +4,21 @@ module CB #(
   parameter LE_OUTPUTS = 1,
   parameter LE_INPUTS = 4
 )(
+  //CRAM signals
   input logic clk, en, nrst,
+  input logic config_en,
+  input logic config_data_inA, config_data_inB,
+  output logic config_data_outA, config_data_outB,
+
+  //configurable logic signals
   // inout wire [WIDTH-1:0] sb_bus, //switchbox bus
   input logic [WIDTH - 1:0] sb_bus_in, 
   output logic [WIDTH - 1:0] sb_bus_out, //switch to discreet inputs and outputs
-  input logic config_en,
-  input logic config_data_inA, config_data_inB,
+
+  input logic [WIDTH - 1:0] cb_bus_in,
+  output logic [WIDTH - 1:0] cb_bus_out,
+
   input logic [LE_OUTPUTS - 1:0] le_outA, le_outB,
-  output logic config_data_outA, config_data_outB,
   output logic [LE_INPUTS - 1:0] le_inA, le_inB
 );
   // The connection box (CB) of an FPGA connects each Logic Element (LE)
@@ -73,7 +80,7 @@ module CB #(
           end else if (config_mux_selA[i] == SEL_BITS'(CONST_1)) begin
             le_inA[i] = 1'b1;
           end else if ((config_mux_selA[i]) < WIDTH) begin
-            le_inA[i] = sb_bus_in[config_mux_selA[i]]; //may need to rework bus muxing logic
+            le_inA[i] = sb_bus_in[config_mux_selA[i]] | cb_bus_in[config_mux_selA[i]]; //may need to rework bus muxing logic
           end else begin
             le_inA[i] = 0;
           end
@@ -88,7 +95,7 @@ module CB #(
           end else if (config_mux_selB[i] == SEL_BITS'(CONST_1)) begin
             le_inB[i] = 1'b1;
           end else if ((config_mux_selB[i]) < WIDTH) begin
-            le_inB[i] = sb_bus_in[config_mux_selB[i]]; //may need to rework bus muxing logic
+            le_inB[i] = sb_bus_in[config_mux_selB[i]] | cb_bus_in[config_mux_selB[i]]; //may need to rework bus muxing logic
           end else begin
             le_inB[i] = 0;
           end
@@ -116,6 +123,13 @@ module CB #(
         assign sb_bus_out[j] = (!config_en && nrst) ? (
           (selA == SEL_BITS'(j)) ? le_out[i*2 + 0] :
           (selB == SEL_BITS'(j)) ? le_out[i*2 + 1] :
+          cb_bus_in[j] ? cb_bus_in[j] : //incoming bus has last priority
+          1'b0 //removed tristate
+          ) : 1'b0;
+        assign cb_bus_out[j] = (!config_en && nrst) ? (
+          (selA == SEL_BITS'(j)) ? le_out[i*2 + 0] :
+          (selB == SEL_BITS'(j)) ? le_out[i*2 + 1] :
+          sb_bus_in[j] ? sb_bus_in[j] : //incoming bus has last priority
           1'b0 //removed tristate
           ) : 1'b0;
       end
