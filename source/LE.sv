@@ -22,15 +22,15 @@ module LE #(
 //Configuration data:
 //MSB [ reset_edge | reset_val | edge_mode | reg_mode | LUT data ] LSB
 logic [(LUT_SIZE + 4) - 1:0] config_data; //LUT data + operation mode
-always_ff @(posedge clk, negedge nrst) begin
+always @(posedge clk, negedge nrst) begin
   if (~nrst) begin
-    config_data <= 0;
+    config_data <= {4'b0010, 16'b0};
   end else if (en && config_en) begin
     config_data <= {config_data[(LUT_SIZE + 4) - 2:0], config_data_in};
   end
 end
 
-assign config_data_out = config_data[(LUT_SIZE + 1) - 1];
+assign config_data_out = config_data[(LUT_SIZE + 4) - 1];
 
 //D type flip-flop
 (*keep*)logic dff_out; //sel Q
@@ -56,7 +56,7 @@ always_ff @(posedge sel_clk, negedge le_nrst) begin
   end else if (le_en) begin
     dff0_out <= mux_out;
   end else begin
-    dff0_out <= dff_out;
+    dff0_out <= dff0_out;
   end
 end
 always_ff @(posedge sel_clk, negedge le_nrst) begin
@@ -66,7 +66,7 @@ always_ff @(posedge sel_clk, negedge le_nrst) begin
   end else if (le_en) begin
     dff1_out <= mux_out;
   end else begin
-    dff1_out <= dff_out;
+    dff1_out <= dff1_out;
   end
 end
 assign dff_out = reset_val ? dff1_out : dff0_out;

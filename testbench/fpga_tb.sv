@@ -9,7 +9,7 @@ module fpga_tb;
 
   localparam SEL_BITS  = $clog2(BUS_WIDTH + 2);
   //                     [  Switch Box ]   [             Connection Box              ]   [ LE Interconnect ]     [   Logic Element   ]
-  localparam CFG_BITS = ((BUS_WIDTH*4*2) + (4 * ((LE_INPUTS + LE_OUTPUTS) * SEL_BITS)) + (LE_INPUTS * 4 * 3) + 4 * (LE_LUT_SIZE + 1));
+  localparam CFG_BITS = 4 * ((BUS_WIDTH*4*2) + (4 * ((LE_INPUTS + LE_OUTPUTS) * SEL_BITS)) + (LE_INPUTS * 4 * 3) + 4 * (LE_LUT_SIZE + 4));
  
   // ========TOP-LEVEL IO==========//
   //CRAM signals                   
@@ -84,7 +84,7 @@ module fpga_tb;
 
   logic [((LE_INPUTS + LE_OUTPUTS) * SEL_BITS) - 1:0] config_data0A, config_data0B, config_data1A, config_data1B;
   logic [(LE_INPUTS * 4 * 3) - 1:0] lei_config;
-  logic mode1A, mode0A, mode1B, mode0B;
+  logic [3:0] mode1A, mode0A, mode1B, mode0B;
   logic [LE_LUT_SIZE - 1:0] lut_data1A, lut_data0A, lut_data1B, lut_data0B;
 
   logic [CFG_BITS - 1:0] cram_data;
@@ -132,7 +132,7 @@ module fpga_tb;
       config_en = 1;
       for (int i = CFG_BITS; i > 0; i--) begin
         clk = 0;
-        config_data_in = data[i-1];
+        config_data_in = data[i % CFG_BITS - 1];
         #0.01;
         clk = 1;
         #0.01;
@@ -142,16 +142,21 @@ module fpga_tb;
       config_data_in = 0;
     end
   endtask
-  // <==MSB [SB] [CB1B CB1A] [CB0B CB0A] [LEI] [LE1B LE1A] [LE0B LE0A] LSB==>
+  /*
+   <==MSB [SB] [CB1B CB1A] [CB0B CB0A] [LEI] [LE1B LE1A] [LE0B LE0A] LSB==>
 
-  //  ___   ____   ___________
-  // |CB0|-[LE0B]-|    LEI    |
-  // |___|-[LE0A]-|___________|
-  //  _|________   _|__   __|_
-  // |          | [LE1A] [LE1B]
-  // |    SB    |  _|_______|_
-  // |          |-|    CB1    |
-  // |__________| |___________|
+  Physical Layout:
+    ___   ____   ___________
+   |   |-[LE0B]-|           |
+   |CB0|  ____  |    LEI    |
+   |___|-[LE0A]-|___________|
+    _|________   _|__   __|_
+   |          | [LE1A] [LE1B]
+   |    SB    |  _|_______|_
+   |          |-|    CB1    |
+   |__________| |___________|
+
+  */
 
   task automatic clear_signals();
     begin
@@ -172,7 +177,7 @@ module fpga_tb;
           route_sel_unpacked[i][j] = 3;
         end
       end
-      {mode1A, mode0A, mode1B, mode0B} = 0;
+      {mode1A, mode0A, mode1B, mode0B} = {4{4'b0010}};
       {lut_data1A, lut_data0A, lut_data1B, lut_data0B} = 0;
       for (int i = 0; i < LE_INPUTS; i ++) begin
         for (int j = 0; j < 4; j ++) begin
@@ -210,7 +215,7 @@ module fpga_tb;
   initial begin
     $dumpfile("waves/fpga.vcd");
     $dumpvars(0, fpga_tb);
-    $display("[TEST] Starting FPGA cell test with width = %0d", BUS_WIDTH);
+    $display("[TEST] Starting 4-cell FPGA test with width = %0d", BUS_WIDTH);
     test_case = 0;
     sub_test = 0;
     clear_signals();
@@ -241,7 +246,7 @@ module fpga_tb;
 
     //LUT data
     lut_data0A = 16'b1000100010001000; //2-input AND with [1:0]
-    mode0A = 0; //non-registered
+    mode0A = 4'b0010; //non-registered
 
     //CRAM
     flatten_route_sel();
@@ -296,7 +301,7 @@ module fpga_tb;
     |1|1|1|0 |
     LEin[2:0]={J,K,Q}
     */
-    mode0A = 1; //registered
+    mode0A = 4'b0011; //registered
     lut_data0A = 16'b01110010_01110010; //repeated twice to ignore MSB
 
     //first connect le_out(Q) to le_in[0] and this to a top-level switchbox output
@@ -391,8 +396,8 @@ module fpga_tb;
     lut_data0B = 16'b11101000_11101000; //cout
 
     //set the mode
-    mode0A = 0; //combinational mode
-    mode0B = 0;
+    mode0A = 4'b0010; //combinational mode
+    mode0B = 4'b0010;
 
     //now, configure LE inputs
     set_config_mux0A(0,0); //connect LE0A input 0 to busA[0]
@@ -447,8 +452,8 @@ module fpga_tb;
     //reconfigure old FA
     lut_data0A = 16'b10010110_10010110;
     lut_data0B = 16'b11101000_11101000;
-    mode0A = 0; //combinational mode
-    mode0B = 0;
+    mode0A = 4'b0010; //combinational mode
+    mode0B = 4'b0010;
 
     set_config_mux0A(1,0); //A0
     set_config_mux0B(1,0);
@@ -470,8 +475,8 @@ module fpga_tb;
     // route_sel_unpacked[5][0] = 2'd1; //don't need; internal signal only
 
     //configure the remaining two LEs
-    mode1A = 0;
-    mode1B = 0;
+    mode1A = 4'b0010;
+    mode1B = 4'b0010;
 
     lut_data1A = 16'b10010110_10010110; //sum2;
     lut_data1B = 16'b11101000_11101000; //cout2;
@@ -541,7 +546,7 @@ module fpga_tb;
     |1 | 0 |
     */
     lut_data0A = 16'b01_01_01_01_01_01_01_01; //repeat 8 times to ignore MSBs
-    mode0A = 1; //registered
+    mode0A = 4'b0011; //registered
     // set_config_mux0A(0, 0);
     lei_dataup[0][0] = 0;
     set_config_mux0A(1, CONST_0);
@@ -559,7 +564,7 @@ module fpga_tb;
     |1 |1 | 0 |
     */
     lut_data0B = 16'b0110_0110_0110_0110; //repeated to ignore MSBs
-    mode0B = 1; //registered
+    mode0B = 4'b0011; //registered
     // set_config_mux0B(0, 0);
     // set_config_mux0B(1, 1);
     lei_dataup[0][1] = 0;
@@ -582,7 +587,7 @@ module fpga_tb;
     |1 |1 |1 | 0 |
     */
     lut_data1A = 16'b01111000_01111000;
-    mode1A = 1; //registered
+    mode1A = 4'b0011; //registered
     // set_config_mux1A(0, 0);
     // set_config_mux1A(1, 1);
     // set_config_mux1A(2, 2);
@@ -615,7 +620,7 @@ module fpga_tb;
     |1 |1 |1 |1 | 0 |
     */
     lut_data1B = 16'b0111111110000000;
-    mode1B = 1; //registered
+    mode1B = 4'b0011; //registered
     // set_config_mux1B(0, 0);
     // set_config_mux1B(1, 1);
     // set_config_mux1B(2, 2);
@@ -697,10 +702,10 @@ module fpga_tb;
     lut_data1A = 16'b1011000011110100;
     lut_data1B = 16'b1111111000010000;
 
-    mode0A = 1; //registered mode
-    mode0B = 1;
-    mode1A = 1;
-    mode1B = 1;
+    mode0A = 4'b0011; //registered mode
+    mode0B = 4'b0011;
+    mode1A = 4'b0011;
+    mode1B = 4'b0011;
 
     for (int i = 0; i < 4; i ++) begin //configure inputs and outputs
       lei_dataup[0][i] = 0;
