@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Sat Jul 12 23:25:49 2025
+[*] Sun Jul 13 03:38:18 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpgacell.vcd"
-[dumpfile_mtime] "Sat Jul 12 23:25:39 2025"
-[dumpfile_size] 1306132
+[dumpfile_mtime] "Sun Jul 13 03:37:13 2025"
+[dumpfile_size] 975764
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpgacell.gtkw"
 [timestart] 0
 [size] 1274 949
 [pos] 1984 26
-*-25.746742 76500000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-25.683485 92100000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] fpgacell_tb.
 [treeopen] fpgacell_tb.dut.
 [sst_width] 233
@@ -38,47 +38,31 @@ fpgacell_tb.dut.le_en
 fpgacell_tb.dut.le_nrst
 @200
 -cell inouts
-@c00022
-fpgacell_tb.SBsouth_in[15:0]
-@28
-(0)fpgacell_tb.SBsouth_in[15:0]
-(1)fpgacell_tb.SBsouth_in[15:0]
-(2)fpgacell_tb.SBsouth_in[15:0]
-(3)fpgacell_tb.SBsouth_in[15:0]
-(4)fpgacell_tb.SBsouth_in[15:0]
-(5)fpgacell_tb.SBsouth_in[15:0]
-(6)fpgacell_tb.SBsouth_in[15:0]
-(7)fpgacell_tb.SBsouth_in[15:0]
-(8)fpgacell_tb.SBsouth_in[15:0]
-(9)fpgacell_tb.SBsouth_in[15:0]
-(10)fpgacell_tb.SBsouth_in[15:0]
-(11)fpgacell_tb.SBsouth_in[15:0]
-(12)fpgacell_tb.SBsouth_in[15:0]
-(13)fpgacell_tb.SBsouth_in[15:0]
-(14)fpgacell_tb.SBsouth_in[15:0]
-(15)fpgacell_tb.SBsouth_in[15:0]
-@1401200
--group_end
 @800023
-fpgacell_tb.SBsouth_out[15:0]
+fpgacell_tb.SBsouth_in[7:0]
 @29
-(0)fpgacell_tb.SBsouth_out[15:0]
-(1)fpgacell_tb.SBsouth_out[15:0]
-(2)fpgacell_tb.SBsouth_out[15:0]
-(3)fpgacell_tb.SBsouth_out[15:0]
-(4)fpgacell_tb.SBsouth_out[15:0]
-(5)fpgacell_tb.SBsouth_out[15:0]
-(6)fpgacell_tb.SBsouth_out[15:0]
-(7)fpgacell_tb.SBsouth_out[15:0]
-(8)fpgacell_tb.SBsouth_out[15:0]
-(9)fpgacell_tb.SBsouth_out[15:0]
-(10)fpgacell_tb.SBsouth_out[15:0]
-(11)fpgacell_tb.SBsouth_out[15:0]
-(12)fpgacell_tb.SBsouth_out[15:0]
-(13)fpgacell_tb.SBsouth_out[15:0]
-(14)fpgacell_tb.SBsouth_out[15:0]
-(15)fpgacell_tb.SBsouth_out[15:0]
+(0)fpgacell_tb.SBsouth_in[7:0]
+(1)fpgacell_tb.SBsouth_in[7:0]
+(2)fpgacell_tb.SBsouth_in[7:0]
+(3)fpgacell_tb.SBsouth_in[7:0]
+(4)fpgacell_tb.SBsouth_in[7:0]
+(5)fpgacell_tb.SBsouth_in[7:0]
+(6)fpgacell_tb.SBsouth_in[7:0]
+(7)fpgacell_tb.SBsouth_in[7:0]
 @1001201
+-group_end
+@800022
+fpgacell_tb.SBsouth_out[7:0]
+@28
+(0)fpgacell_tb.SBsouth_out[7:0]
+(1)fpgacell_tb.SBsouth_out[7:0]
+(2)fpgacell_tb.SBsouth_out[7:0]
+(3)fpgacell_tb.SBsouth_out[7:0]
+(4)fpgacell_tb.SBsouth_out[7:0]
+(5)fpgacell_tb.SBsouth_out[7:0]
+(6)fpgacell_tb.SBsouth_out[7:0]
+(7)fpgacell_tb.SBsouth_out[7:0]
+@1001200
 -group_end
 [pattern_trace] 1
 [pattern_trace] 0

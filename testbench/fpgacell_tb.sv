@@ -2,7 +2,7 @@
 `timescale 1us/1ps
 module fpgacell_tb;
   //make sure to update parameters inside DUT if simming from syn
-  parameter BUS_WIDTH = 16;
+  parameter BUS_WIDTH = 8;
   parameter LE_INPUTS = 4;
   parameter LE_OUTPUTS = 1;
   parameter LE_LUT_SIZE = 16;
@@ -443,7 +443,7 @@ module fpgacell_tb;
     clear_signals();
 
     //SIGNAL: [A0][A1][B0][B1][Cin]  [Cout0]  [S0][S1][Cout]
-    //INDEX:  [0] [1] [2] [3]  [4]     [5]    [6] [7]  [8]
+    //INDEX:  [0] [1] [2] [3]  [4]     [x]    [5] [6]  [7]
 
     //reconfigure old FA
     lut_data0A = 16'b10010110_10010110;
@@ -464,10 +464,10 @@ module fpgacell_tb;
     // route_sel_unpacked[3][2] = 2'd1;
     route_sel_unpacked[4][2] = 2'd1;
 
-    set_config_mux0A(LE_INPUTS, 6); //s0
+    set_config_mux0A(LE_INPUTS, 5); //s0
     // set_config_mux0B(LE_INPUTS, 5); //cout0
 
-    route_sel_unpacked[6][0] = 2'd1; //connect outputs to SB south
+    route_sel_unpacked[5][0] = 2'd1; //connect outputs to SB south
     // route_sel_unpacked[5][0] = 2'd1; //don't need; internal signal only
 
     //configure the remaining two LEs
@@ -482,7 +482,7 @@ module fpgacell_tb;
     // set_config_mux1B(0,5);
     lei_dataup[0][2] = 3'd1;
     lei_dataup[0][3] = 3'd1;
-    route_sel_unpacked[5][0] = 2'd2; //Cout from fa1 turns left into Cin of fa2
+    // route_sel_unpacked[5][0] = 2'd2; //Cout from fa1 turns left into Cin of fa2
 
     set_config_mux1A(1,1); //A1
     set_config_mux1B(1,1);
@@ -493,10 +493,10 @@ module fpgacell_tb;
     route_sel_unpacked[3][2] = 2'd0; //south[3] turns right into B1 inputs
 
     //and finally, the outputs:
-    set_config_mux1A(LE_INPUTS, 7); //sum1
-    set_config_mux1B(LE_INPUTS, 8); //cout
-    route_sel_unpacked[7][1] = 2'd2; //sum2 turns left and goes south
-    route_sel_unpacked[8][1] = 2'd2;
+    set_config_mux1A(LE_INPUTS, 6); //sum1
+    set_config_mux1B(LE_INPUTS, 7); //cout
+    route_sel_unpacked[6][1] = 2'd2; //sum2 turns left and goes south
+    route_sel_unpacked[7][1] = 2'd2;
 
     flatten_route_sel();
     flatten_lei_data();
@@ -509,7 +509,7 @@ module fpgacell_tb;
       // [Cin][B1][B0][A1][A0]
       SBsouth_in[4:0] = i[4:0];
       #1;
-      if ({2'd0, i[4]} + i[3:2] + i[1:0] == SBsouth_out[8:6]) begin
+      if ({2'd0, i[4]} + i[3:2] + i[1:0] == SBsouth_out[7:5]) begin
         // $display("Test %d PASS", i[4:0]);
       end else begin
         $display("Test %d .%d :%d FAIL", test_case[4:0], sub_test[4:0], i[4:0]);

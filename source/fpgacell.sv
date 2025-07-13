@@ -1,10 +1,10 @@
 `default_nettype none
 module fpgacell #(
   parameter
-    LE_LUT_SIZE = 16,
+    BUS_WIDTH = 8,
     LE_INPUTS = 4,
     LE_OUTPUTS = 1,
-    BUS_WIDTH = 16
+    LE_LUT_SIZE = 16
 )(
   //CRAM signals
   input logic clk, en, nrst,

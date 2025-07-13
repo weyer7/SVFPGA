@@ -4066,63 +4066,48 @@ module \$paramod\LEI\LE_INPUTS=s32'00000000000000000000000000000100 (clk, en, nr
   assign le_outputs = { leout1B, leout1A, leout0B, leout0A };
 endmodule
 
-module \$paramod\LE\LUT_SIZE=s32'00000000000000000000000000010000 (clk, en, nrst, config_data_in, config_en, config_data_out, le_clk, le_en, le_nrst, selCB, selLEI, LEIdvn, le_out);
-  wire _000_;
-  wire _001_;
-  wire _002_;
-  wire _003_;
-  wire _004_;
-  wire _005_;
-  wire _006_;
-  wire _007_;
-  wire _008_;
-  wire _009_;
-  wire _010_;
-  wire _011_;
-  wire _012_;
-  wire _013_;
-  wire _014_;
-  wire _015_;
-  wire _016_;
-  wire _017_;
-  wire _018_;
-  wire _019_;
-  wire _020_;
-  wire _021_;
-  wire _022_;
-  wire _023_;
-  wire _024_;
-  wire _025_;
-  wire _026_;
-  wire _027_;
-  wire _028_;
-  wire _029_;
-  wire _030_;
-  wire _031_;
-  wire _032_;
-  wire _033_;
-  wire _034_;
-  wire _035_;
-  wire _036_;
-  wire _037_;
-  wire _038_;
-  wire _039_;
-  wire _040_;
-  wire _041_;
-  wire _042_;
-  wire _043_;
-  wire _044_;
-  wire _045_;
-  wire _046_;
-  wire _047_;
-  wire _048_;
-  wire _049_;
-  wire _050_;
+module \$paramod\LE\LUT_SIZE=s32'00000000000000000000000000001001 (clk, en, nrst, config_data_in, config_en, config_data_out, le_clk, le_en, le_nrst, selCB, selLEI, LEIdvn, le_out);
+  wire _00_;
+  wire _01_;
+  wire _02_;
+  wire _03_;
+  wire _04_;
+  wire _05_;
+  wire _06_;
+  wire _07_;
+  wire _08_;
+  wire _09_;
+  wire _10_;
+  wire _11_;
+  wire _12_;
+  wire _13_;
+  wire _14_;
+  wire _15_;
+  wire _16_;
+  wire _17_;
+  wire _18_;
+  wire _19_;
+  wire _20_;
+  wire _21_;
+  wire _22_;
+  wire _23_;
+  wire _24_;
+  wire _25_;
+  wire _26_;
+  wire _27_;
+  wire _28_;
+  wire _29_;
+  wire _30_;
+  wire _31_;
+  wire _32_;
+  wire _33_;
+  wire _34_;
+  wire _35_;
   input [3:0] LEIdvn;
   wire [3:0] LEIdvn;
   input clk;
   wire clk;
-  wire [19:0] config_data;
+  wire [12:0] config_data;
   input config_data_in;
   wire config_data_in;
   output config_data_out;
@@ -4144,7 +4129,7 @@ module \$paramod\LE\LUT_SIZE=s32'00000000000000000000000000010000 (clk, en, nrst
   output le_out;
   wire le_out;
   wire mode;
-  wire [15:0] mux_data;
+  wire [8:0] mux_data;
   input nrst;
   wire nrst;
   wire reset_mode;
@@ -4155,464 +4140,332 @@ module \$paramod\LE\LUT_SIZE=s32'00000000000000000000000000010000 (clk, en, nrst
   wire [3:0] selLEI;
   wire sel_clk;
   wire sel_reset;
-  sky130_fd_sc_hd__clkinv_1 _051_ (
+  sky130_fd_sc_hd__clkinv_1 _36_ (
     .A(dff0_out),
-    .Y(_024_)
+    .Y(_15_)
   );
-  sky130_fd_sc_hd__clkinv_1 _052_ (
+  sky130_fd_sc_hd__clkinv_1 _37_ (
     .A(dff1_out),
-    .Y(_025_)
+    .Y(_16_)
   );
-  sky130_fd_sc_hd__clkinv_1 _053_ (
-    .A(config_data[16]),
-    .Y(_026_)
+  sky130_fd_sc_hd__clkinv_1 _38_ (
+    .A(config_data[9]),
+    .Y(_17_)
   );
-  sky130_fd_sc_hd__xnor2_1 _054_ (
-    .A(config_data[17]),
+  sky130_fd_sc_hd__xnor2_1 _39_ (
+    .A(config_data[10]),
     .B(le_clk),
     .Y(sel_clk)
   );
-  sky130_fd_sc_hd__xor2_1 _055_ (
-    .A(config_data[19]),
+  sky130_fd_sc_hd__xor2_1 _40_ (
+    .A(config_data[12]),
     .B(nrst),
     .X(sel_reset)
   );
-  sky130_fd_sc_hd__nand2_1 _056_ (
+  sky130_fd_sc_hd__nand2_1 _41_ (
     .A(dff1_out),
-    .B(config_data[18]),
-    .Y(_027_)
+    .B(config_data[11]),
+    .Y(_18_)
   );
-  sky130_fd_sc_hd__o21ai_0 _057_ (
-    .A1(_024_),
-    .A2(config_data[18]),
-    .B1(_027_),
+  sky130_fd_sc_hd__o21ai_0 _42_ (
+    .A1(_15_),
+    .A2(config_data[11]),
+    .B1(_18_),
     .Y(dff_out)
   );
-  sky130_fd_sc_hd__mux2i_1 _058_ (
+  sky130_fd_sc_hd__mux2_1 _43_ (
     .A0(selCB[3]),
     .A1(selLEI[3]),
     .S(LEIdvn[3]),
-    .Y(_028_)
+    .X(_19_)
   );
-  sky130_fd_sc_hd__mux2_1 _059_ (
+  sky130_fd_sc_hd__mux2i_1 _44_ (
     .A0(selCB[2]),
     .A1(selLEI[2]),
     .S(LEIdvn[2]),
-    .X(_029_)
+    .Y(_20_)
   );
-  sky130_fd_sc_hd__mux2i_1 _060_ (
+  sky130_fd_sc_hd__mux2i_1 _45_ (
     .A0(selCB[1]),
     .A1(selLEI[1]),
     .S(LEIdvn[1]),
-    .Y(_030_)
+    .Y(_21_)
   );
-  sky130_fd_sc_hd__mux2i_1 _061_ (
+  sky130_fd_sc_hd__mux2i_1 _46_ (
     .A0(selCB[0]),
     .A1(selLEI[0]),
     .S(LEIdvn[0]),
-    .Y(_031_)
+    .Y(_22_)
   );
-  sky130_fd_sc_hd__mux2i_1 _062_ (
+  sky130_fd_sc_hd__mux2i_1 _47_ (
     .A0(config_data[7]),
     .A1(config_data[6]),
-    .S(_031_),
-    .Y(_032_)
+    .S(_22_),
+    .Y(_23_)
   );
-  sky130_fd_sc_hd__mux2i_1 _063_ (
+  sky130_fd_sc_hd__mux2i_1 _48_ (
     .A0(config_data[5]),
     .A1(config_data[4]),
-    .S(_031_),
-    .Y(_033_)
+    .S(_22_),
+    .Y(_24_)
   );
-  sky130_fd_sc_hd__lpflow_isobufsrc_1 _064_ (
-    .A(_030_),
-    .SLEEP(_033_),
-    .X(_034_)
-  );
-  sky130_fd_sc_hd__o21ai_0 _065_ (
-    .A1(_030_),
-    .A2(_032_),
-    .B1(_029_),
-    .Y(_035_)
-  );
-  sky130_fd_sc_hd__mux2i_1 _066_ (
+  sky130_fd_sc_hd__mux2i_1 _49_ (
     .A0(config_data[3]),
     .A1(config_data[2]),
-    .S(_031_),
-    .Y(_036_)
+    .S(_22_),
+    .Y(_25_)
   );
-  sky130_fd_sc_hd__mux2i_1 _067_ (
+  sky130_fd_sc_hd__mux2i_1 _50_ (
     .A0(config_data[1]),
     .A1(config_data[0]),
-    .S(_031_),
-    .Y(_037_)
+    .S(_22_),
+    .Y(_26_)
   );
-  sky130_fd_sc_hd__mux2i_1 _068_ (
-    .A0(_036_),
-    .A1(_037_),
-    .S(_030_),
-    .Y(_038_)
+  sky130_fd_sc_hd__mux4_2 _51_ (
+    .A0(_23_),
+    .A1(_24_),
+    .A2(_25_),
+    .A3(_26_),
+    .S0(_21_),
+    .S1(_20_),
+    .X(_27_)
   );
-  sky130_fd_sc_hd__o22a_1 _069_ (
-    .A1(_034_),
-    .A2(_035_),
-    .B1(_038_),
-    .B2(_029_),
-    .X(_039_)
+  sky130_fd_sc_hd__nand2_1 _52_ (
+    .A(config_data[8]),
+    .B(_19_),
+    .Y(_28_)
   );
-  sky130_fd_sc_hd__mux2_1 _070_ (
-    .A0(config_data[10]),
-    .A1(config_data[14]),
-    .S(_029_),
-    .X(_040_)
+  sky130_fd_sc_hd__nand3_1 _53_ (
+    .A(_20_),
+    .B(_21_),
+    .C(_22_),
+    .Y(_29_)
   );
-  sky130_fd_sc_hd__mux2i_1 _071_ (
-    .A0(config_data[11]),
-    .A1(config_data[15]),
-    .S(_029_),
-    .Y(_041_)
+  sky130_fd_sc_hd__nor2_1 _54_ (
+    .A(_28_),
+    .B(_29_),
+    .Y(_30_)
   );
-  sky130_fd_sc_hd__a21oi_1 _072_ (
-    .A1(_031_),
-    .A2(_040_),
-    .B1(_030_),
-    .Y(_042_)
+  sky130_fd_sc_hd__o21ba_1 _55_ (
+    .A1(_19_),
+    .A2(_27_),
+    .B1_N(_30_),
+    .X(_31_)
   );
-  sky130_fd_sc_hd__o21ai_0 _073_ (
-    .A1(_031_),
-    .A2(_041_),
-    .B1(_042_),
-    .Y(_043_)
-  );
-  sky130_fd_sc_hd__mux2i_1 _074_ (
-    .A0(config_data[9]),
-    .A1(config_data[13]),
-    .S(_029_),
-    .Y(_044_)
-  );
-  sky130_fd_sc_hd__mux2i_1 _075_ (
-    .A0(config_data[8]),
-    .A1(config_data[12]),
-    .S(_029_),
-    .Y(_045_)
-  );
-  sky130_fd_sc_hd__mux2_1 _076_ (
-    .A0(_044_),
-    .A1(_045_),
-    .S(_031_),
-    .X(_046_)
-  );
-  sky130_fd_sc_hd__a21oi_1 _077_ (
-    .A1(_030_),
-    .A2(_046_),
-    .B1(_028_),
-    .Y(_047_)
-  );
-  sky130_fd_sc_hd__a22oi_1 _078_ (
-    .A1(_028_),
-    .A2(_039_),
-    .B1(_043_),
-    .B2(_047_),
-    .Y(_048_)
-  );
-  sky130_fd_sc_hd__o21ai_0 _079_ (
-    .A1(_026_),
+  sky130_fd_sc_hd__o21ai_0 _56_ (
+    .A1(_17_),
     .A2(dff_out),
     .B1(nrst),
-    .Y(_049_)
+    .Y(_32_)
   );
-  sky130_fd_sc_hd__a211oi_1 _080_ (
-    .A1(_026_),
-    .A2(_048_),
-    .B1(_049_),
+  sky130_fd_sc_hd__a211oi_1 _57_ (
+    .A1(_17_),
+    .A2(_31_),
+    .B1(_32_),
     .C1(config_en),
     .Y(le_out)
   );
-  sky130_fd_sc_hd__nand2_1 _081_ (
+  sky130_fd_sc_hd__nand2_1 _58_ (
     .A(config_en),
     .B(en),
-    .Y(_050_)
+    .Y(_33_)
   );
-  sky130_fd_sc_hd__mux2_1 _082_ (
+  sky130_fd_sc_hd__mux2_1 _59_ (
     .A0(config_data_in),
     .A1(config_data[0]),
-    .S(_050_),
-    .X(_000_)
+    .S(_33_),
+    .X(_00_)
   );
-  sky130_fd_sc_hd__mux2_1 _083_ (
+  sky130_fd_sc_hd__mux2_1 _60_ (
     .A0(config_data[0]),
     .A1(config_data[1]),
-    .S(_050_),
-    .X(_001_)
+    .S(_33_),
+    .X(_01_)
   );
-  sky130_fd_sc_hd__mux2_1 _084_ (
+  sky130_fd_sc_hd__mux2_1 _61_ (
     .A0(config_data[1]),
     .A1(config_data[2]),
-    .S(_050_),
-    .X(_002_)
+    .S(_33_),
+    .X(_02_)
   );
-  sky130_fd_sc_hd__mux2_1 _085_ (
+  sky130_fd_sc_hd__mux2_1 _62_ (
     .A0(config_data[2]),
     .A1(config_data[3]),
-    .S(_050_),
-    .X(_003_)
+    .S(_33_),
+    .X(_03_)
   );
-  sky130_fd_sc_hd__mux2_1 _086_ (
+  sky130_fd_sc_hd__mux2_1 _63_ (
     .A0(config_data[3]),
     .A1(config_data[4]),
-    .S(_050_),
-    .X(_004_)
+    .S(_33_),
+    .X(_04_)
   );
-  sky130_fd_sc_hd__mux2_1 _087_ (
+  sky130_fd_sc_hd__mux2_1 _64_ (
     .A0(config_data[4]),
     .A1(config_data[5]),
-    .S(_050_),
-    .X(_005_)
+    .S(_33_),
+    .X(_05_)
   );
-  sky130_fd_sc_hd__mux2_1 _088_ (
+  sky130_fd_sc_hd__mux2_1 _65_ (
     .A0(config_data[5]),
     .A1(config_data[6]),
-    .S(_050_),
-    .X(_006_)
+    .S(_33_),
+    .X(_06_)
   );
-  sky130_fd_sc_hd__mux2_1 _089_ (
+  sky130_fd_sc_hd__mux2_1 _66_ (
     .A0(config_data[6]),
     .A1(config_data[7]),
-    .S(_050_),
-    .X(_007_)
+    .S(_33_),
+    .X(_07_)
   );
-  sky130_fd_sc_hd__mux2_1 _090_ (
+  sky130_fd_sc_hd__mux2_1 _67_ (
     .A0(config_data[7]),
     .A1(config_data[8]),
-    .S(_050_),
-    .X(_008_)
+    .S(_33_),
+    .X(_08_)
   );
-  sky130_fd_sc_hd__mux2_1 _091_ (
-    .A0(config_data[8]),
-    .A1(config_data[9]),
-    .S(_050_),
-    .X(_009_)
+  sky130_fd_sc_hd__nor2_1 _68_ (
+    .A(config_data[8]),
+    .B(_33_),
+    .Y(_34_)
   );
-  sky130_fd_sc_hd__mux2_1 _092_ (
-    .A0(config_data[9]),
-    .A1(config_data[10]),
-    .S(_050_),
-    .X(_010_)
+  sky130_fd_sc_hd__a21oi_1 _69_ (
+    .A1(_17_),
+    .A2(_33_),
+    .B1(_34_),
+    .Y(_09_)
   );
-  sky130_fd_sc_hd__mux2_1 _093_ (
+  sky130_fd_sc_hd__nand2_1 _70_ (
+    .A(config_data[10]),
+    .B(_33_),
+    .Y(_35_)
+  );
+  sky130_fd_sc_hd__o21ai_0 _71_ (
+    .A1(_17_),
+    .A2(_33_),
+    .B1(_35_),
+    .Y(_10_)
+  );
+  sky130_fd_sc_hd__mux2_1 _72_ (
     .A0(config_data[10]),
     .A1(config_data[11]),
-    .S(_050_),
-    .X(_011_)
+    .S(_33_),
+    .X(_11_)
   );
-  sky130_fd_sc_hd__mux2_1 _094_ (
+  sky130_fd_sc_hd__mux2_1 _73_ (
     .A0(config_data[11]),
     .A1(config_data[12]),
-    .S(_050_),
-    .X(_012_)
+    .S(_33_),
+    .X(_12_)
   );
-  sky130_fd_sc_hd__mux2_1 _095_ (
-    .A0(config_data[12]),
-    .A1(config_data[13]),
-    .S(_050_),
-    .X(_013_)
-  );
-  sky130_fd_sc_hd__mux2_1 _096_ (
-    .A0(config_data[13]),
-    .A1(config_data[14]),
-    .S(_050_),
-    .X(_014_)
-  );
-  sky130_fd_sc_hd__mux2_1 _097_ (
-    .A0(config_data[14]),
-    .A1(config_data[15]),
-    .S(_050_),
-    .X(_015_)
-  );
-  sky130_fd_sc_hd__nor2_1 _098_ (
-    .A(config_data[15]),
-    .B(_050_),
-    .Y(_022_)
-  );
-  sky130_fd_sc_hd__a21oi_1 _099_ (
-    .A1(_026_),
-    .A2(_050_),
-    .B1(_022_),
-    .Y(_016_)
-  );
-  sky130_fd_sc_hd__nand2_1 _100_ (
-    .A(config_data[17]),
-    .B(_050_),
-    .Y(_023_)
-  );
-  sky130_fd_sc_hd__o21ai_0 _101_ (
-    .A1(_026_),
-    .A2(_050_),
-    .B1(_023_),
-    .Y(_017_)
-  );
-  sky130_fd_sc_hd__mux2_1 _102_ (
-    .A0(config_data[17]),
-    .A1(config_data[18]),
-    .S(_050_),
-    .X(_018_)
-  );
-  sky130_fd_sc_hd__mux2_1 _103_ (
-    .A0(config_data[18]),
-    .A1(config_data[19]),
-    .S(_050_),
-    .X(_019_)
-  );
-  sky130_fd_sc_hd__mux2i_1 _104_ (
-    .A0(_024_),
-    .A1(_048_),
+  sky130_fd_sc_hd__mux2i_1 _74_ (
+    .A0(_15_),
+    .A1(_31_),
     .S(le_en),
-    .Y(_020_)
+    .Y(_13_)
   );
-  sky130_fd_sc_hd__mux2i_1 _105_ (
-    .A0(_025_),
-    .A1(_048_),
+  sky130_fd_sc_hd__mux2i_1 _75_ (
+    .A0(_16_),
+    .A1(_31_),
     .S(le_en),
-    .Y(_021_)
+    .Y(_14_)
   );
-  sky130_fd_sc_hd__dfrtp_1 _106_ (
+  sky130_fd_sc_hd__dfrtp_1 _76_ (
     .CLK(clk),
-    .D(_000_),
+    .D(_00_),
     .Q(config_data[0]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _107_ (
+  sky130_fd_sc_hd__dfrtp_1 _77_ (
     .CLK(clk),
-    .D(_001_),
+    .D(_01_),
     .Q(config_data[1]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _108_ (
+  sky130_fd_sc_hd__dfrtp_1 _78_ (
     .CLK(clk),
-    .D(_002_),
+    .D(_02_),
     .Q(config_data[2]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _109_ (
+  sky130_fd_sc_hd__dfrtp_1 _79_ (
     .CLK(clk),
-    .D(_003_),
+    .D(_03_),
     .Q(config_data[3]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _110_ (
+  sky130_fd_sc_hd__dfrtp_1 _80_ (
     .CLK(clk),
-    .D(_004_),
+    .D(_04_),
     .Q(config_data[4]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _111_ (
+  sky130_fd_sc_hd__dfrtp_1 _81_ (
     .CLK(clk),
-    .D(_005_),
+    .D(_05_),
     .Q(config_data[5]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _112_ (
+  sky130_fd_sc_hd__dfrtp_1 _82_ (
     .CLK(clk),
-    .D(_006_),
+    .D(_06_),
     .Q(config_data[6]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _113_ (
+  sky130_fd_sc_hd__dfrtp_1 _83_ (
     .CLK(clk),
-    .D(_007_),
+    .D(_07_),
     .Q(config_data[7]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _114_ (
+  sky130_fd_sc_hd__dfrtp_1 _84_ (
     .CLK(clk),
-    .D(_008_),
+    .D(_08_),
     .Q(config_data[8]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _115_ (
+  sky130_fd_sc_hd__dfrtp_1 _85_ (
     .CLK(clk),
-    .D(_009_),
+    .D(_09_),
     .Q(config_data[9]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _116_ (
+  sky130_fd_sc_hd__dfrtp_1 _86_ (
     .CLK(clk),
-    .D(_010_),
+    .D(_10_),
     .Q(config_data[10]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _117_ (
+  sky130_fd_sc_hd__dfrtp_1 _87_ (
     .CLK(clk),
-    .D(_011_),
+    .D(_11_),
     .Q(config_data[11]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _118_ (
+  sky130_fd_sc_hd__dfrtp_1 _88_ (
     .CLK(clk),
-    .D(_012_),
+    .D(_12_),
     .Q(config_data[12]),
     .RESET_B(nrst)
   );
-  sky130_fd_sc_hd__dfrtp_1 _119_ (
-    .CLK(clk),
-    .D(_013_),
-    .Q(config_data[13]),
-    .RESET_B(nrst)
-  );
-  sky130_fd_sc_hd__dfrtp_1 _120_ (
-    .CLK(clk),
-    .D(_014_),
-    .Q(config_data[14]),
-    .RESET_B(nrst)
-  );
-  sky130_fd_sc_hd__dfrtp_1 _121_ (
-    .CLK(clk),
-    .D(_015_),
-    .Q(config_data[15]),
-    .RESET_B(nrst)
-  );
-  sky130_fd_sc_hd__dfrtp_1 _122_ (
-    .CLK(clk),
-    .D(_016_),
-    .Q(config_data[16]),
-    .RESET_B(nrst)
-  );
-  sky130_fd_sc_hd__dfstp_2 _123_ (
-    .CLK(clk),
-    .D(_017_),
-    .Q(config_data[17]),
-    .SET_B(nrst)
-  );
-  sky130_fd_sc_hd__dfrtp_1 _124_ (
-    .CLK(clk),
-    .D(_018_),
-    .Q(config_data[18]),
-    .RESET_B(nrst)
-  );
-  sky130_fd_sc_hd__dfrtp_1 _125_ (
-    .CLK(clk),
-    .D(_019_),
-    .Q(config_data[19]),
-    .RESET_B(nrst)
-  );
-  sky130_fd_sc_hd__dfrtp_1 _126_ (
+  sky130_fd_sc_hd__dfrtp_1 _89_ (
     .CLK(sel_clk),
-    .D(_020_),
+    .D(_13_),
     .Q(dff0_out),
     .RESET_B(le_nrst)
   );
-  sky130_fd_sc_hd__dfstp_2 _127_ (
+  sky130_fd_sc_hd__dfstp_2 _90_ (
     .CLK(sel_clk),
-    .D(_021_),
+    .D(_14_),
     .Q(dff1_out),
     .SET_B(le_nrst)
   );
-  assign config_data_out = config_data[19];
-  assign edge_mode = config_data[17];
-  assign mode = config_data[16];
-  assign mux_data = config_data[15:0];
-  assign reset_mode = config_data[19];
-  assign reset_val = config_data[18];
+  assign config_data_out = config_data[12];
+  assign edge_mode = config_data[10];
+  assign mode = config_data[9];
+  assign mux_data = config_data[8:0];
+  assign reset_mode = config_data[12];
+  assign reset_val = config_data[11];
 endmodule
 
 module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_out, east_in, east_out, south_in, south_out, west_in, west_out, clk, en, nrst, config_data_in, config_en, config_data_out);
@@ -5256,198 +5109,198 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
   wire [15:0] north_out;
   input nrst;
   wire nrst;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11130.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11142.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11154.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11166.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11178.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11190.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11202.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11214.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11226.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11238.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11250.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11262.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11274.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11286.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11298.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:100$11310.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11119.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11131.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11143.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11155.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11167.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11179.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11191.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11203.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11215.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11227.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11239.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11251.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11263.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11275.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11287.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:80$11299.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11120.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11132.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11144.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11156.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11168.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11180.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11192.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11204.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11216.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11228.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11240.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11252.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11264.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11276.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11288.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:81$11300.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11121.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11133.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11145.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11157.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11169.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11181.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11193.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11205.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11217.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11229.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11241.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11253.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11265.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11277.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11289.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:82$11301.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11122.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11134.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11146.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11158.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11170.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11182.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11194.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11206.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11218.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11230.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11242.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11254.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11266.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11278.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11290.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:86$11302.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11123.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11135.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11147.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11159.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11171.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11183.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11195.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11207.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11219.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11231.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11243.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11255.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11267.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11279.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11291.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:87$11303.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11124.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11136.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11148.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11160.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11172.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11184.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11196.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11208.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11220.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11232.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11244.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11256.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11268.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11280.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11292.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:88$11304.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11125.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11137.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11149.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11161.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11173.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11185.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11197.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11209.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11221.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11233.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11245.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11257.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11269.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11281.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11293.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:92$11305.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11126.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11138.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11150.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11162.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11174.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11186.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11198.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11210.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11222.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11234.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11246.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11258.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11270.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11282.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11294.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:93$11306.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11127.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11139.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11151.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11163.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11175.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11187.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11199.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11211.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11223.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11235.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11247.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11259.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11271.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11283.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11295.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:94$11307.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11128.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11140.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11152.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11164.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11176.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11188.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11200.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11212.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11224.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11236.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11248.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11260.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11272.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11284.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11296.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:98$11308.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11129.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11141.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11153.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11165.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11177.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11189.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11201.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11213.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11225.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11237.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11249.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11261.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11273.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11285.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11297.turn ;
-  wire [1:0] \rot_dir$func$source/SB.sv:99$11309.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11392.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11404.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11416.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11428.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11440.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11452.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11464.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11476.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11488.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11500.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11512.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11524.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11536.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11548.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11560.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:100$11572.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11381.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11393.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11405.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11417.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11429.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11441.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11453.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11465.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11477.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11489.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11501.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11513.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11525.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11537.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11549.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:80$11561.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11382.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11394.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11406.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11418.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11430.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11442.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11454.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11466.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11478.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11490.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11502.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11514.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11526.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11538.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11550.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:81$11562.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11383.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11395.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11407.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11419.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11431.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11443.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11455.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11467.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11479.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11491.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11503.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11515.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11527.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11539.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11551.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:82$11563.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11384.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11396.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11408.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11420.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11432.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11444.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11456.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11468.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11480.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11492.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11504.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11516.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11528.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11540.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11552.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:86$11564.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11385.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11397.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11409.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11421.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11433.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11445.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11457.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11469.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11481.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11493.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11505.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11517.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11529.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11541.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11553.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:87$11565.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11386.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11398.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11410.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11422.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11434.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11446.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11458.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11470.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11482.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11494.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11506.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11518.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11530.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11542.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11554.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:88$11566.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11387.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11399.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11411.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11423.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11435.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11447.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11459.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11471.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11483.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11495.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11507.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11519.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11531.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11543.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11555.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:92$11567.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11388.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11400.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11412.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11424.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11436.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11448.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11460.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11472.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11484.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11496.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11508.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11520.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11532.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11544.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11556.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:93$11568.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11389.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11401.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11413.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11425.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11437.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11449.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11461.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11473.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11485.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11497.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11509.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11521.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11533.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11545.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11557.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:94$11569.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11390.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11402.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11414.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11426.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11438.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11450.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11462.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11474.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11486.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11498.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11510.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11522.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11534.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11546.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11558.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:98$11570.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11391.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11403.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11415.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11427.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11439.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11451.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11463.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11475.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11487.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11499.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11511.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11523.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11535.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11547.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11559.turn ;
+  wire [1:0] \rot_dir$func$source/SB.sv:99$11571.turn ;
   wire [127:0] route_sel;
   wire [127:0] route_sel_flat;
   input [15:0] south_in;
@@ -5571,11 +5424,11 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0191_)
   );
   sky130_fd_sc_hd__clkinv_1 _0648_ (
-    .A(route_sel_flat[33]),
+    .A(route_sel_flat[32]),
     .Y(_0192_)
   );
   sky130_fd_sc_hd__clkinv_1 _0649_ (
-    .A(route_sel_flat[32]),
+    .A(route_sel_flat[33]),
     .Y(_0193_)
   );
   sky130_fd_sc_hd__clkinv_1 _0650_ (
@@ -5619,11 +5472,11 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0203_)
   );
   sky130_fd_sc_hd__clkinv_1 _0660_ (
-    .A(route_sel_flat[48]),
+    .A(route_sel_flat[49]),
     .Y(_0204_)
   );
   sky130_fd_sc_hd__clkinv_1 _0661_ (
-    .A(route_sel_flat[49]),
+    .A(route_sel_flat[48]),
     .Y(_0205_)
   );
   sky130_fd_sc_hd__clkinv_1 _0662_ (
@@ -5715,11 +5568,11 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0227_)
   );
   sky130_fd_sc_hd__clkinv_1 _0684_ (
-    .A(route_sel_flat[80]),
+    .A(route_sel_flat[81]),
     .Y(_0228_)
   );
   sky130_fd_sc_hd__clkinv_1 _0685_ (
-    .A(route_sel_flat[81]),
+    .A(route_sel_flat[80]),
     .Y(_0229_)
   );
   sky130_fd_sc_hd__clkinv_1 _0686_ (
@@ -6378,8 +6231,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0330_)
   );
   sky130_fd_sc_hd__nand2_1 _0803_ (
-    .A(route_sel_flat[33]),
-    .B(route_sel_flat[32]),
+    .A(route_sel_flat[32]),
+    .B(route_sel_flat[33]),
     .Y(_0331_)
   );
   sky130_fd_sc_hd__nor2_1 _0804_ (
@@ -6421,8 +6274,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0336_)
   );
   sky130_fd_sc_hd__a21oi_1 _0810_ (
-    .A1(route_sel_flat[33]),
-    .A2(_0193_),
+    .A1(_0192_),
+    .A2(route_sel_flat[33]),
     .B1(_0336_),
     .Y(_0337_)
   );
@@ -6440,8 +6293,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0338_)
   );
   sky130_fd_sc_hd__a21oi_1 _0813_ (
-    .A1(_0192_),
-    .A2(route_sel_flat[32]),
+    .A1(route_sel_flat[32]),
+    .A2(_0193_),
     .B1(_0338_),
     .Y(_0339_)
   );
@@ -6454,8 +6307,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
   sky130_fd_sc_hd__o22ai_1 _0815_ (
     .A1(route_sel_flat[36]),
     .A2(_0189_),
-    .B1(route_sel_flat[33]),
-    .B2(route_sel_flat[32]),
+    .B1(route_sel_flat[32]),
+    .B2(route_sel_flat[33]),
     .Y(_0340_)
   );
   sky130_fd_sc_hd__a21oi_1 _0816_ (
@@ -6493,8 +6346,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0345_)
   );
   sky130_fd_sc_hd__nand2_1 _0822_ (
-    .A(route_sel_flat[42]),
-    .B(route_sel_flat[43]),
+    .A(route_sel_flat[43]),
+    .B(route_sel_flat[42]),
     .Y(_0346_)
   );
   sky130_fd_sc_hd__a211o_1 _0823_ (
@@ -6505,8 +6358,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .X(_0347_)
   );
   sky130_fd_sc_hd__a21oi_1 _0824_ (
-    .A1(route_sel_flat[42]),
-    .A2(route_sel_flat[43]),
+    .A1(route_sel_flat[43]),
+    .A2(route_sel_flat[42]),
     .B1(east_in[5]),
     .Y(_0348_)
   );
@@ -6523,8 +6376,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0350_)
   );
   sky130_fd_sc_hd__o22ai_1 _0827_ (
-    .A1(route_sel_flat[42]),
-    .A2(route_sel_flat[43]),
+    .A1(route_sel_flat[43]),
+    .A2(route_sel_flat[42]),
     .B1(_0196_),
     .B2(route_sel_flat[46]),
     .Y(_0351_)
@@ -6561,8 +6414,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(east_out[5])
   );
   sky130_fd_sc_hd__o22ai_1 _0833_ (
-    .A1(route_sel_flat[42]),
-    .A2(_0194_),
+    .A1(_0194_),
+    .A2(route_sel_flat[42]),
     .B1(route_sel_flat[47]),
     .B2(route_sel_flat[46]),
     .Y(_0355_)
@@ -6587,8 +6440,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0357_)
   );
   sky130_fd_sc_hd__a21oi_1 _0837_ (
-    .A1(route_sel_flat[42]),
-    .A2(_0194_),
+    .A1(_0194_),
+    .A2(route_sel_flat[42]),
     .B1(_0357_),
     .Y(_0358_)
   );
@@ -6599,8 +6452,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(west_out[5])
   );
   sky130_fd_sc_hd__nand2_1 _0839_ (
-    .A(route_sel_flat[48]),
-    .B(route_sel_flat[49]),
+    .A(route_sel_flat[49]),
+    .B(route_sel_flat[48]),
     .Y(_0359_)
   );
   sky130_fd_sc_hd__a21boi_0 _0840_ (
@@ -6616,8 +6469,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0361_)
   );
   sky130_fd_sc_hd__nand2_1 _0842_ (
-    .A(route_sel_flat[51]),
-    .B(route_sel_flat[50]),
+    .A(route_sel_flat[50]),
+    .B(route_sel_flat[51]),
     .Y(_0362_)
   );
   sky130_fd_sc_hd__a311o_1 _0843_ (
@@ -6629,8 +6482,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .X(_0363_)
   );
   sky130_fd_sc_hd__a21oi_1 _0844_ (
-    .A1(route_sel_flat[51]),
-    .A2(route_sel_flat[50]),
+    .A1(route_sel_flat[50]),
+    .A2(route_sel_flat[51]),
     .B1(east_in[6]),
     .Y(_0364_)
   );
@@ -6647,8 +6500,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0366_)
   );
   sky130_fd_sc_hd__o22ai_1 _0847_ (
-    .A1(route_sel_flat[51]),
-    .A2(route_sel_flat[50]),
+    .A1(route_sel_flat[50]),
+    .A2(route_sel_flat[51]),
     .B1(_0202_),
     .B2(route_sel_flat[54]),
     .Y(_0367_)
@@ -6673,8 +6526,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0369_)
   );
   sky130_fd_sc_hd__a21oi_1 _0851_ (
-    .A1(_0204_),
-    .A2(route_sel_flat[49]),
+    .A1(route_sel_flat[49]),
+    .A2(_0205_),
     .B1(_0369_),
     .Y(_0370_)
   );
@@ -6685,15 +6538,15 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(east_out[6])
   );
   sky130_fd_sc_hd__o22ai_1 _0853_ (
-    .A1(_0200_),
-    .A2(route_sel_flat[50]),
+    .A1(route_sel_flat[50]),
+    .A2(_0200_),
     .B1(route_sel_flat[55]),
     .B2(route_sel_flat[54]),
     .Y(_0371_)
   );
   sky130_fd_sc_hd__a21oi_1 _0854_ (
-    .A1(route_sel_flat[48]),
-    .A2(_0205_),
+    .A1(_0204_),
+    .A2(route_sel_flat[48]),
     .B1(_0371_),
     .Y(_0372_)
   );
@@ -6706,13 +6559,13 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
   sky130_fd_sc_hd__o22ai_1 _0856_ (
     .A1(route_sel_flat[52]),
     .A2(_0201_),
-    .B1(route_sel_flat[48]),
-    .B2(route_sel_flat[49]),
+    .B1(route_sel_flat[49]),
+    .B2(route_sel_flat[48]),
     .Y(_0373_)
   );
   sky130_fd_sc_hd__a21oi_1 _0857_ (
-    .A1(_0200_),
-    .A2(route_sel_flat[50]),
+    .A1(route_sel_flat[50]),
+    .A2(_0200_),
     .B1(_0373_),
     .Y(_0374_)
   );
@@ -7142,8 +6995,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0431_)
   );
   sky130_fd_sc_hd__nand2_1 _0928_ (
-    .A(route_sel_flat[80]),
-    .B(route_sel_flat[81]),
+    .A(route_sel_flat[81]),
+    .B(route_sel_flat[80]),
     .Y(_0432_)
   );
   sky130_fd_sc_hd__nor2_1 _0929_ (
@@ -7185,8 +7038,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0437_)
   );
   sky130_fd_sc_hd__a21oi_1 _0935_ (
-    .A1(_0228_),
-    .A2(route_sel_flat[81]),
+    .A1(route_sel_flat[81]),
+    .A2(_0229_),
     .B1(_0437_),
     .Y(_0438_)
   );
@@ -7204,8 +7057,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0439_)
   );
   sky130_fd_sc_hd__a21oi_1 _0938_ (
-    .A1(route_sel_flat[80]),
-    .A2(_0229_),
+    .A1(_0228_),
+    .A2(route_sel_flat[80]),
     .B1(_0439_),
     .Y(_0440_)
   );
@@ -7218,8 +7071,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
   sky130_fd_sc_hd__o22ai_1 _0940_ (
     .A1(route_sel_flat[84]),
     .A2(_0225_),
-    .B1(route_sel_flat[80]),
-    .B2(route_sel_flat[81]),
+    .B1(route_sel_flat[81]),
+    .B2(route_sel_flat[80]),
     .Y(_0441_)
   );
   sky130_fd_sc_hd__a21oi_1 _0941_ (
@@ -7512,8 +7365,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .X(_0480_)
   );
   sky130_fd_sc_hd__nand2_1 _0989_ (
-    .A(route_sel_flat[107]),
-    .B(route_sel_flat[106]),
+    .A(route_sel_flat[106]),
+    .B(route_sel_flat[107]),
     .Y(_0481_)
   );
   sky130_fd_sc_hd__a221o_1 _0990_ (
@@ -7525,8 +7378,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .X(_0482_)
   );
   sky130_fd_sc_hd__a21oi_1 _0991_ (
-    .A1(route_sel_flat[107]),
-    .A2(route_sel_flat[106]),
+    .A1(route_sel_flat[106]),
+    .A2(route_sel_flat[107]),
     .B1(east_in[13]),
     .Y(_0483_)
   );
@@ -7543,8 +7396,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0485_)
   );
   sky130_fd_sc_hd__o22ai_1 _0994_ (
-    .A1(route_sel_flat[107]),
-    .A2(route_sel_flat[106]),
+    .A1(route_sel_flat[106]),
+    .A2(route_sel_flat[107]),
     .B1(_0244_),
     .B2(route_sel_flat[110]),
     .Y(_0486_)
@@ -7581,8 +7434,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(east_out[13])
   );
   sky130_fd_sc_hd__o22ai_1 _1000_ (
-    .A1(_0242_),
-    .A2(route_sel_flat[106]),
+    .A1(route_sel_flat[106]),
+    .A2(_0242_),
     .B1(route_sel_flat[111]),
     .B2(route_sel_flat[110]),
     .Y(_0490_)
@@ -7607,8 +7460,8 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0492_)
   );
   sky130_fd_sc_hd__a21oi_1 _1004_ (
-    .A1(_0242_),
-    .A2(route_sel_flat[106]),
+    .A1(route_sel_flat[106]),
+    .A2(_0242_),
     .B1(_0492_),
     .Y(_0493_)
   );
@@ -8232,7 +8085,7 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0560_)
   );
   sky130_fd_sc_hd__o21ai_0 _1113_ (
-    .A1(_0193_),
+    .A1(_0192_),
     .A2(en),
     .B1(_0560_),
     .Y(_0032_)
@@ -8243,7 +8096,7 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0561_)
   );
   sky130_fd_sc_hd__o21ai_0 _1115_ (
-    .A1(_0192_),
+    .A1(_0193_),
     .A2(en),
     .B1(_0561_),
     .Y(_0033_)
@@ -8254,7 +8107,7 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0562_)
   );
   sky130_fd_sc_hd__a21oi_1 _1117_ (
-    .A1(_0192_),
+    .A1(_0193_),
     .A2(en),
     .B1(_0562_),
     .Y(_0034_)
@@ -8408,7 +8261,7 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0576_)
   );
   sky130_fd_sc_hd__o21ai_0 _1145_ (
-    .A1(_0204_),
+    .A1(_0205_),
     .A2(en),
     .B1(_0576_),
     .Y(_0048_)
@@ -8419,7 +8272,7 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0577_)
   );
   sky130_fd_sc_hd__o21ai_0 _1147_ (
-    .A1(_0205_),
+    .A1(_0204_),
     .A2(en),
     .B1(_0577_),
     .Y(_0049_)
@@ -8430,7 +8283,7 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0578_)
   );
   sky130_fd_sc_hd__a21oi_1 _1149_ (
-    .A1(_0205_),
+    .A1(_0204_),
     .A2(en),
     .B1(_0578_),
     .Y(_0050_)
@@ -8760,7 +8613,7 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0608_)
   );
   sky130_fd_sc_hd__o21ai_0 _1209_ (
-    .A1(_0228_),
+    .A1(_0229_),
     .A2(en),
     .B1(_0608_),
     .Y(_0080_)
@@ -8771,7 +8624,7 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0609_)
   );
   sky130_fd_sc_hd__o21ai_0 _1211_ (
-    .A1(_0229_),
+    .A1(_0228_),
     .A2(en),
     .B1(_0609_),
     .Y(_0081_)
@@ -8782,7 +8635,7 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .Y(_0610_)
   );
   sky130_fd_sc_hd__a21oi_1 _1213_ (
-    .A1(_0229_),
+    .A1(_0228_),
     .A2(en),
     .B1(_0610_),
     .Y(_0082_)
@@ -10051,198 +9904,198 @@ module \$paramod\SB\WIDTH=s32'00000000000000000000000000010000 (north_in, north_
     .SET_B(nrst)
   );
   assign config_data_out = route_sel_flat[127];
-  assign \rot_dir$func$source/SB.sv:100$11130.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11142.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11154.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11166.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11178.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11190.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11202.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11214.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11226.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11238.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11250.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11262.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11274.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11286.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11298.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:100$11310.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11119.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11131.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11143.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11155.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11167.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11179.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11191.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11203.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11215.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11227.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11239.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11251.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11263.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11275.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11287.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:80$11299.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11120.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11132.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11144.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11156.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11168.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11180.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11192.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11204.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11216.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11228.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11240.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11252.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11264.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11276.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11288.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:81$11300.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11121.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11133.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11145.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11157.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11169.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11181.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11193.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11205.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11217.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11229.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11241.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11253.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11265.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11277.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11289.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:82$11301.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11122.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11134.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11146.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11158.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11170.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11182.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11194.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11206.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11218.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11230.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11242.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11254.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11266.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11278.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11290.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:86$11302.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11123.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11135.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11147.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11159.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11171.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11183.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11195.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11207.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11219.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11231.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11243.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11255.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11267.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11279.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11291.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:87$11303.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11124.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11136.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11148.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11160.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11172.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11184.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11196.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11208.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11220.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11232.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11244.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11256.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11268.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11280.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11292.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:88$11304.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11125.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11137.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11149.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11161.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11173.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11185.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11197.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11209.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11221.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11233.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11245.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11257.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11269.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11281.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11293.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:92$11305.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11126.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11138.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11150.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11162.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11174.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11186.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11198.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11210.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11222.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11234.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11246.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11258.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11270.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11282.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11294.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:93$11306.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11127.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11139.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11151.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11163.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11175.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11187.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11199.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11211.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11223.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11235.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11247.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11259.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11271.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11283.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11295.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:94$11307.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11128.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11140.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11152.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11164.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11176.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11188.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11200.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11212.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11224.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11236.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11248.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11260.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11272.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11284.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11296.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:98$11308.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11129.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11141.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11153.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11165.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11177.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11189.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11201.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11213.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11225.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11237.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11249.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11261.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11273.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11285.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11297.turn  = 2'bxx;
-  assign \rot_dir$func$source/SB.sv:99$11309.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11392.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11404.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11416.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11428.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11440.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11452.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11464.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11476.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11488.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11500.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11512.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11524.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11536.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11548.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11560.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:100$11572.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11381.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11393.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11405.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11417.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11429.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11441.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11453.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11465.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11477.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11489.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11501.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11513.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11525.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11537.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11549.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:80$11561.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11382.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11394.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11406.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11418.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11430.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11442.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11454.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11466.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11478.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11490.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11502.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11514.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11526.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11538.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11550.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:81$11562.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11383.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11395.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11407.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11419.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11431.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11443.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11455.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11467.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11479.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11491.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11503.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11515.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11527.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11539.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11551.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:82$11563.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11384.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11396.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11408.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11420.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11432.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11444.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11456.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11468.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11480.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11492.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11504.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11516.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11528.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11540.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11552.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:86$11564.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11385.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11397.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11409.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11421.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11433.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11445.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11457.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11469.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11481.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11493.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11505.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11517.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11529.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11541.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11553.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:87$11565.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11386.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11398.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11410.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11422.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11434.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11446.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11458.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11470.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11482.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11494.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11506.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11518.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11530.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11542.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11554.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:88$11566.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11387.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11399.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11411.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11423.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11435.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11447.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11459.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11471.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11483.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11495.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11507.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11519.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11531.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11543.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11555.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:92$11567.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11388.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11400.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11412.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11424.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11436.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11448.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11460.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11472.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11484.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11496.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11508.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11520.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11532.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11544.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11556.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:93$11568.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11389.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11401.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11413.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11425.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11437.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11449.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11461.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11473.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11485.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11497.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11509.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11521.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11533.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11545.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11557.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:94$11569.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11390.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11402.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11414.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11426.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11438.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11450.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11462.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11474.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11486.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11498.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11510.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11522.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11534.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11546.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11558.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:98$11570.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11391.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11403.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11415.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11427.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11439.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11451.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11463.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11475.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11487.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11499.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11511.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11523.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11535.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11547.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11559.turn  = 2'bxx;
+  assign \rot_dir$func$source/SB.sv:99$11571.turn  = 2'bxx;
   assign route_sel = route_sel_flat;
 endmodule
 
@@ -10367,7 +10220,7 @@ module \$paramod\fpgacell\BUS_WIDTH=s32'00000000000000000000000000010000 (clk, e
     .leout1B(leout1B),
     .nrst(nrst)
   );
-  \$paramod\LE\LUT_SIZE=s32'00000000000000000000000000010000  LE_0A (
+  \$paramod\LE\LUT_SIZE=s32'00000000000000000000000000001001  LE_0A (
     .LEIdvn(lein0A_LEIdvn),
     .clk(clk),
     .config_data_in(config_data_in),
@@ -10382,7 +10235,7 @@ module \$paramod\fpgacell\BUS_WIDTH=s32'00000000000000000000000000010000 (clk, e
     .selCB(lein0A_CB),
     .selLEI(lein0A_LEI)
   );
-  \$paramod\LE\LUT_SIZE=s32'00000000000000000000000000010000  LE_0B (
+  \$paramod\LE\LUT_SIZE=s32'00000000000000000000000000001001  LE_0B (
     .LEIdvn(lein0B_LEIdvn),
     .clk(clk),
     .config_data_in(le_east_cram_out),
@@ -10397,7 +10250,7 @@ module \$paramod\fpgacell\BUS_WIDTH=s32'00000000000000000000000000010000 (clk, e
     .selCB(lein0B_CB),
     .selLEI(lein0B_LEI)
   );
-  \$paramod\LE\LUT_SIZE=s32'00000000000000000000000000010000  LE_1A (
+  \$paramod\LE\LUT_SIZE=s32'00000000000000000000000000001001  LE_1A (
     .LEIdvn(lein1A_LEIdvn),
     .clk(clk),
     .config_data_in(le_north_cram_out),
@@ -10412,7 +10265,7 @@ module \$paramod\fpgacell\BUS_WIDTH=s32'00000000000000000000000000010000 (clk, e
     .selCB(lein1A_CB),
     .selLEI(lein1A_LEI)
   );
-  \$paramod\LE\LUT_SIZE=s32'00000000000000000000000000010000  LE_1B (
+  \$paramod\LE\LUT_SIZE=s32'00000000000000000000000000001001  LE_1B (
     .LEIdvn(lein1B_LEIdvn),
     .clk(clk),
     .config_data_in(le_south_cram_out),
