@@ -17,7 +17,7 @@ module LE_tb;
   logic le_out;
 
   // DUT
-  LE #(.LUT_SIZE(LUT_SIZE)) dut (
+  LE dut (
     .*
   );
 
@@ -44,10 +44,10 @@ module LE_tb;
     end
   endtask
 
-  task cram(logic [(LUT_SIZE + 1) - 1:0] data);
+  task cram(logic [(LUT_SIZE + 4) - 1:0] data);
     begin
       config_en = 1; //allow configuration
-      for (int i = LUT_SIZE + 1; i > 0; i --) begin
+      for (int i = LUT_SIZE + 4; i > 0; i --) begin
         clk = 0;
         config_data_in = data[i - 1]; //MSB first
         #0.01;
@@ -81,8 +81,8 @@ module LE_tb;
     $dumpvars(0, LE_tb);
 
     $display("Starting testbench...");
-    le_reset();
     reset();
+    le_reset();
     test_case = 0;
 
     // ==========================
@@ -90,7 +90,8 @@ module LE_tb;
     // ==========================
     $display("Test 1: Combinational mode");
     test_case = 1;
-    cram ({1'b0, xor_lut});
+    //MSB [ reset_edge | reset_val | edge_mode | reg_mode | LUT data ] LSB
+    cram ({4'b0010, xor_lut});
     for (int i = 0; i < LUT_SIZE; i++) begin
       selCB = i;
       #1; // allow propagation
@@ -104,9 +105,49 @@ module LE_tb;
     // =======================
     // TEST 2: Registered Mode
     // =======================
-    $display("Test 2: Registered (DFF) mode");
+    $display("Test 2: Registered (DFF) posedge, reset0");
     test_case = 2;
-    cram({1'b1, xor_lut});
+    //MSB [ reset_edge | reset_val | edge_mode | reg_mode | LUT data ] LSB
+    cram ({4'b0011, xor_lut});
+
+    for (int i = 0; i < LUT_SIZE; i++) begin
+      selCB = i;
+      #2;
+    end
+
+    le_reset();
+    reset();
+
+    $display("Test 2: Registered (DFF) negedge, reset0");
+    test_case = 2;
+    //MSB [ reset_edge | reset_val | edge_mode | reg_mode | LUT data ] LSB
+    cram ({4'b0001, xor_lut});
+
+    for (int i = 0; i < LUT_SIZE; i++) begin
+      selCB = i;
+      #2;
+    end
+
+    le_reset();
+    reset();
+
+    $display("Test 2: Registered (DFF) posedge, reset1");
+    test_case = 2;
+    //MSB [ reset_edge | reset_val | edge_mode | reg_mode | LUT data ] LSB
+    cram ({4'b0111, xor_lut});
+
+    for (int i = 0; i < LUT_SIZE; i++) begin
+      selCB = i;
+      #2;
+    end
+
+    le_reset();
+    reset();
+
+    $display("Test 2: Registered (DFF) negedge, reset1");
+    test_case = 2;
+    //MSB [ reset_edge | reset_val | edge_mode | reg_mode | LUT data ] LSB
+    cram ({4'b0101, xor_lut});
 
     for (int i = 0; i < LUT_SIZE; i++) begin
       selCB = i;
@@ -121,7 +162,8 @@ module LE_tb;
     // =========================
     $display("Test 3: Registered mode, en=0 (hold)");
     test_case = 3;
-    cram({1'b1, 16'd1});
+    //MSB [ reset_edge | reset_val | edge_mode | reg_mode | LUT data ] LSB
+    cram ({4'b0011, 16'd1});
     #2
     selCB = 0;
     #1
@@ -131,13 +173,13 @@ module LE_tb;
     #10
     assert (le_out == 1) else
       $error("FAIL: DFF should hold value when en=0");
-
     // ====================================
     // TEST 4: previous tests driven by LEI
     // ====================================
 
     LEIdvn = '1;
-    cram ({1'b0, xor_lut});
+    //MSB [ reset_edge | reset_val | edge_mode | reg_mode | LUT data ] LSB
+    cram ({1'b1,1'b0,1'b1,1'b0, xor_lut});
     for (int i = 0; i < LUT_SIZE; i++) begin
       selLEI = i;
       #1; // allow propagation
@@ -149,7 +191,8 @@ module LE_tb;
     reset();
 
     LEIdvn = '1;
-    cram({1'b1, xor_lut});
+    //MSB [ reset_edge | reset_val | edge_mode | reg_mode | LUT data ] LSB
+    cram ({1'b1,1'b0,1'b1,1'b1, xor_lut});
 
     for (int i = 0; i < LUT_SIZE; i++) begin
       selLEI = i;
@@ -160,7 +203,8 @@ module LE_tb;
     reset();
 
     LEIdvn = '1;
-    cram({1'b1, 16'd1});
+    //MSB [ reset_edge | reset_val | edge_mode | reg_mode | LUT data ] LSB
+    cram ({1'b1,1'b0,1'b1,1'b1, 16'd1});
     #2
     selLEI = 0;
     #1
