@@ -4,7 +4,7 @@ module LE #(
     LUT_SIZE = 16 //number of look up table values
 )(
   //CRAM signals
-  input logic clk, en, nrst,
+  input logic clk, nrst,
   input logic config_data_in, config_en,
   output logic config_data_out,
 
@@ -25,7 +25,7 @@ logic [(LUT_SIZE + 4) - 1:0] config_data; //LUT data + operation mode
 always @(posedge clk, negedge nrst) begin
   if (~nrst) begin
     config_data <= {4'b0010, 16'b0};
-  end else if (en && config_en) begin
+  end else if (config_en) begin
     config_data <= {config_data[(LUT_SIZE + 4) - 2:0], config_data_in};
   end
 end

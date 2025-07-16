@@ -5,7 +5,7 @@ module CB #(
   parameter LE_INPUTS = 4
 )(
   //CRAM signals
-  input logic clk, en, nrst,
+  input logic clk, nrst,
   input logic config_en,
   input logic config_data_inA, config_data_inB,
   output logic config_data_outA, config_data_outB,
@@ -33,7 +33,7 @@ module CB #(
     if (~nrst) begin
       config_dataA <= '1; //check if this is correct
       config_dataB <= '1; //check if this is correct
-    end else if (en && config_en) begin
+    end else if (config_en) begin
       config_dataA <= {config_dataA[($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 2:0], config_data_inA};
       config_dataB <= {config_dataB[($clog2(WIDTH + 2)) * (LE_INPUTS + LE_OUTPUTS) - 2:0], config_data_inB};
     end
@@ -72,33 +72,25 @@ module CB #(
   generate
     for (i = 0; i < LE_INPUTS; i++) begin : input_mux
       always_comb begin
-        if (config_en || !nrst) begin
-          le_inA[i] = 1'b0; //avoid driving LE if configuring
+        if (config_mux_selA[i] == SEL_BITS'(CONST_0)) begin
+          le_inA[i] = 1'b0;
+        end else if (config_mux_selA[i] == SEL_BITS'(CONST_1)) begin
+          le_inA[i] = 1'b1;
+        end else if ((config_mux_selA[i]) < WIDTH) begin
+          le_inA[i] = sb_bus_in[config_mux_selA[i]] | cb_bus_in[config_mux_selA[i]]; //may need to rework bus muxing logic
         end else begin
-          if (config_mux_selA[i] == SEL_BITS'(CONST_0)) begin
-            le_inA[i] = 1'b0;
-          end else if (config_mux_selA[i] == SEL_BITS'(CONST_1)) begin
-            le_inA[i] = 1'b1;
-          end else if ((config_mux_selA[i]) < WIDTH) begin
-            le_inA[i] = sb_bus_in[config_mux_selA[i]] | cb_bus_in[config_mux_selA[i]]; //may need to rework bus muxing logic
-          end else begin
-            le_inA[i] = 0;
-          end
+          le_inA[i] = 0;
         end
       end
       always_comb begin
-        if (config_en || !nrst) begin
-          le_inB[i] = 1'b0; //avoid driving LE if configuring
+        if (config_mux_selB[i] == SEL_BITS'(CONST_0)) begin
+          le_inB[i] = 1'b0;
+        end else if (config_mux_selB[i] == SEL_BITS'(CONST_1)) begin
+          le_inB[i] = 1'b1;
+        end else if ((config_mux_selB[i]) < WIDTH) begin
+          le_inB[i] = sb_bus_in[config_mux_selB[i]] | cb_bus_in[config_mux_selB[i]]; //may need to rework bus muxing logic
         end else begin
-          if (config_mux_selB[i] == SEL_BITS'(CONST_0)) begin
-            le_inB[i] = 1'b0;
-          end else if (config_mux_selB[i] == SEL_BITS'(CONST_1)) begin
-            le_inB[i] = 1'b1;
-          end else if ((config_mux_selB[i]) < WIDTH) begin
-            le_inB[i] = sb_bus_in[config_mux_selB[i]] | cb_bus_in[config_mux_selB[i]]; //may need to rework bus muxing logic
-          end else begin
-            le_inB[i] = 0;
-          end
+          le_inB[i] = 0;
         end
       end
 
@@ -120,18 +112,18 @@ module CB #(
 
       genvar j;
       for (j = 0; j < WIDTH; j++) begin : bus_drive
-        assign sb_bus_out[j] = (!config_en && nrst) ? (
+        assign sb_bus_out[j] = (
           (selA == SEL_BITS'(j)) ? le_out[i*2 + 0] :
           (selB == SEL_BITS'(j)) ? le_out[i*2 + 1] :
           cb_bus_in[j] ? cb_bus_in[j] : //incoming bus has last priority
           1'b0 //removed tristate
-          ) : 1'b0;
-        assign cb_bus_out[j] = (!config_en && nrst) ? (
+          );
+        assign cb_bus_out[j] = (
           (selA == SEL_BITS'(j)) ? le_out[i*2 + 0] :
           (selB == SEL_BITS'(j)) ? le_out[i*2 + 1] :
           sb_bus_in[j] ? sb_bus_in[j] : //incoming bus has last priority
           1'b0 //removed tristate
-          ) : 1'b0;
+          );
       end
     end
   endgenerate

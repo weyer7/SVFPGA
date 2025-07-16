@@ -2,7 +2,7 @@
 module LEI #(
   parameter int LE_INPUTS = 4
 )(
-  input logic clk, en, nrst, config_en,
+  input logic clk, nrst, config_en,
   input logic config_data_in,
   output logic config_data_out,
 
@@ -18,7 +18,7 @@ module LEI #(
   always_ff @(posedge clk, negedge nrst) begin
     if (~nrst) begin
       config_data <= '0;
-    end else if (en && config_en) begin
+    end else if (config_en) begin
       config_data <= {config_data[CFG_BITS - 2:0], config_data_in};
     end
   end
@@ -49,7 +49,7 @@ module LEI #(
         //flat_index = ((j * 4) + i) * 3
         logic [2:0] sel;
         sel = config_data[(((j << 2) + i) * 3) +: 3];
-        if (sel < 3'd4 && !config_en) begin
+        if (sel < 3'd4) begin
           concat_inputs[i][j] = le_outputs[sel];
           // input_drv[i][j]     = 1'b1;
         end else begin

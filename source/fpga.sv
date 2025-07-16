@@ -4,7 +4,7 @@ module fpga #(
     BUS_WIDTH = 16
 )(
   //CRAM signals
-  input logic clk, en, nrst, config_en,
+  input logic clk, nrst, config_en,
   input logic config_data_in,
   output logic config_data_out,
 
@@ -44,7 +44,7 @@ module fpga #(
   fpgacell #(.BUS_WIDTH(BUS_WIDTH)) cell0 
   (
     //CRAM signals
-    .clk(clk), .en(en), .nrst(nrst), .config_en(config_en),
+    .clk(clk), .nrst(nrst), .config_en(config_en),
     .config_data_in(config_data_in), .config_data_out(cell0_cram_out),
     //configurable logic signals
     .le_clk(clk), .le_en(le_en), .le_nrst(le_nrst),
@@ -59,7 +59,7 @@ module fpga #(
   fpgacell #(.BUS_WIDTH(BUS_WIDTH)) cell1
   (
     //CRAM signals
-    .clk(clk), .en(en), .nrst(nrst), .config_en(config_en),
+    .clk(clk), .nrst(nrst), .config_en(config_en),
     .config_data_in(cell0_cram_out), .config_data_out(cell1_cram_out),
     //configurable logic signals
     .le_clk(clk), .le_en(le_en), .le_nrst(le_nrst),
@@ -74,7 +74,7 @@ module fpga #(
   fpgacell #(.BUS_WIDTH(BUS_WIDTH)) cell2
   (
     //CRAM signals
-    .clk(clk), .en(en), .nrst(nrst), .config_en(config_en),
+    .clk(clk), .nrst(nrst), .config_en(config_en),
     .config_data_in(cell1_cram_out), .config_data_out(cell2_cram_out),
     //configurable logic signals
     .le_clk(clk), .le_en(le_en), .le_nrst(le_nrst),
@@ -89,7 +89,7 @@ module fpga #(
   fpgacell #(.BUS_WIDTH(BUS_WIDTH)) cell3
   (
     //CRAM signals
-    .clk(clk), .en(en), .nrst(nrst), .config_en(config_en),
+    .clk(clk), .nrst(nrst), .config_en(config_en),
     .config_data_in(cell2_cram_out), .config_data_out(config_data_out),
     //configurable logic signals
     .le_clk(clk), .le_en(le_en), .le_nrst(le_nrst),
