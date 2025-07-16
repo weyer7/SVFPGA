@@ -36,7 +36,7 @@ module SB #(
   always_ff @(posedge clk, negedge nrst) begin
     if (~nrst) begin
       route_sel_flat <= {CFG_BITS{'1}}; //make sure this is good
-    end else if (en) begin
+    end else if (en && config_en) begin
       route_sel_flat <= {route_sel_flat[WIDTH * 4 * 2 - 2:0], config_data_in};
     end
   end

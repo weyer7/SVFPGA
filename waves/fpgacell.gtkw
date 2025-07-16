@@ -1,21 +1,21 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Sun Jul 13 03:38:18 2025
+[*] Sun Jul 13 16:42:23 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpgacell.vcd"
-[dumpfile_mtime] "Sun Jul 13 03:37:13 2025"
-[dumpfile_size] 975764
+[dumpfile_mtime] "Sun Jul 13 16:42:00 2025"
+[dumpfile_size] 973255
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpgacell.gtkw"
 [timestart] 0
-[size] 1274 949
-[pos] 1984 26
-*-25.683485 92100000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[size] 1326 949
+[pos] 687 26
+*-25.595612 52000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] fpgacell_tb.
 [treeopen] fpgacell_tb.dut.
 [sst_width] 233
 [signals_width] 166
 [sst_expanded] 1
-[sst_vpaned_height] 332
+[sst_vpaned_height] 336
 @200
 -Test Case
 @420

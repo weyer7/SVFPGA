@@ -9,7 +9,8 @@ module fpga #(
   output logic config_data_out,
 
   //configurable logic signals
-  input logic le_clk, le_en, le_nrst,
+  input logic /*le_clk,*/ 
+  le_en, le_nrst,
   //NORTH
   input logic [BUS_WIDTH * 2 - 1:0] io_north_in,
   output logic [BUS_WIDTH * 2 - 1:0] io_north_out,
@@ -46,7 +47,7 @@ module fpga #(
     .clk(clk), .en(en), .nrst(nrst), .config_en(config_en),
     .config_data_in(config_data_in), .config_data_out(cell0_cram_out),
     //configurable logic signals
-    .le_clk(le_clk), .le_en(le_en), .le_nrst(le_nrst),
+    .le_clk(clk), .le_en(le_en), .le_nrst(le_nrst),
 
     //NORTH
     .CBnorth_in(bus2_0), .CBnorth_out(bus0_2),
@@ -61,7 +62,7 @@ module fpga #(
     .clk(clk), .en(en), .nrst(nrst), .config_en(config_en),
     .config_data_in(cell0_cram_out), .config_data_out(cell1_cram_out),
     //configurable logic signals
-    .le_clk(le_clk), .le_en(le_en), .le_nrst(le_nrst),
+    .le_clk(clk), .le_en(le_en), .le_nrst(le_nrst),
 
     //NORTH
     .CBnorth_in(bus3_1), .CBnorth_out(bus1_3),
@@ -76,7 +77,7 @@ module fpga #(
     .clk(clk), .en(en), .nrst(nrst), .config_en(config_en),
     .config_data_in(cell1_cram_out), .config_data_out(cell2_cram_out),
     //configurable logic signals
-    .le_clk(le_clk), .le_en(le_en), .le_nrst(le_nrst),
+    .le_clk(clk), .le_en(le_en), .le_nrst(le_nrst),
 
     //NORTH
     .CBnorth_in(io_north_in[BUS_WIDTH - 1:0]), .CBnorth_out(north0_out), //top level IO
@@ -91,7 +92,7 @@ module fpga #(
     .clk(clk), .en(en), .nrst(nrst), .config_en(config_en),
     .config_data_in(cell2_cram_out), .config_data_out(config_data_out),
     //configurable logic signals
-    .le_clk(le_clk), .le_en(le_en), .le_nrst(le_nrst),
+    .le_clk(clk), .le_en(le_en), .le_nrst(le_nrst),
 
     //NORTH
     .CBnorth_in(io_north_in[BUS_WIDTH * 2 - 1:BUS_WIDTH]), .CBnorth_out(north1_out), //top level IO

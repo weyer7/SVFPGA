@@ -1,19 +1,19 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Sun Jul 13 01:51:04 2025
+[*] Tue Jul 15 20:01:50 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpga.vcd"
-[dumpfile_mtime] "Sun Jul 13 01:50:42 2025"
-[dumpfile_size] 6854020
+[dumpfile_mtime] "Tue Jul 15 20:00:56 2025"
+[dumpfile_size] 15591777
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpga.gtkw"
 [timestart] 0
-[size] 1274 949
+[size] 1920 1043
 [pos] -1 -1
-*-26.444475 107300000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-[sst_width] 214
-[signals_width] 174
+*-25.672922 260500000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 233
+[signals_width] 198
 [sst_expanded] 1
-[sst_vpaned_height] 278
+[sst_vpaned_height] 282
 @200
 -CRAM signals
 @28
@@ -26,13 +26,47 @@ fpga_tb.config_en
 @200
 -LE inputs
 @28
-fpga_tb.le_clk
 fpga_tb.le_en
 fpga_tb.le_nrst
 @200
 -FPGA IO
-@22
+@c00022
 fpga_tb.io_south_in[31:0]
+@28
+(0)fpga_tb.io_south_in[31:0]
+(1)fpga_tb.io_south_in[31:0]
+(2)fpga_tb.io_south_in[31:0]
+(3)fpga_tb.io_south_in[31:0]
+(4)fpga_tb.io_south_in[31:0]
+(5)fpga_tb.io_south_in[31:0]
+(6)fpga_tb.io_south_in[31:0]
+(7)fpga_tb.io_south_in[31:0]
+(8)fpga_tb.io_south_in[31:0]
+(9)fpga_tb.io_south_in[31:0]
+(10)fpga_tb.io_south_in[31:0]
+(11)fpga_tb.io_south_in[31:0]
+(12)fpga_tb.io_south_in[31:0]
+(13)fpga_tb.io_south_in[31:0]
+(14)fpga_tb.io_south_in[31:0]
+(15)fpga_tb.io_south_in[31:0]
+(16)fpga_tb.io_south_in[31:0]
+(17)fpga_tb.io_south_in[31:0]
+(18)fpga_tb.io_south_in[31:0]
+(19)fpga_tb.io_south_in[31:0]
+(20)fpga_tb.io_south_in[31:0]
+(21)fpga_tb.io_south_in[31:0]
+(22)fpga_tb.io_south_in[31:0]
+(23)fpga_tb.io_south_in[31:0]
+(24)fpga_tb.io_south_in[31:0]
+(25)fpga_tb.io_south_in[31:0]
+(26)fpga_tb.io_south_in[31:0]
+(27)fpga_tb.io_south_in[31:0]
+(28)fpga_tb.io_south_in[31:0]
+(29)fpga_tb.io_south_in[31:0]
+(30)fpga_tb.io_south_in[31:0]
+(31)fpga_tb.io_south_in[31:0]
+@1401200
+-group_end
 @800022
 fpga_tb.io_south_out[31:0]
 @28
@@ -44,9 +78,7 @@ fpga_tb.io_south_out[31:0]
 (5)fpga_tb.io_south_out[31:0]
 (6)fpga_tb.io_south_out[31:0]
 (7)fpga_tb.io_south_out[31:0]
-@29
 (8)fpga_tb.io_south_out[31:0]
-@28
 (9)fpga_tb.io_south_out[31:0]
 (10)fpga_tb.io_south_out[31:0]
 (11)fpga_tb.io_south_out[31:0]
@@ -69,8 +101,14 @@ fpga_tb.io_south_out[31:0]
 (28)fpga_tb.io_south_out[31:0]
 (29)fpga_tb.io_south_out[31:0]
 (30)fpga_tb.io_south_out[31:0]
+@29
 (31)fpga_tb.io_south_out[31:0]
 @1001200
 -group_end
+@28
+LE_0A.le_out
+LE_0B.le_out
+LE_1A.le_out
+LE_1B.le_out
 [pattern_trace] 1
 [pattern_trace] 0

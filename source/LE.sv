@@ -9,7 +9,7 @@ module LE #(
   output logic config_data_out,
 
   input logic le_clk, le_en, le_nrst,
-  input logic [$clog2(LUT_SIZE) - 1:0] selCB, selLEI, LEIdvn, //select lines of the LE's LUT
+  input logic [$clog2(LUT_SIZE) - 1:0] selCB, selLEI, //select lines of the LE's LUT
   output logic le_out
 );
 // The logic element, or LE of an FPGA is what defines the FPGA's behavior.
@@ -78,7 +78,7 @@ logic [$clog2(LUT_SIZE) - 1:0] select;
 assign mux_data = config_data[(LUT_SIZE + 1) - 2:0];
 always_comb begin
   for (int i = 0; i < $clog2(LUT_SIZE); i ++) begin
-    select[i] = LEIdvn[i] ? selLEI[i] : selCB[i];
+    select[i] = selLEI[i] | selCB[i];
   end
 end
 assign mux_out = mux_data[select];
