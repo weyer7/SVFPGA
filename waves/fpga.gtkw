@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Tue Jul 15 20:01:50 2025
+[*] Wed Jul 16 18:37:29 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpga.vcd"
-[dumpfile_mtime] "Tue Jul 15 20:00:56 2025"
-[dumpfile_size] 15591777
+[dumpfile_mtime] "Wed Jul 16 18:32:21 2025"
+[dumpfile_size] 71019154
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/fpga.gtkw"
 [timestart] 0
-[size] 1920 1043
+[size] 1728 958
 [pos] -1 -1
-*-25.672922 260500000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-25.873051 133900000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [sst_width] 233
 [signals_width] 198
 [sst_expanded] 1
@@ -81,7 +81,9 @@ fpga_tb.io_south_out[31:0]
 (8)fpga_tb.io_south_out[31:0]
 (9)fpga_tb.io_south_out[31:0]
 (10)fpga_tb.io_south_out[31:0]
+@29
 (11)fpga_tb.io_south_out[31:0]
+@28
 (12)fpga_tb.io_south_out[31:0]
 (13)fpga_tb.io_south_out[31:0]
 (14)fpga_tb.io_south_out[31:0]
@@ -101,14 +103,8 @@ fpga_tb.io_south_out[31:0]
 (28)fpga_tb.io_south_out[31:0]
 (29)fpga_tb.io_south_out[31:0]
 (30)fpga_tb.io_south_out[31:0]
-@29
 (31)fpga_tb.io_south_out[31:0]
 @1001200
 -group_end
-@28
-LE_0A.le_out
-LE_0B.le_out
-LE_1A.le_out
-LE_1B.le_out
 [pattern_trace] 1
 [pattern_trace] 0

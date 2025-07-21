@@ -69,7 +69,7 @@ module SB #(
     for (i = 0; i < WIDTH; i++) begin : wire_loop
 
       // Determine who is driving the bus. Priority logic avoids contention
-      assign wire_bus[i] = 
+      assign wire_bus[i] = config_en ? 1'b0 :
           (route_sel[i][DIR_N] != 2'b11) ? north_in[i] :
           (route_sel[i][DIR_E] != 2'b11) ? east_in[i]  :
           (route_sel[i][DIR_S] != 2'b11) ? south_in[i] :
