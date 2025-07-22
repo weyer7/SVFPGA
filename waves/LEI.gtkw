@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Thu Jul 10 03:10:04 2025
+[*] Tue Jul 22 23:09:41 2025
 [*]
 [dumpfile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/LEI.vcd"
-[dumpfile_mtime] "Thu Jul 10 03:07:41 2025"
-[dumpfile_size] 24010
+[dumpfile_mtime] "Tue Jul 22 23:09:03 2025"
+[dumpfile_size] 247984
 [savefile] "/home/shay/a/weyer7/System_Verilog/Projects/FPGA/lab-project-template/waves/LEI.gtkw"
 [timestart] 0
 [size] 1728 958
 [pos] 1939 0
-*-23.055504 24140000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-33.045864 23400000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [sst_width] 233
 [signals_width] 166
 [sst_expanded] 1
@@ -25,21 +25,6 @@ LEI_tb.config_data_in
 LEI_tb.config_data_out
 @200
 -Drive signals
-@22
-LEI_tb.drvLE0A[3:0]
-LEI_tb.drvLE0B[3:0]
-LEI_tb.drvLE1A[3:0]
-@c00022
-LEI_tb.drvLE1B[3:0]
-@28
-(0)LEI_tb.drvLE1B[3:0]
-(1)LEI_tb.drvLE1B[3:0]
-(2)LEI_tb.drvLE1B[3:0]
-(3)LEI_tb.drvLE1B[3:0]
-@1401200
--group_end
-@200
--LE inputs
 @800022
 LEI_tb.lein0A[3:0]
 @28
@@ -67,17 +52,15 @@ LEI_tb.lein1A[3:0]
 (3)LEI_tb.lein1A[3:0]
 @1001200
 -group_end
-@800022
+@800023
 LEI_tb.lein1B[3:0]
-@28
+@29
 (0)LEI_tb.lein1B[3:0]
 (1)LEI_tb.lein1B[3:0]
 (2)LEI_tb.lein1B[3:0]
 (3)LEI_tb.lein1B[3:0]
-@1001200
+@1001201
 -group_end
-@201
--LE outputs
 @28
 LEI_tb.leout0A
 LEI_tb.leout0B

@@ -4,7 +4,7 @@
 module LEI_tb;
 
   localparam int LE_INPUTS = 4;
-  localparam CFG_BITS = LE_INPUTS * 4 * 3;
+  localparam CFG_BITS = LE_INPUTS * 4 * 4;
 
   //CRAM signals
   logic clk, en, nrst;
@@ -12,7 +12,7 @@ module LEI_tb;
   logic config_en;
 
   //    [from]            [  input index  ] [LE#]       
-  logic [LE_INPUTS * 4 * 3 - 1:0] config_data;
+  logic [LE_INPUTS * 4 * 4 - 1:0] config_data;
   logic leout0A, leout0B, leout1A, leout1B;
   logic [LE_INPUTS - 1:0]drvLE0A, drvLE0B, drvLE1A, drvLE1B;
 
@@ -20,6 +20,8 @@ module LEI_tb;
 
   //outputs
   logic [LE_INPUTS - 1:0] lein0A, lein0B, lein1A, lein1B;
+
+  logic [3:0] ccw_in, ccw_out, cw_in, cw_out;
 
   // DUT
   LEI dut (
@@ -75,16 +77,16 @@ module LEI_tb;
     end
   endtask
 
-  logic [2:0] config_dataup [LE_INPUTS - 1:0] [3:0];
+  logic [3:0] config_dataup [LE_INPUTS - 1:0] [3:0];
 
   task automatic flatten_config_data();
   //   input  logic [2:0] config_data [LE_INPUTS - 1:0][3:0],
-  //   output logic [LE_INPUTS * 4 * 3 - 1:0] config_packed
+  //   output logic [LE_INPUTS * 4 * 4 - 1:0] config_packed
   // );
     config_data = '0;
     for (int j = 0; j < LE_INPUTS; j++) begin
       for (int i = 0; i < 4; i++) begin
-        config_data[(j * 4 + i) * 3 +: 3] = config_dataup[j][i];
+        config_data[(j * 4 + i) * 4 +: 4] = config_dataup[j][i];
       end
     end
   endtask
@@ -115,7 +117,7 @@ module LEI_tb;
     // TEST CASE 2: 4 drivers to same LE
     // =================================
     clear_signals();
-    test_case = 2; //2 drivers to same LE
+    test_case = 2; //4 drivers to same LE
 
     config_dataup[0][0] = 1;
     config_dataup[1][0] = 2;
