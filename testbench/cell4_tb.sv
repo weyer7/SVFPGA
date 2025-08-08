@@ -1,6 +1,6 @@
 `default_nettype none
 `timescale 1us/1ps
-module fpga_tb;
+module cell4_tb;
   //make sure to update parameters inside DUT if simming from syn
   parameter BUS_WIDTH = 16;
   parameter LE_INPUTS = 4;
@@ -196,7 +196,7 @@ module fpga_tb;
   int test_case;
   int sub_test;
 
-  fpga #(
+  cell4 #(
     // .LE_LUT_SIZE(LE_LUT_SIZE),
     // .LE_INPUTS(LE_INPUTS),
     // .LE_OUTPUTS(LE_OUTPUTS),
@@ -218,8 +218,8 @@ module fpga_tb;
   // MAIN TEST SEQUENCE
   //=========================================================================
   initial begin
-    $dumpfile("waves/fpga.vcd");
-    $dumpvars(0, fpga_tb);
+    $dumpfile("waves/cell4.vcd");
+    $dumpvars(0, cell4_tb);
     $display("[TEST] Starting 4-cell FPGA test with width = %0d", BUS_WIDTH);
     test_case = 0;
     sub_test = 0;

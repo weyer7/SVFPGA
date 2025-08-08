@@ -1,5 +1,5 @@
 `default_nettype none
-module fpga #(
+module cell4 #(
   parameter
     BUS_WIDTH = 16
 )(
