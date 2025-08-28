@@ -41,7 +41,7 @@ assign config_data_out = config_data[(LUT_SIZE + 4) - 1];
 (*keep*)logic reset_val; //async reset value
 (*keep*)logic reset_mode; //reset edge sensitivity mode
 (*keep*)logic sel_reset; //selected reset signal
-always_comb begin
+always @(*) begin
   edge_mode = config_data[LUT_SIZE + 1];
   reset_val = config_data[LUT_SIZE + 2];
   reset_mode = config_data[LUT_SIZE + 3];

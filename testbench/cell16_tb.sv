@@ -1,15 +1,17 @@
 `default_nettype none
 `timescale 1us/1ps
-module fpgacell_tb;
+module cell16_tb;
   //make sure to update parameters inside DUT if simming from syn
-  parameter BUS_WIDTH = 8;
+  parameter BUS_WIDTH = 16;
   parameter LE_INPUTS = 4;
   parameter LE_OUTPUTS = 1;
   parameter LE_LUT_SIZE = 16;
 
+  //single cell signals
   localparam SEL_BITS  = $clog2(BUS_WIDTH + 2);
   //                     [  Switch Box ]   [             Connection Box              ]   [ LE Interconnect ]     [   Logic Element   ]
   localparam CFG_BITS = ((BUS_WIDTH*4*2) + (4 * ((LE_INPUTS + LE_OUTPUTS) * SEL_BITS)) + (LE_INPUTS * 4 * 3) + 4 * (LE_LUT_SIZE + 4));
+  logic [CFG_BITS - 1:0] blank_cram;
  
   // ========TOP-LEVEL IO==========//
   //CRAM signals                   
@@ -17,19 +19,19 @@ module fpgacell_tb;
   logic config_data_in, config_en; 
   logic config_data_out;           
   //configurable logic signals     
-  logic le_clk, le_en, le_nrst;    
+  logic /*le_clk,*/ le_en, le_nrst;    
   //cardinal busses                
-  logic [BUS_WIDTH - 1:0] CBnorth_in;
-  logic [BUS_WIDTH - 1:0] CBnorth_out;
+  logic [BUS_WIDTH * 4 - 1:0] io_north_in;
+  logic [BUS_WIDTH * 4 - 1:0] io_north_out;
 
-  logic [BUS_WIDTH - 1:0] SBsouth_in;  
-  logic [BUS_WIDTH - 1:0] SBsouth_out;
+  logic [BUS_WIDTH * 4 - 1:0] io_south_in;  
+  logic [BUS_WIDTH * 4 - 1:0] io_south_out;
 
-  logic [BUS_WIDTH - 1:0] CBeast_in;
-  logic [BUS_WIDTH - 1:0] CBeast_out;
+  logic [BUS_WIDTH * 4 - 1:0] io_east_in;
+  logic [BUS_WIDTH * 4 - 1:0] io_east_out;
 
-  logic [BUS_WIDTH - 1:0] SBwest_in;
-  logic [BUS_WIDTH - 1:0] SBwest_out;
+  logic [BUS_WIDTH * 4 - 1:0] io_west_in;
+  logic [BUS_WIDTH * 4 - 1:0] io_west_out;
   // ==============================//
 
   // ====================================================================
@@ -84,7 +86,6 @@ module fpgacell_tb;
 
   logic [((LE_INPUTS + LE_OUTPUTS) * SEL_BITS) - 1:0] config_data0A, config_data0B, config_data1A, config_data1B;
   logic [(LE_INPUTS * 4 * 3) - 1:0] lei_config;
-  //MSB [ reset_edge | reset_val | edge_mode | reg_mode ] LSB
   logic [3:0] mode1A, mode0A, mode1B, mode0B;
   logic [LE_LUT_SIZE - 1:0] lut_data1A, lut_data0A, lut_data1B, lut_data0B;
 
@@ -133,7 +134,7 @@ module fpgacell_tb;
       config_en = 1;
       for (int i = CFG_BITS; i > 0; i--) begin
         clk = 0;
-        config_data_in = data[i-1];
+        config_data_in = data[i - 1];
         #0.01;
         clk = 1;
         #0.01;
@@ -143,16 +144,21 @@ module fpgacell_tb;
       config_data_in = 0;
     end
   endtask
-  // <==MSB [SB] [CB1B CB1A] [CB0B CB0A] [LEI] [LE1B LE1A] [LE0B LE0A] LSB==>
+  /*
+   <==MSB [SB] [CB1B CB1A] [CB0B CB0A] [LEI] [LE1B LE1A] [LE0B LE0A] LSB==>
 
-  //  ___   ____   ___________
-  // |CB0|-[LE0B]-|    LEI    |
-  // |___|-[LE0A]-|___________|
-  //  _|________   _|__   __|_
-  // |          | [LE1A] [LE1B]
-  // |    SB    |  _|_______|_
-  // |          |-|    CB1    |
-  // |__________| |___________|
+  Physical Layout:
+    ___   ____   ___________
+   |   |-[LE0B]-|           |
+   |CB0|  ____  |    LEI    |
+   |___|-[LE0A]-|___________|
+    _|________   _|__   __|_
+   |          | [LE1A] [LE1B]
+   |    SB    |  _|_______|_
+   |          |-|    CB1    |
+   |__________| |___________|
+
+  */
 
   task automatic clear_signals();
     begin
@@ -165,7 +171,8 @@ module fpgacell_tb;
       nrst = 1;
       // {north_drv, south_drv, east_drv, west_drv} = '0;
       // {north_ena, south_ena, east_ena, west_ena} = '0;
-      {CBnorth_in, SBsouth_in, CBeast_in, SBwest_in} = '0;
+      lei_config = '0;
+      {io_north_in, io_south_in, io_east_in, io_west_in} = '0;
       {config_data0A, config_data0B, config_data1A, config_data1B} = '1; // Disabled
       route_sel_flat = {BUS_WIDTH*4*2{'1}}; //disabled
       for (int i = 0; i < BUS_WIDTH; i ++) begin
@@ -189,18 +196,25 @@ module fpgacell_tb;
   int test_case;
   int sub_test;
 
-  fpgacell #(
-    .LE_LUT_SIZE(LE_LUT_SIZE),
-    .LE_INPUTS(LE_INPUTS),
-    .LE_OUTPUTS(LE_OUTPUTS),
-    .BUS_WIDTH(BUS_WIDTH)
+  cell16 #(
+    // .LE_LUT_SIZE(LE_LUT_SIZE),
+    // .LE_INPUTS(LE_INPUTS),
+    // .LE_OUTPUTS(LE_OUTPUTS),
+    // .BUS_WIDTH(BUS_WIDTH)
     )dut(
       .* 
     );
 
     always begin
       #1;
-      le_clk = ~le_clk;
+      if (~config_en) begin
+        clk = ~clk;
+      end
+    end
+
+    always begin
+      #5
+      $display("time (us) : %4d", $time);
     end
   
   logic error; //error status
@@ -209,13 +223,14 @@ module fpgacell_tb;
   // MAIN TEST SEQUENCE
   //=========================================================================
   initial begin
-    $dumpfile("waves/fpgacell.vcd");
-    $dumpvars(0, fpgacell_tb);
-    $display("[TEST] Starting FPGA cell test with width = %0d", BUS_WIDTH);
+    $dumpfile("waves/cell16.vcd");
+    $dumpvars(0, cell16_tb);
+    $display("[TEST] Starting 4-cell FPGA test with width = %0d", BUS_WIDTH);
     test_case = 0;
     sub_test = 0;
     clear_signals();
-    le_clk = 0;
+    blank_cram = cram_data;
+    clk = 0;
     error = 0;
     nrst = 0;
     #1;
@@ -247,6 +262,14 @@ module fpgacell_tb;
     //CRAM
     flatten_route_sel();
     flatten_lei_data();
+    repeat  (3) begin
+      repeat (4) begin
+        cram(blank_cram);
+      end
+    end
+    repeat (3) begin
+      cram(blank_cram);
+    end
     cram(cram_data);
     // #5;
 
@@ -255,7 +278,7 @@ module fpgacell_tb;
     // south_ena[0] = 1;
     // west_ena[1] = 1;
     for (int i = 0; i < 4; i ++) begin
-      {SBwest_in[1], SBsouth_in[0]} = i[1:0];
+      {io_west_in[1], io_south_in[0]} = i[1:0];
       #1;
     end
     // west_drv[1] = 0;
@@ -269,12 +292,19 @@ module fpgacell_tb;
 
     flatten_route_sel();
     flatten_lei_data();
+    repeat  (3) begin
+      repeat (4) begin
+        cram(blank_cram);
+      end
+    end
+    repeat (3) begin
+      cram(blank_cram);
+    end
     cram(cram_data);
-
     // south_ena[3] = 1;
     sub_test = 4;//3-input operation with rest unspecified
     for (int i = 0; i < 8; i ++) begin
-      {SBsouth_in[3], SBwest_in[1], SBsouth_in[0]} = i[2:0];
+      {io_south_in[3], io_west_in[1], io_south_in[0]} = i[2:0];
       #1;
     end
 
@@ -318,8 +348,15 @@ module fpgacell_tb;
     //now, CRAM
     flatten_route_sel();
     flatten_lei_data();
+    repeat  (3) begin
+      repeat (4) begin
+        cram(blank_cram);
+      end
+    end
+    repeat (3) begin
+      cram(blank_cram);
+    end
     cram(cram_data);
-
     sub_test = 2; //logic element nrst
     le_nrst = 0;
     #1
@@ -333,35 +370,35 @@ module fpgacell_tb;
     // south_drv[1] = 0;
     // south_drv[2] = 0;
 
-    @(negedge le_clk); //synchronize
+    @(negedge clk); //synchronize
 
-    SBsouth_in[2] = 1;
+    io_south_in[2] = 1;
     #2;
-    SBsouth_in[2] = 0;
+    io_south_in[2] = 0;
     #4; //test hold
     //reset
-    SBsouth_in[1] = 1;
+    io_south_in[1] = 1;
     #2;
-    SBsouth_in[1] = 0;
+    io_south_in[1] = 0;
     #4; //test hold
-    SBsouth_in[2] = 1; //toggle
-    SBsouth_in[1] = 1;
+    io_south_in[2] = 1; //toggle
+    io_south_in[1] = 1;
     #2;
-    SBsouth_in[1] = 0;
-    SBsouth_in[2] = 0;
+    io_south_in[1] = 0;
+    io_south_in[2] = 0;
     #4; //test hold
-    SBsouth_in[2] = 1; //toggle again
-    SBsouth_in[1] = 1;
+    io_south_in[2] = 1; //toggle again
+    io_south_in[1] = 1;
     #2;
     sub_test = 4; //disabled 
     le_en = 0;
     #4;
     le_en = 1;
     #8; //four toggles
-    SBsouth_in[1] = 0;
-    SBsouth_in[2] = 0;    
+    io_south_in[1] = 0;
+    io_south_in[2] = 0;    
     #4; //test hold
-    SBsouth_in[2] = 1; //set
+    io_south_in[2] = 1; //set
     #2;
     sub_test = 4; //mid_operation reset
     le_nrst = 0;
@@ -419,14 +456,21 @@ module fpgacell_tb;
     //CRAM
     flatten_route_sel();
     flatten_lei_data();
+    repeat  (3) begin
+      repeat (4) begin
+        cram(blank_cram);
+      end
+    end
+    repeat (3) begin
+      cram(blank_cram);
+    end
     cram(cram_data);
-
     sub_test = 2;
     // south_ena[2:0] = '1;
     for (int i = 0; i < 8; i ++) begin
-      SBsouth_in[2:0] = i[2:0];
+      io_south_in[2:0] = i[2:0];
       #1;
-      if (SBsouth_in[2] + SBsouth_in[1] + SBsouth_in[0] != SBsouth_out[4:3]) begin
+      if (io_south_in[2] + io_south_in[1] + io_south_in[0] != io_south_out[4:3]) begin
         $display("Test %d .%d :%d FAIL", test_case[4:0], sub_test[4:0], i[4:0]);
         error = 1;
       end
@@ -443,7 +487,7 @@ module fpgacell_tb;
     clear_signals();
 
     //SIGNAL: [A0][A1][B0][B1][Cin]  [Cout0]  [S0][S1][Cout]
-    //INDEX:  [0] [1] [2] [3]  [4]     [x]    [5] [6]  [7]
+    //INDEX:  [0] [1] [2] [3]  [4]     [5]    [6] [7]  [8]
 
     //reconfigure old FA
     lut_data0A = 16'b10010110_10010110;
@@ -464,10 +508,10 @@ module fpgacell_tb;
     // route_sel_unpacked[3][2] = 2'd1;
     route_sel_unpacked[4][2] = 2'd1;
 
-    set_config_mux0A(LE_INPUTS, 5); //s0
+    set_config_mux0A(LE_INPUTS, 6); //s0
     // set_config_mux0B(LE_INPUTS, 5); //cout0
 
-    route_sel_unpacked[5][0] = 2'd1; //connect outputs to SB south
+    route_sel_unpacked[6][0] = 2'd1; //connect outputs to SB south
     // route_sel_unpacked[5][0] = 2'd1; //don't need; internal signal only
 
     //configure the remaining two LEs
@@ -482,7 +526,7 @@ module fpgacell_tb;
     // set_config_mux1B(0,5);
     lei_dataup[0][2] = 3'd1;
     lei_dataup[0][3] = 3'd1;
-    // route_sel_unpacked[5][0] = 2'd2; //Cout from fa1 turns left into Cin of fa2
+    route_sel_unpacked[5][0] = 2'd2; //Cout from fa1 turns left into Cin of fa2
 
     set_config_mux1A(1,1); //A1
     set_config_mux1B(1,1);
@@ -493,13 +537,21 @@ module fpgacell_tb;
     route_sel_unpacked[3][2] = 2'd0; //south[3] turns right into B1 inputs
 
     //and finally, the outputs:
-    set_config_mux1A(LE_INPUTS, 6); //sum1
-    set_config_mux1B(LE_INPUTS, 7); //cout
-    route_sel_unpacked[6][1] = 2'd2; //sum2 turns left and goes south
-    route_sel_unpacked[7][1] = 2'd2;
+    set_config_mux1A(LE_INPUTS, 7); //sum1
+    set_config_mux1B(LE_INPUTS, 8); //cout
+    route_sel_unpacked[7][1] = 2'd2; //sum2 turns left and goes south
+    route_sel_unpacked[8][1] = 2'd2;
 
     flatten_route_sel();
     flatten_lei_data();
+    repeat  (3) begin
+      repeat (4) begin
+        cram(blank_cram);
+      end
+    end
+    repeat (3) begin
+      cram(blank_cram);
+    end
     cram(cram_data);
     sub_test = 4;
 
@@ -507,16 +559,17 @@ module fpgacell_tb;
     // south_ena[4:0] = '1;
     for (int i = 0; i < 32; i ++) begin
       // [Cin][B1][B0][A1][A0]
-      SBsouth_in[4:0] = i[4:0];
+      io_south_in[4:0] = i[4:0];
       #1;
-      if ({2'd0, i[4]} + i[3:2] + i[1:0] == SBsouth_out[7:5]) begin
+      if ({2'd0, i[4]} + i[3:2] + i[1:0] == io_south_out[8:6]) begin
         // $display("Test %d PASS", i[4:0]);
       end else begin
-        $display("Test %d .%d :%d FAIL", test_case[4:0], sub_test[4:0], i[4:0]);
+        $display("Test %d .%d :%d FAIL. exp = %d, got %d", test_case[4:0], sub_test[4:0], i[4:0], {2'd0, i[4]} + i[3:2] + i[1:0], io_north_out[8:0]);
         error = 1;
       end
     end
     if (error) begin
+      error = 0;
       $display("Test %d FAIL", test_case[4:0]);
       // $error;
       // $finish;
@@ -629,17 +682,25 @@ module fpgacell_tb;
 
     flatten_route_sel();
     flatten_lei_data();
+    repeat  (3) begin
+      repeat (4) begin
+        cram(blank_cram);
+      end
+    end
+    repeat (3) begin
+      cram(blank_cram);
+    end
     cram(cram_data);
     sub_test = 2;
     le_nrst = 0;
     #1;
-    @(posedge le_clk);
+    @(posedge clk);
     #0.1
     le_nrst = 1;
     for (int i = 0; i < 20; i ++) begin
-      @(negedge le_clk);
-      if (SBsouth_out[3:0] != i % 16) begin
-        $display("Test %d .%d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], SBsouth_out[3:0]);
+      @(negedge clk);
+      if (io_south_out[3:0] != i % 16) begin
+        $display("Test %d .%d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], io_south_out[3:0]);
         error = 1;
       end
     end
@@ -720,12 +781,20 @@ module fpgacell_tb;
 
     flatten_route_sel();
     flatten_lei_data();
+    repeat  (3) begin
+      repeat (4) begin
+        cram(blank_cram);
+      end
+    end
+    repeat (3) begin
+      cram(blank_cram);
+    end
     cram(cram_data);
     sub_test = 4;
 
     le_nrst = 0;
     #1;
-    @(posedge le_clk);
+    @(posedge clk);
     #0.1;
     le_nrst = 1;
     #40;

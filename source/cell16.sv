@@ -1,7 +1,7 @@
 `default_nettype none
 module cell16 #(
   parameter
-    BUS_WIDTH = 14
+    BUS_WIDTH = 16
 )(
   //CRAM signals
   input logic clk, nrst, config_en,

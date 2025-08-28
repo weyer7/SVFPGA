@@ -1,7 +1,7 @@
 `default_nettype none
 module fpgacell #(
   parameter
-    BUS_WIDTH = 16,
+    BUS_WIDTH = 14,
     LE_INPUTS = 4,
     LE_OUTPUTS = 1,
     LE_LUT_SIZE = 16
