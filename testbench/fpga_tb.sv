@@ -760,6 +760,438 @@ module fpga_tb;
     #40;
 
     $display("[TEST] Completed");
+
+    // ====================================
+    // TEST 5: USING MORE THAN ONE CLB
+    // ====================================
+
+    test_case = 5;
+    sub_test = 1;
+    clear_signals();
+    //four-bit counter
+
+    //SIGNAL: [Q3][Q2][Q1][Q0]
+    //INDEX:  [3] [2] [1] [0]
+    /*
+    Q0_n = ~Q0
+
+    |Q0|Q0n|
+    |0 | 1 |
+    |1 | 0 |
+    */
+    lut_data0A = 16'b01_01_01_01_01_01_01_01; //repeat 8 times to ignore MSBs
+    mode0A = 4'b0011; //registered
+    // set_config_mux0A(0, 0);
+    lei_dataup[0][0] = 0;
+    set_config_mux0A(1, CONST_0);
+    set_config_mux0A(2, CONST_0);
+    set_config_mux0A(3, CONST_0);
+    route_sel_unpacked[0][0] = 2'd1; //straight to south
+    set_config_mux0A(LE_INPUTS, 0);
+    /*
+    Q1_n = Q1 ^ Q0
+
+    |Q1|Q0|Q1n|
+    |0 |0 | 0 |
+    |0 |1 | 1 |
+    |1 |0 | 1 |
+    |1 |1 | 0 |
+    */
+    lut_data0B = 16'b0110_0110_0110_0110; //repeated to ignore MSBs
+    mode0B = 4'b0011; //registered
+    // set_config_mux0B(0, 0);
+    // set_config_mux0B(1, 1);
+    lei_dataup[0][1] = 0;
+    lei_dataup[1][1] = 1;
+    set_config_mux0B(2, CONST_0);
+    set_config_mux0B(3, CONST_0);
+    route_sel_unpacked[1][0] = 2'd1;
+    set_config_mux0B(LE_INPUTS, 1);
+    /*
+    Q2_n = Q2 ^ (Q1 & Q0)
+
+    |Q2|Q1|Q0|Q2n|
+    |0 |0 |0 | 0 |
+    |0 |0 |1 | 0 |
+    |0 |1 |0 | 0 |
+    |0 |1 |1 | 1 |
+    |1 |0 |0 | 1 |
+    |1 |0 |1 | 1 |
+    |1 |1 |0 | 1 |
+    |1 |1 |1 | 0 |
+    */
+    lut_data1A = 16'b01111000_01111000;
+    mode1A = 4'b0011; //registered
+    // set_config_mux1A(0, 0);
+    // set_config_mux1A(1, 1);
+    // set_config_mux1A(2, 2);
+    lei_dataup[0][2] = 0;
+    lei_dataup[1][2] = 1;
+    lei_dataup[2][2] = 2;
+    set_config_mux1A(3, CONST_0);
+    route_sel_unpacked[2][1] = 2'd2;
+    set_config_mux1A(LE_INPUTS, 2);
+
+    /*
+    Q3_n = Q3 ^ (Q2 & Q1 & Q0)
+
+    |Q3|Q2|Q1|Q0|Q3n|
+    |0 |0 |0 |0 | 0 |
+    |0 |0 |0 |1 | 0 |
+    |0 |0 |1 |0 | 0 |
+    |0 |0 |1 |1 | 0 |
+    |0 |1 |0 |0 | 0 |
+    |0 |1 |0 |1 | 0 |
+    |0 |1 |1 |0 | 0 |
+    |0 |1 |1 |1 | 1 |
+    |1 |0 |0 |0 | 1 |
+    |1 |0 |0 |1 | 1 |
+    |1 |0 |1 |0 | 1 |
+    |1 |0 |1 |1 | 1 |
+    |1 |1 |0 |0 | 1 |
+    |1 |1 |0 |1 | 1 |
+    |1 |1 |1 |0 | 1 |
+    |1 |1 |1 |1 | 0 |
+    */
+    lut_data1B = 16'b0111111110000000;
+    mode1B = 4'b0011; //registered
+    // set_config_mux1B(0, 0);
+    // set_config_mux1B(1, 1);
+    // set_config_mux1B(2, 2);
+    // set_config_mux1B(3, 3);
+    lei_dataup[0][3] = 0;
+    lei_dataup[1][3] = 1;
+    lei_dataup[2][3] = 2;
+    lei_dataup[3][3] = 3;
+    route_sel_unpacked[3][1] = 2'd2;
+    set_config_mux1B(LE_INPUTS, 3);
+
+    flatten_route_sel();
+    flatten_lei_data();
+
+    cram(blank_cram);
+    cram(cram_data);
+    cram(blank_cram);
+
+    //configure cell1 as a passthrough
+    clear_signals();
+    //idx, from, to
+    //NESW
+    route_sel_unpacked[0][0] = 2'b01;
+    route_sel_unpacked[1][0] = 2'b01;
+    route_sel_unpacked[2][0] = 2'b01;
+    route_sel_unpacked[3][0] = 2'b01;
+
+    flatten_route_sel();
+    flatten_lei_data();
+
+    cram(cram_data);
+
+    sub_test = 2;
+    le_nrst = 0;
+    #1;
+    @(posedge clk);
+    #0.1
+    le_nrst = 1;
+    for (int i = 0; i < 20; i ++) begin
+      @(negedge clk);
+      if (io_south_out[3:0] != i % 16) begin
+        $display("Test %d .%d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], io_south_out[3:0]);
+        error = 1;
+      end
+    end
+    if (error) begin
+      // $error;
+      // $finish;
+    end else begin
+      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+    end
+
+
+
+
+    //cramming two chained counters
+
+    //configure cell3 as pulse generator
+
+    /*
+      if all bits of count from cell 2 are high, generate pulse
+      first LE: 4-input AND
+      second LE: registered output of first LE
+      third LE: high if first LE is high and second LE is low
+      fourth LE: N/A
+    */
+
+    clear_signals();
+
+    //first LE
+    lut_data0A = 16'h8000; //4-input AND
+    mode0A = 4'h2; //combinational
+    set_config_mux0A(0, 0); //LE0A[0] = north[0]
+    set_config_mux0A(1, 1); //LE0A[1] = north[1]
+    set_config_mux0A(2, 2); //LE0A[2] = north[2]
+    set_config_mux0A(3, 3); //LE0A[3] = north[3]
+
+    //route from cell 2 to north bus
+    route_sel_unpacked[0][3] = 2'b10; //north[0] = east[0]
+    route_sel_unpacked[1][3] = 2'b10; //north[1] = east[1]
+    route_sel_unpacked[2][3] = 2'b10; //north[2] = east[2]
+    route_sel_unpacked[3][3] = 2'b10; //north[3] = east[3]
+    //don't use LEI for inputs for this LE
+
+    //second LE
+    lut_data0B = 16'hAAAA;
+    mode0B = 4'h3; //registered
+    //configure LE0B inputs
+    //[idx][LEin#] = [LEout#]
+    lei_dataup[0][1] = 0; //LE0B[0] = LE0A
+    set_config_mux0B(1, CONST_0);
+    set_config_mux0B(2, CONST_0);
+    set_config_mux0B(3, CONST_0);
+
+    //third LE
+    /*
+    B|A|F
+    0|0|0
+    0|1|1
+    1|0|0
+    1|1|0
+    */
+    lut_data1A = 16'h2222;
+    mode1A = 4'h2; //combinational
+
+    //configure LE1A inputs
+    lei_dataup[0][2] = 0; //LE1A[0] = LE0A
+    lei_dataup[1][2] = 1; //LE1A[1] = LE0B
+    set_config_mux1A(2, CONST_0);
+    set_config_mux1A(3, CONST_0);
+
+    //route output
+    set_config_mux1A(LE_INPUTS, 8); //connect to east bus
+
+    //route straight from east[8] to south[8]
+    route_sel_unpacked[8][1] = 2'b10;
+
+    //cram
+    flatten_lei_data();
+    flatten_route_sel();
+    cram(cram_data);
+
+    sub_test ++;
+
+    //configure cell 2 as a four-bit counter
+    clear_signals();
+
+    lut_data0A = 16'b01_01_01_01_01_01_01_01; //repeat 8 times to ignore MSBs
+    mode0A = 4'b0011; //registered
+    lei_dataup[0][0] = 0;
+    set_config_mux0A(1, CONST_0);
+    set_config_mux0A(2, CONST_0);
+    set_config_mux0A(3, CONST_0);
+    route_sel_unpacked[0][0] = 2'd1; //straight to south
+    set_config_mux0A(LE_INPUTS, 0);
+    lut_data0B = 16'b0110_0110_0110_0110; //repeated to ignore MSBs
+    mode0B = 4'b0011; //registered
+    lei_dataup[0][1] = 0;
+    lei_dataup[1][1] = 1;
+    set_config_mux0B(2, CONST_0);
+    set_config_mux0B(3, CONST_0);
+    route_sel_unpacked[1][0] = 2'd1;
+    set_config_mux0B(LE_INPUTS, 1);
+    lut_data1A = 16'b01111000_01111000;
+    mode1A = 4'b0011; //registered
+    lei_dataup[0][2] = 0;
+    lei_dataup[1][2] = 1;
+    lei_dataup[2][2] = 2;
+    set_config_mux1A(3, CONST_0);
+    route_sel_unpacked[2][1] = 2'd2;
+    set_config_mux1A(LE_INPUTS, 2);
+    lut_data1B = 16'b0111111110000000;
+    mode1B = 4'b0011; //registered
+    lei_dataup[0][3] = 0;
+    lei_dataup[1][3] = 1;
+    lei_dataup[2][3] = 2;
+    lei_dataup[3][3] = 3;
+    route_sel_unpacked[3][1] = 2'd2;
+    set_config_mux1B(LE_INPUTS, 3);
+
+    //route signals to east buss for cell3
+    route_sel_unpacked[0][2] = 2'b0; //route south[0] to east[0]
+    route_sel_unpacked[1][2] = 2'b0; //route south[1] to east[1]
+    route_sel_unpacked[2][2] = 2'b0; //route south[2] to east[2]
+    route_sel_unpacked[3][2] = 2'b0; //route south[3] to east[3]
+
+    flatten_route_sel();
+    flatten_lei_data();
+
+    cram(cram_data);
+    sub_test ++;
+
+    //configure cell1 as the edge detector bypass
+
+    clear_signals();
+
+    route_sel_unpacked[8][0] = 2'b00; //route north[8] to west[8]
+
+    //pulse generator for bit 8 of counter
+    lut_data1A = 16'h8000; //4-input AND
+    mode1A = 4'h2; //combinational
+
+    //set inputs
+    route_sel_unpacked[4][3] = 2'd1;
+    route_sel_unpacked[5][3] = 2'd1;
+    route_sel_unpacked[6][3] = 2'd1;
+    set_config_mux1A(0, 4);
+    set_config_mux1A(1, 5);
+    set_config_mux1A(2, 6);
+    route_sel_unpacked[8][3] = 2'b01; //west[8] = east[8]
+    set_config_mux1A(3, 8);
+
+    //route output
+    set_config_mux1A(LE_INPUTS, 9);
+    route_sel_unpacked[9][1] = 2'b01; //west[9] = east[9]
+
+    flatten_lei_data();
+    flatten_route_sel();
+
+    cram(cram_data);
+
+    sub_test ++;
+
+    //configure cell0 as the MSB 4-bit counter
+    clear_signals();
+    //route LSBs through
+    //idx, from, to
+    //NESW
+    route_sel_unpacked[0][0] = 2'b01;
+    route_sel_unpacked[1][0] = 2'b01;
+    route_sel_unpacked[2][0] = 2'b01;
+    route_sel_unpacked[3][0] = 2'b01;
+
+    //route edge pulse to north bus
+    route_sel_unpacked[8][1] = 2'b00; //right turn from east[8] to north[8]
+
+    //configure 0A to toggle on a pulse
+    /*
+    B|A|F
+    0|0|0
+    0|1|1
+    1|0|1
+    1|1|0
+    4'h6
+    */
+    lut_data0A = 16'h6666; //repeat 4 times to ignore MSBs
+    mode0A = 4'b0011; //registered
+
+    //set LE0A inputs
+    lei_dataup[0][0] = 0;
+    set_config_mux0A(1, 8);
+    set_config_mux0A(2, CONST_0);
+    set_config_mux0A(3, CONST_0);
+    route_sel_unpacked[4][0] = 2'b1; //straight to south
+    route_sel_unpacked[4][2] = 2'b00; //south to east
+
+    set_config_mux0A(LE_INPUTS, 4);
+
+    //configure LE0B
+    /*
+    E|Q|A|D
+    0|0|0|0
+    0|0|1|0
+    0|1|0|1
+    0|1|1|1
+    1|0|0|0
+    1|0|1|1
+    1|1|0|1
+    1|1|1|0
+    6C
+    */
+    lut_data0B = 16'h6C6C; //repeated to ignore MSBs
+    mode0B = 4'b0011; //registered
+    lei_dataup[0][1] = 0;
+    lei_dataup[1][1] = 1;
+    route_sel_unpacked[8][1] = 2'b00; //north[8] = east[8]
+    set_config_mux0B(2, 8);
+    set_config_mux0B(3, CONST_0);
+    route_sel_unpacked[5][0] = 2'b1;
+    route_sel_unpacked[5][2] = 2'b00;
+    set_config_mux0B(LE_INPUTS, 5);
+
+    //configure LE1A
+    /*
+    E|Q|B|A|D
+    0|0|0|0|0
+    0|0|0|1|0
+    0|0|1|0|0
+    0|0|1|1|0
+    0|1|0|0|1
+    0|1|0|1|1
+    0|1|1|0|1
+    0|1|1|1|1
+    1|0|0|0|0
+    1|0|0|1|0
+    1|0|1|0|0
+    1|0|1|1|1
+    1|1|0|0|1
+    1|1|0|1|1
+    1|1|1|0|1
+    1|1|1|1|0
+    78F0
+    */
+    lut_data1A = 16'h78F0;
+    mode1A = 4'b0011; //registered
+    lei_dataup[0][2] = 0;
+    lei_dataup[1][2] = 1;
+    lei_dataup[2][2] = 2;
+    set_config_mux1A(3, 8);
+    route_sel_unpacked[6][1] = 2'd2;
+    route_sel_unpacked[6][2] = 2'd0;
+    set_config_mux1A(LE_INPUTS, 6);
+
+    //configure LE1B
+    /*
+    E|Q|D
+    0|0|0
+    0|1|1
+    1|0|1
+    1|1|0
+    6
+    */
+    lut_data1B = 16'h6666;
+    mode1B = 4'b0011; //registered
+    lei_dataup[0][3] = 3;
+    set_config_mux1B(1, 9);
+    set_config_mux1B(2, CONST_0);
+    set_config_mux1B(3, CONST_0);
+    route_sel_unpacked[7][1] = 2'd2;
+    set_config_mux1B(LE_INPUTS, 7);
+
+    flatten_route_sel();
+    flatten_lei_data();
+
+    cram(cram_data);
+    sub_test ++;
+
+    le_nrst = 0;
+    #1;
+    @(posedge clk);
+    #0.1
+    le_nrst = 1;
+    for (int i = 0; i < 270; i ++) begin
+      @(negedge clk);
+      if (io_south_out[7:0] != i % 256) begin
+        $display("Test %d .%d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], io_south_out[3:0]);
+        error = 1;
+      end
+    end
+    if (error) begin
+      // $error;
+      // $finish;
+    end else begin
+      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+    end
+
+    sub_test = 3;
     $finish;
   end
 endmodule
