@@ -17,7 +17,8 @@ module fpga_tb;
   //CRAM signals                   
   logic clk, en, nrst;             
   logic config_data_in, config_en; 
-  logic config_data_out;           
+  logic config_data_out, cfg_done;
+  logic [1:0] cfg_error;           
   //configurable logic signals     
   logic /*le_clk,*/ le_en, le_nrst;    
   //cardinal busses                
@@ -1189,6 +1190,43 @@ module fpga_tb;
       // $finish;
     end else begin
       $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+    end
+
+    // ====================================
+    // TEST 6: INVALID CRAMs
+    // ====================================
+
+    test_case = 6;
+    sub_test = 1;
+    clear_signals();
+
+    //too short
+    repeat (3) cram(blank_cram);
+    repeat(5) @(negedge clk);
+    if (cfg_error == 1 && !cfg_done) begin
+      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+    end else begin
+      $display("Test %d .%d FAIL", test_case[4:0], sub_test[4:0]);
+    end
+
+    //too long
+    sub_test = 2;
+    repeat (5) cram(blank_cram);
+    repeat(5) @(negedge clk);
+    if (cfg_error == 2 && !cfg_done) begin
+      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+    end else begin
+      $display("Test %d .%d FAIL", test_case[4:0], sub_test[4:0]);
+    end
+
+    //test that blank cram still works
+    sub_test = 3;
+    repeat (4) cram(blank_cram);
+    repeat(5) @(negedge clk);
+    if (cfg_error == 0 && cfg_done) begin
+      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+    end else begin
+      $display("Test %d .%d FAIL", test_case[4:0], sub_test[4:0]);
     end
 
     sub_test = 3;

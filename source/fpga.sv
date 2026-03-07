@@ -6,7 +6,8 @@ module fpga #(
   //CRAM signals
   input logic clk, nrst, config_en,
   input logic config_data_in,
-  output logic config_data_out,
+  output logic config_data_out, cfg_done,
+  output logic [1:0] cfg_error,
 
   //configurable logic signals
   input logic /*le_clk,*/ 
@@ -27,6 +28,45 @@ module fpga #(
   input logic [BUS_WIDTH * 2 - 1:0] io_west_in,
   output logic [BUS_WIDTH * 2 - 1:0] io_west_out
 );
+  localparam CFG_BITS = 356 * 4 + 1 - 1;
+  logic [$clog2(CFG_BITS + 1) :0] config_bits, config_bits_d;
+  logic cfg_done_d, config_en_q;
+  logic [1:0] cfg_error_d;
+  always_ff @(posedge clk, negedge nrst) begin
+    if (!nrst) begin
+      config_bits <= '1;
+      cfg_done <= 0;
+      config_en_q <= 0;
+      cfg_error <= 3;
+    end else begin
+      config_bits <= config_bits_d;
+      cfg_done <= cfg_done_d;
+      config_en_q <= config_en;
+      cfg_error = cfg_error_d;
+    end
+  end
+
+  always_comb begin
+    config_bits_d = config_bits;
+    cfg_error_d = cfg_error;
+    cfg_done_d = 0;
+    cfg_error = 0;
+    if (config_en && !config_en_q) begin
+      config_bits_d = 1;
+    end else if (!config_en && config_en_q && (config_bits < CFG_BITS)) begin
+      cfg_error_d = 1;
+    end else if (!config_en && config_en_q && (config_bits > CFG_BITS)) begin
+      cfg_error_d = 2;
+    end else if (config_en) begin
+      config_bits_d ++;
+    end else if (config_bits == CFG_BITS) begin
+      cfg_done_d = 1;
+      cfg_error = 0;
+    end 
+  end
+  // assign cfg_done_d = (cfg_done || (config_bits == CFG_BITS)) && !(config_en && !config_en_q);
+  logic cfg_en;
+  assign cfg_en = config_en && !cfg_done;
 
   //intercell internal busses
   logic [BUS_WIDTH - 1:0] bus0_1, bus0_2, bus1_0, bus1_3, bus2_0, bus2_3, bus3_1, bus3_2;
@@ -44,7 +84,7 @@ module fpga #(
   fpgacell #(.BUS_WIDTH(BUS_WIDTH)) cell0 
   (
     //CRAM signals
-    .clk(clk), .nrst(nrst), .config_en(config_en),
+    .clk(clk), .nrst(nrst), .config_en(cfg_en),
     .config_data_in(config_data_in), .config_data_out(cell0_cram_out),
     //configurable logic signals
     .le_clk(clk), .le_en(le_en), .le_nrst(le_nrst),
@@ -59,7 +99,7 @@ module fpga #(
   fpgacell #(.BUS_WIDTH(BUS_WIDTH)) cell1
   (
     //CRAM signals
-    .clk(clk), .nrst(nrst), .config_en(config_en),
+    .clk(clk), .nrst(nrst), .config_en(cfg_en),
     .config_data_in(cell0_cram_out), .config_data_out(cell1_cram_out),
     //configurable logic signals
     .le_clk(clk), .le_en(le_en), .le_nrst(le_nrst),
@@ -74,7 +114,7 @@ module fpga #(
   fpgacell #(.BUS_WIDTH(BUS_WIDTH)) cell2
   (
     //CRAM signals
-    .clk(clk), .nrst(nrst), .config_en(config_en),
+    .clk(clk), .nrst(nrst), .config_en(cfg_en),
     .config_data_in(cell1_cram_out), .config_data_out(cell2_cram_out),
     //configurable logic signals
     .le_clk(clk), .le_en(le_en), .le_nrst(le_nrst),
@@ -89,7 +129,7 @@ module fpga #(
   fpgacell #(.BUS_WIDTH(BUS_WIDTH)) cell3
   (
     //CRAM signals
-    .clk(clk), .nrst(nrst), .config_en(config_en),
+    .clk(clk), .nrst(nrst), .config_en(cfg_en),
     .config_data_in(cell2_cram_out), .config_data_out(config_data_out),
     //configurable logic signals
     .le_clk(clk), .le_en(le_en), .le_nrst(le_nrst),

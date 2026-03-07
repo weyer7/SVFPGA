@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
-[*] Sat Mar  7 05:13:33 2026
+[*] Sat Mar  7 06:28:34 2026
 [*]
 [dumpfile] "/home/aweyer26/SVFPGA/waves/fpga.vcd"
-[dumpfile_mtime] "Sat Mar  7 05:13:16 2026"
-[dumpfile_size] 21635158
+[dumpfile_mtime] "Sat Mar  7 06:27:19 2026"
+[dumpfile_size] 22095218
 [savefile] "/home/aweyer26/SVFPGA/waves/fpga.gtkw"
 [timestart] 0
 [size] 2478 1203
 [pos] -1 -1
-*-26.627058 534200000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-26.627058 333200000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] fpga_tb.
 [treeopen] fpga_tb.dut.
 [sst_width] 276
@@ -25,6 +25,10 @@ fpga_tb.nrst
 fpga_tb.config_data_in
 fpga_tb.config_data_out
 fpga_tb.config_en
+@29
+fpga_tb.dut.cfg_done
+@28
+fpga_tb.dut.cfg_error[1:0]
 @200
 -LE inputs
 @28
