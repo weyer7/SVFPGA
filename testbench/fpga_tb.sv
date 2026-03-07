@@ -447,7 +447,7 @@ module fpga_tb;
       io_south_in[2:0] = i[2:0];
       #1;
       if (io_south_in[2] + io_south_in[1] + io_south_in[0] != io_south_out[4:3]) begin
-        $display("Test %d .%d :%d FAIL", test_case[4:0], sub_test[4:0], i[4:0]);
+        $display("Test %0d.%0d :%d FAIL", test_case[4:0], sub_test[4:0], i[4:0]);
         error = 1;
       end
     end
@@ -455,7 +455,7 @@ module fpga_tb;
       // $error;
       // $finish;
     end else begin
-      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+      $display("Test %0d.%0d PASS", test_case[4:0], sub_test[4:0]);
     end
 
     //two chained full-adders (no need to reconfigure the first one)
@@ -535,7 +535,7 @@ module fpga_tb;
       if ({2'd0, i[4]} + i[3:2] + i[1:0] == io_south_out[8:6]) begin
         // $display("Test %d PASS", i[4:0]);
       end else begin
-        $display("Test %d .%d :%d FAIL. exp = %d, got %d", test_case[4:0], sub_test[4:0], i[4:0], {2'd0, i[4]} + i[3:2] + i[1:0], io_north_out[8:0]);
+        $display("Test %0d.%0d :%d FAIL. exp = %d, got %d", test_case[4:0], sub_test[4:0], i[4:0], {2'd0, i[4]} + i[3:2] + i[1:0], io_north_out[8:0]);
         error = 1;
       end
     end
@@ -545,7 +545,7 @@ module fpga_tb;
       // $error;
       // $finish;
     end else begin
-      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+      $display("Test %0d.%0d PASS", test_case[4:0], sub_test[4:0]);
     end
     // ====================================
     // TEST 4: COMPLEX SEQUENTIAL OPERATION
@@ -666,7 +666,7 @@ module fpga_tb;
     for (int i = 0; i < 20; i ++) begin
       @(negedge clk);
       if (io_south_out[3:0] != i % 16) begin
-        $display("Test %d .%d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], io_south_out[3:0]);
+        $display("Test %0d.%0d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], io_south_out[3:0]);
         error = 1;
       end
     end
@@ -674,7 +674,7 @@ module fpga_tb;
       // $error;
       // $finish;
     end else begin
-      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+      $display("Test %0d.%0d PASS", test_case[4:0], sub_test[4:0]);
     end
 
     //grey code counter
@@ -759,8 +759,6 @@ module fpga_tb;
     #0.1;
     le_nrst = 1;
     #40;
-
-    $display("[TEST] Completed");
 
     // ====================================
     // TEST 5: USING MORE THAN ONE CLB
@@ -897,7 +895,7 @@ module fpga_tb;
     for (int i = 0; i < 20; i ++) begin
       @(negedge clk);
       if (io_south_out[3:0] != i % 16) begin
-        $display("Test %d .%d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], io_south_out[3:0]);
+        $display("Test %0d.%0d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], io_south_out[3:0]);
         error = 1;
       end
     end
@@ -905,7 +903,7 @@ module fpga_tb;
       // $error;
       // $finish;
     end else begin
-      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+      $display("Test %0d.%0d PASS", test_case[4:0], sub_test[4:0]);
     end
 
 
@@ -1181,7 +1179,7 @@ module fpga_tb;
     for (int i = 0; i < 270; i ++) begin
       @(negedge clk);
       if (io_south_out[7:0] != i % 256) begin
-        $display("Test %d .%d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], io_south_out[3:0]);
+        $display("Test %0d.%0d :%d FAIL: exp:%d, got: ",test_case[4:0], sub_test[4:0], i[4:0], i[4:0], io_south_out[3:0]);
         error = 1;
       end
     end
@@ -1189,7 +1187,7 @@ module fpga_tb;
       // $error;
       // $finish;
     end else begin
-      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+      $display("Test %0d.%0d PASS", test_case[4:0], sub_test[4:0]);
     end
 
     // ====================================
@@ -1204,9 +1202,9 @@ module fpga_tb;
     repeat (3) cram(blank_cram);
     repeat(5) @(negedge clk);
     if (cfg_error == 1 && !cfg_done) begin
-      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+      $display("Test %0d.%0d PASS", test_case[4:0], sub_test[4:0]);
     end else begin
-      $display("Test %d .%d FAIL", test_case[4:0], sub_test[4:0]);
+      $display("Test %0d.%0d FAIL", test_case[4:0], sub_test[4:0]);
     end
 
     //too long
@@ -1214,9 +1212,9 @@ module fpga_tb;
     repeat (5) cram(blank_cram);
     repeat(5) @(negedge clk);
     if (cfg_error == 2 && !cfg_done) begin
-      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+      $display("Test %0d.%0d PASS", test_case[4:0], sub_test[4:0]);
     end else begin
-      $display("Test %d .%d FAIL", test_case[4:0], sub_test[4:0]);
+      $display("Test %0d.%0d FAIL", test_case[4:0], sub_test[4:0]);
     end
 
     //test that blank cram still works
@@ -1224,12 +1222,12 @@ module fpga_tb;
     repeat (4) cram(blank_cram);
     repeat(5) @(negedge clk);
     if (cfg_error == 0 && cfg_done) begin
-      $display("Test %d .%d PASS", test_case[4:0], sub_test[4:0]);
+      $display("Test %0d.%0d PASS", test_case[4:0], sub_test[4:0]);
     end else begin
-      $display("Test %d .%d FAIL", test_case[4:0], sub_test[4:0]);
+      $display("Test %0d.%0d FAIL", test_case[4:0], sub_test[4:0]);
     end
 
-    sub_test = 3;
+    $display("[TEST] Completed");
     $finish;
   end
 endmodule
