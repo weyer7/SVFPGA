@@ -1,0 +1,94 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sun Mar  8 01:55:25 2026
+[*]
+[dumpfile] "/home/aweyer26/SVFPGA/waves/fpga_param.vcd"
+[dumpfile_mtime] "Sun Mar  8 01:55:05 2026"
+[dumpfile_size] 32062149
+[savefile] "/home/aweyer26/SVFPGA/waves/fpga_param.gtkw"
+[timestart] 0
+[size] 2560 1481
+[pos] -1 -1
+*-26.736897 431100000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] fpga_param_tb.
+[treeopen] fpga_param_tb.dut.
+[treeopen] fpga_param_tb.dut.row[0].
+[treeopen] fpga_param_tb.dut.row[0].col[0].
+[treeopen] fpga_param_tb.dut.row[0].col[1].
+[treeopen] fpga_param_tb.dut.row[1].
+[treeopen] fpga_param_tb.dut.row[1].col[0].
+[treeopen] fpga_param_tb.dut.row[1].col[1].
+[sst_width] 297
+[signals_width] 200
+[sst_expanded] 1
+[sst_vpaned_height] 465
+@200
+-
+@28
+fpga_param_tb.dut.clk
+fpga_param_tb.dut.nrst
+fpga_param_tb.dut.config_en
+fpga_param_tb.dut.config_data_in
+fpga_param_tb.dut.config_data_out
+fpga_param_tb.cfg_error[1:0]
+@420
+fpga_param_tb.dut.TOTAL_CFG_BITS
+fpga_param_tb.dut.OEB_BITS
+fpga_param_tb.dut.BITS_PER_CELL
+@200
+-PL Fabric Signals
+@28
+fpga_param_tb.dut.le_en
+fpga_param_tb.dut.le_nrst
+@200
+-Outputs
+@800022
+fpga_param_tb.dut.io_south_out[31:0]
+@28
+(0)fpga_param_tb.dut.io_south_out[31:0]
+(1)fpga_param_tb.dut.io_south_out[31:0]
+(2)fpga_param_tb.dut.io_south_out[31:0]
+(3)fpga_param_tb.dut.io_south_out[31:0]
+(4)fpga_param_tb.dut.io_south_out[31:0]
+(5)fpga_param_tb.dut.io_south_out[31:0]
+(6)fpga_param_tb.dut.io_south_out[31:0]
+(7)fpga_param_tb.dut.io_south_out[31:0]
+(8)fpga_param_tb.dut.io_south_out[31:0]
+(9)fpga_param_tb.dut.io_south_out[31:0]
+(10)fpga_param_tb.dut.io_south_out[31:0]
+(11)fpga_param_tb.dut.io_south_out[31:0]
+(12)fpga_param_tb.dut.io_south_out[31:0]
+(13)fpga_param_tb.dut.io_south_out[31:0]
+(14)fpga_param_tb.dut.io_south_out[31:0]
+(15)fpga_param_tb.dut.io_south_out[31:0]
+(16)fpga_param_tb.dut.io_south_out[31:0]
+(17)fpga_param_tb.dut.io_south_out[31:0]
+(18)fpga_param_tb.dut.io_south_out[31:0]
+(19)fpga_param_tb.dut.io_south_out[31:0]
+(20)fpga_param_tb.dut.io_south_out[31:0]
+(21)fpga_param_tb.dut.io_south_out[31:0]
+(22)fpga_param_tb.dut.io_south_out[31:0]
+(23)fpga_param_tb.dut.io_south_out[31:0]
+(24)fpga_param_tb.dut.io_south_out[31:0]
+(25)fpga_param_tb.dut.io_south_out[31:0]
+(26)fpga_param_tb.dut.io_south_out[31:0]
+(27)fpga_param_tb.dut.io_south_out[31:0]
+(28)fpga_param_tb.dut.io_south_out[31:0]
+(29)fpga_param_tb.dut.io_south_out[31:0]
+(30)fpga_param_tb.dut.io_south_out[31:0]
+(31)fpga_param_tb.dut.io_south_out[31:0]
+@1001200
+-group_end
+@200
+-Config Chain
+@28
+fpga_param_tb.dut.row[0].col[0].cell_inst.config_data_in
+fpga_param_tb.dut.row[0].col[1].cell_inst.config_data_in
+fpga_param_tb.dut.row[1].col[0].cell_inst.config_data_in
+fpga_param_tb.dut.row[1].col[1].cell_inst.config_data_in
+@420
+fpga_param_tb.CFG_BITS
+@23
+fpga_param_tb.blank_cram[355:0]
+[pattern_trace] 1
+[pattern_trace] 0
